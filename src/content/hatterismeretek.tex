@@ -1,47 +1,70 @@
 \chapter{Háttérismeretek}
 \section{Modellek}
-Terveket, modelleket az élet számos területén alkalmazunk, ugyanis ez által tudjuk még az előtt vizsgálni a megvalósítandó terméket, rendszert, hogy azt ténylegesen létre kellene hozni. A vizsgálat célja és módja egész sokféle lehet. A látvány tervező bemutat egy látványtervet és a megfelelő stakeholderek ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan jelölési rendszert alkalmazni, ami legalább az azonos téma területen belül, elfogadott és használt, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
 
-A jelölési rendszer vagy modellezési nyelv lehet egy szöveges leírás is, például egy programkód, de sokszor célszerű valamilyen vizuális megoldás használni azaz formák és nyilak illetve  szimbólumokat tartalmazó diagramokat alkalmazni. Ezek sok esetben kifejezőbbek, lényegre törőbbek, és elsősorban könnyebben értelmezhetőek mint a szöveges leírások.
+Modelleket az élet számos területén alkalmazunk, ez lehetővé teszi az előtt vizsgálni a megvalósítandó rendszert, hogy azt ténylegesen létre kellene hozni. A vizsgálatoknak számos módja és célja lehetséges. A látvány tervező bemutat egy látványtervet és a megfelelő stakeholderek ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan standardizált jelölési rendszert alkalmazni, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
+
+A jelölési rendszer vagy modellezési formalizmus lehet egy szöveges leírás is, például egy programkód, de sokszor célszerű vizuális megoldást használni, szimbólumokat tartalmazó diagramokat alkalmazni. Ezek sok esetben kifejezőbbek, lényegre törőbbek, és elsősorban könnyebben értelmezhetőek mint a szöveges leírások.
 
 \section{Statechart formalizmus}
-Az állapottérkép egy állapotgép grafikus leírása, amit rendszerek állapot alapú viselkedésének leírásához használunk. Ez azt jelenti, hogy rendszert véges sok állapottal jellemezhetjük, amelyek közül adott időpillanatban néhány aktív. Az állapotok közötti átjárást állapotátmeneteknek hívjuk. Az állapotok és állapotátmenetek tulajdonképpen egy irányított gráfot definiálnak, ahol az állapotok csomópontok, az állapotátmenetek pedig irányított élek. A legtöbb esetben az állapotok közötti átjárás valamilyen feltételhez vagy feltételekhez kötöttek például egy esemény megérkezéséhez, vagy valamilyen logikai feltétel kielégüléséhez, ha a feltételek teljesülnek akkor tüzelésről beszélünk, ilyenkor az él vagy állapotátmenet kiindulási állapota inaktívvá, míg a célállapota aktívvá válik.
+Az állapottérkép egy diagram ami irányított gráfot tartalmaz, ahol a csomópontok állapotokat, az élek állapotátmeneteket definiálnak. Az állapotok és átmenetek egy állapot alapú viselkedést írnak le amit állapotgépnek nevezünk. Az állapotátmenetek állapotok közötti lehetséges átjárásokat definiálnak és általában feltételhez kötöttek, ami jellemzően valamilyen esemény bekövetkezése vagy logikai feltétel teljesülése. A feltételek teljesülésekor az állapotváltás bekövetkezik, ezt szokás \emph{tüzelésnek} is hívni. Az állapotgép legfőbb jellemzője, hogy adott időpillanatban melyik állapotok aktívak, állapotváltások aktív állapotból történnek, ilyenkor az állapot inaktívvá válik a cél pedig aktívvá (hurok él is lehetséges).
 
-\subsection{MagicDraw állapottérképek}
-Az előzőekben inkább általánosságban beszéltem az állapottérképekről, most az elemeinek a szintaktikáját és szemantikáját fogom ismertetni, méghozzá a UML 2 szerint amit a MagicDraw követ.
+A viselkedés indulásakor az első aktív állapotot kezdő állapotnak hívják, ez egy különleges ún. pszeudoállapot, ami az állapotgép belépési pontja és általában azonnal átléptetésre kerül egy másik állapotba.
+
+\subsection{Állapottérképek UML 2-ben}
+Előzőekben az állapot alapú modellezés kvázi alapjai kerültek bemutatásra. A következőkben az állapottérképek egy konkrét specifikációja kerül bemutatásra az UML 2 szerint.
 
 \begin{itemize}
 	%--------------
 	% Állapot
 	%--------------
-	\item \emph{állapot (state)}: az állapottérképek csomópontjai, a rendszer működésének egyfajta jól megkülönböztethető állásai, amelyek valamilyen esemény bekövetkezésére várnak. Az állapotok rendelkeznek:
+	\item \emph{Állapot (State)}: az állapottérképek csomópontjai, a rendszer működésének egyfajta jól megkülönböztethető fázisai, amelyek valamilyen esemény bekövetkezésére várnak. Az állapotok rendelkeznek:
 	\begin{itemize}
 		\item név: az állapot neve
-		\item be/kilépési akció: be és kilépés során végrehajtandó cselekvés
+		\item be/kilépési akció: be és kilépés során végrehajtandó cselekvés.
 	\end{itemize}
 	
+	%-----------------
+	% Kezdő állapot
+	%-----------------
+	\item \emph{Kezdő állapot (Initial State)}: pszeudoállapot, régiónként egy szerepelhet belőle és a régió belépési pontjaként szolgál.
+	%-----------------
+	% Végső állapot
+	%-----------------
+	\item \emph{Végállapot (Final State)}\footnote{UML 2-ben a végső állapotot nem pszeudoállapotként hanem állapotként van definiálva https://www.omg.org/spec/UML/2.0} (final state): A végső állapot, a régió terminálasi pontja, ha egy állapotgép összes régiója egy végső állapotba ért akkor az állapotgép is terminál.
+	%----------------
+	% Termináló állapot
+	%----------------
+	\item \emph{Termináló állapot (Terminal State)}: pszeudoállapot, ami az egész állapotgépet azonnal terminálja, ezt hibák lekezelésére lehet például alkalmazni.
 	%--------------
 	% Állapot átmenet
 	%--------------
-	\item \emph{állapot átmenet (transition)}: az állapottérképek élei, az állapotok közötti átjárhatóságot definiálják, ha egy állapot átmenet érvényre jutását tüzelésnek hívjuk. Az állapotátmenetek rendelkeznek:
+	\item \emph{Állapot átmenet (Transition)}: az állapottérképek élei, a lehetséges állapotváltozásokat definiálják. Az állapotátmenetek rendelkeznek:
 		\begin{itemize}
-			\item triggerekkel
-			\item őrfeltételekkel
+			\item Triggerekkel
+			\item Őrfeltételekkel
 		\end{itemize}
 	%---------------
 	% Trigger
 	%---------------
-	\item \emph{trigger}: állapot átmenet tüzelésének megkísérlése valamilyen esemény hatására, az esemény lehet
+	\item \emph{Trigger}: Állapot váltást kiváltó esemény amely lehet:
 	\begin{itemize}
 		\item Változás esemény (Change Event): valamilyen értéknek a megváltozása.
-		\item Üzenet esemény (Message Event): valamilyen üzenet típusú objektumnak az érkezése, amit ebben a kontextusban kérésnek tekintünk. Egy ilyen típusú kommunikáció valójában kétféle eseménytől függ, az üzenet elküldésétől és annak küldőjétől és az üzenet fogadásától és annak fogadójától. A kérés lehet egy metódus hívás, egy jelnek (signal) a fogadása.
-		\item Időzítés esemény (TimeEvent): idő változásához kötött esemény
+		\item Üzenet esemény (Message Event): valamilyen üzenet típusú objektumnak az érkezése, amit ebben a kontextusban kérésnek felel meg. Az ilyen típusú kommunikáció kétféle eseménytől függ, az üzenet elküldésétől és annak küldőjétől és az üzenet fogadásától és fogadójától. A kérés lehet egy metódus hívás, egy jelnek (\emph{Signal}) a fogadása.
+		\item Időzítés esemény (Time Event): idő változásához kötött esemény.
 	\end{itemize}
-	Fontos megjegyezni, hogy itt most nem foglalkozok az események kiváltásának kérdésével azaz a küldő oldallal, és a fogadásnál sem térek ki a portokra, és interfészekre, ezek értelmezése és hasznossága az állapottérképek közti kommunikáció modellezése nélkül ezen a ponton elenyésző.
+
+\end{itemize}
+Fontos megjegyezni, hogy a dolgozat nem tér ki részletesen az események kiváltásának kérdésére, valamint az események küldésénél és fogadásánál szerepet játszó portokra, és interfészekre, ezen elemek a dolgozat szempontjából irrelevánsnak tekinthetők.
+\begin{itemize}
 	%----------------
 	% Guard
 	%----------------
-	\item \emph{őrfeltétel (guard)}: egy logikai kifejezés, melynek teljesülnie kell, hogy az állapotátmenet, amihez hozzá van rendelve tüzelhessen.
+	\item \emph{Őrfeltétel (Guard)}: egy logikai kifejezés, melynek teljesülnie kell, hogy az adott állapotátmenet bekövetkezhessen.
+	%----------------
+	%Action
+	%----------------
+	\item \emph{Akció}: Különböző események bekövetkezésekor, mint állapotváltások, belépés állapotokba, kilépés állapotokból, vagy maga az állapotban maradás, lehetőségünk van viselkedéseket végrehajtani. UML szerint ezek lehetnek: Activityk, Állapotgépek, Interakció\footnote{Interakció modell elemek között, leírásához a jellegétől függően többféle diagram használható(Szekvencia, Kommunikációs, Időzítés).} OpaqueBehavior\footnote{ szöveges, UML-től eltérő nyelvvel specifikált viselkedés.}
+	
 	%-----------------
 	% Ábra: állapot-atmenet-trigger-guard-action
 	%----------------
@@ -53,92 +76,139 @@ Az előzőekben inkább általánosságban beszéltem az állapottérképekről,
 	%----------------
 	% Összetett állapot
 	%----------------
-	\item \emph{összetett állapot(composite state)}: összetett állapotról akkor beszélünk, ha az állapotnak vannak további belső állapotai is, ilyenkor, ha az állapotgép egy tüzelés hatására kilép a kompozit állapotból akkor a belső állapotokból is kilép.
+\end{itemize}
+Gyakran előfordul, hogy általánosabb állapotot célszerű felbontani részállapotokra. Az egyszerű állapottérképek elemeivel, ez a fajta hierarchikus viszony az állapotok között nehezen ábrázolható, ezért célszerű további elemek használata.
+\begin{itemize}	
 	%------------------
 	% Régió
 	%------------------
-	\item \emph{régió}: régió egy állapotokat tartalmazó egység, az állapottérkép mindig tartalmaz egy régiót amibe az állapotok definiálhatók. Régiók létezhetnek egymással párhuzamosan ilyenkor a végrehajtásuk párhuzamosan történik.
+	\item \emph{Régió}: állapotokat tartalmazó egység, az állapottérkép mindig tartalmaz egy régiót amibe az állapotok definiálhatók. Régiók létezhetnek egymással párhuzamosan ilyenkor a végrehajtásuk párhuzamosan történik.
 	%------------------
-	% Ortogonális állapot
-	%------------------
-	\item \emph{ortogonális állapot (orthogonal state)}: olyan összetett állapot ami két vagy több régiót tartalmaz.
+	% Öszetett állapot
 	%-------------------
-	% Submachine state
-	%-----------------
-	\item \emph{submachine state}: egy olyan állapot, ami egy állapottérképre hivatkozik, ez lehetővé teszi, hogy egy állapottérkép többszöri felhasználását, akár más-más kontextusban, működését tekintve hasonló mint az ortogonális állapot
-	%-----------------
-	% Ábra
-	%-----------------
-	\begin{figure}[!ht]
-		\centering
-		\includegraphics[keepaspectratio]{figures/statechart_elements/composit.png}
-		\caption{Összetett állapot (balra), ortogonális állapot (jobbra) és submachine state (alul)}
-	\end{figure}
-	%-----------------
-	% Kezdő állapot
-	%-----------------
-	\item \emph{kezdő állapot (initial state)}: A kezdő állapot egy pszeudo állapot, régiónként egy szerepelhet belőle és a régió belépési pontjaként szolgál.
-	%-----------------
-	% Végső állapot
-	%-----------------
-	\item \emph{végső állapot}\footnote{UML 2 ben a végső állapotot nem pszeduo állapotként hanem állapotként van definiálva https://www.omg.org/spec/UML/2.0} (final state): A végső állapot, a régió terminálasi pontja, ha egy állapotgép összes régiója egy végső állapotba ért akkor az állapotgép is terminál.
-	%----------------
-	% Termináló állapot
-	%----------------
-	\item \emph{termináló állapot (terminal state)}: pszeudo állapot, ami az egész állapotgépet azonnal terminálja
-	%---------------
-	% Belépési pont
-	%---------------
-	\item \emph{belépési pont(entry point)}: egy pszeudo állapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Továbbá léteznie kell egy állapotátmenetnek közte és egy az állapot vagy állapotgép régiója között.
-	%--------------
-	% Kilépési pont
-	%---------------
-	\item \emph{kilépési pont(exit point)}: mint a belépési pont, de ez kilépési pontot reprezentál
-	%---------------
-	% kapcsolódási pont
-	%---------------
-	\item \emph{kapcsolódási pont referencia(connection point reference)}: submachine stateben definiált be és kilépési pontokra tudunk vele hivatkozni, ez lehetővé teszi, hogy a submachine stateben leírt belső állapotokhoz is felvehessünk állapotátmeneteket
+	\item \emph{Összetett állapot(Composite State)}: ha az állapotnak vannak további belső állapotai is, ha az állapot aktív akkor legalább egy belső is aktív, ha az állapotgép egy állapotváltás hatására kilép a kompozit állapotból akkor a belső állapotokból is kilép.
 	%---------------
 	% History state
 	%--------------
-	\item \emph{history state}: olyan pszeudo állapot, amely egy régióban megjegyzi az utolsó aktív állapotot, a régióbol történő kilépéskor, ha a régióba visszalépünk a history state visszaállítja a megjegyzett állapotot. Amennyiben nincs előző állapot az ő belőle húzott állapotátmenet cél állapota lesz aktív. Létezik shallow és deep history state. Előbbi csak adott régión belül jegyzi meg az állapotot míg utóbbi a tartalmazott régiók állapotait is megjegyzi és visszaállítja.
-	%-------------
-	% Csomópont
-	%-------------
-	\item \emph{csomópont (junciton)}: több állapotátmenet összekapcsolása és egyként kezelése, például ha a cél állapotuk ugyan az és logikailag összetartoznak vagy egy beérkező átmenet szétbontása több átmenetre. Ilyenkor lehetőség van őrfeltételt rakni az átmenetekre, ezeknek a kiértékelése viszont még azelőtt történik, hogy bármelyik átmenet végrehajtásra kerülne, ezért egy ilyen ágat szokás statikus feltételes ágnak nevezni.
-	%------------
-	% Elágazás
-	%-----------
-	\item \emph{választás (choice)}: hasonló mint a csomópont, viszont az őrfeltételek az elágazásba való belépéskor értékelődnek ki dinamikusan. Ezt jellemzően alternatív útvonalak megadására használjuk. Fontos megjegyezni, hogy az elágazás és a csomópont esetében is lehetséges, hogy több átmenet is tüzelhetne, ilyenkor az érvényre jutó átmenet kiválasztása nem determinisztikus módon történik ezért elkerülendő, például else őrfeltétel alkalmazásával.
+	\item \emph{History State}: olyan pszeudo állapot, amely egy régióban megjegyzi az utolsó aktív állapotot, kilépéskor, ha a régióba visszalépünk a history state visszaállítja a megjegyzett állapotot. Amennyiben nincs előző állapot az ő belőle húzott állapotátmenet cél állapota lesz aktív. Két féle History Statet különböztetünk meg Shallow és Deep Historyt. Előbbi csak adott régión belül jegyzi meg az állapotot míg utóbbi a tartalmazott régiók állapotait is megjegyzi és visszaállítja.
+	
+\end{itemize}
+Rendszerünket egy időpillanatban több egymástól független állapot is jellemezheti. Ezt a viselkedést párhozamos régiók alkalmazásával lehet leírni.
+\begin{itemize}
+	%------------------
+	% Ortogonális állapot
+	%------------------
+	\item \emph{Ortogonális állapot (Orthogonal State)}: olyan összetett állapot ami két vagy több régiót tartalmaz.
 	%---------
 	% Fork
 	%---------
-	\item \emph{fork}: pszeudo állapot, ami egy beérkező átmenetet szétbont több átmenetre, amiknek a cél állapotuk ortogonális régiókban találhatók. A kimenő átmeneteken nem lehet se trigger, sem pedig őrfeltétel.
+	\item \emph{Fork}: pszeudoállapot, ami egy beérkező átmenetet szétbont több átmenetre, amiknek a cél állapotuk ortogonális régiókban találhatók. A kimenő átmeneteken nem lehet se trigger, sem pedig őrfeltétel.
 	%---------
 	% Join
 	%---------
-	\item \emph{join}: pszeudo állapot, ami több beérkező átmenetet kapcsol össze eggyé. Az átmenetek orthogonális régiókból kell, hogy induljanak és nem lehet rajtuk trigger vagy őrfeltétel. A join szinkronizációs funkcionalitással bír: addig nem lehet tovább lépni belőle amíg minden belé érkező átmenet végre nem hajtódott.
+	\item \emph{Join}: pszeudoállapot, ami több beérkező átmenetet kapcsol össze eggyé. Az átmenetek ortogonális régiókból kell, hogy induljanak és nem lehet rajtuk trigger vagy őrfeltétel. A join szinkronizációs funkcionalitással bír: addig nem lehet tovább lépni belőle amíg minden beérkező átmenet végre nem hajtódott.
+	
+	\emph{Fork/Join} alkalmazásával ki tudjuk kényszeríteni, hogy részrendszereink elérjenek egy adott állapotot, mielőtt a végrehajtás folytatódhatna. Szintaktikájuk \aref{fig:forkjoin} ábrán látható. 
+	
 	%------------
 	% Ábra: fork - join
 	%-----------
 	\begin{figure}[!ht]
 		\centering
-		\includegraphics[keepaspectratio]{figures/statechart_elements/forkjoin.png}
+		\includegraphics[keepaspectratio, width=100mm]{figures/statechart_elements/forkjoin.png}
 		\caption{Példa: fork-join}
+		\label{fig:forkjoin}
 	\end{figure}
+	
+\end{itemize}
+Rendszereink leírásakor előfordulhatnak ismétlődő részek, amiket célszerű egyszer leírni és újra felhasználni.
+\begin{itemize}
+	%-------------------
+	% Submachine state
+	%-----------------
+	\item \emph{Submachine state}: Egy olyan állapot, ami egy állapottérképre hivatkozik, ez lehetővé teszi, hogy egy állapottérkép többszöri felhasználását, akár más-más kontextusban
+	%---------------
+	% Belépési pont
+	%---------------
+	\item \emph{Belépési pont(Entry Point)}: egy pszeudoállapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Továbbá léteznie kell egy állapotátmenetnek közte és egy az állapot vagy állapottérkép fő régiója között.
+	%--------------
+	% Kilépési pont
+	%---------------
+	\item \emph{Kilépési pont(Exit point)}: mint a belépési pont, de ez kilépési pontot reprezentál
+	%---------------
+	% kapcsolódási pont
+	%---------------
+	\item \emph{Kapcsolódási pont referencia(Connection Point Reference)}: \emph{Submachine Stateben} definiált be és kilépési pontokra tudunk vele hivatkozni, ez lehetővé teszi, hogy a \emph{Submachine Stateben} leírt belső állapotokhoz is felvehessünk állapotátmeneteket.
+	
+\end{itemize}
+Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kezdő illetve végpontjait tudjuk definiálni. Újrafelhasználásnál a behivatkozott állapottérképen ezekre referálhatunk Kapcsolódási Pont Referenciákkal. Az ezekbe húzott állapotátmenetek úgy tekintendők mintha kezdő vagy végpontjuk az az állapot lenne amihez a belépési vagy kilépési rendelve van. A \emph{Submachine State} szintaktikáját és használatát  \aref{fig:SubmachineState} ábra szemlélteti.
+%-----------------
+% Ábra Submachine state usage
+%-----------------
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[keepaspectratio, width=150mm]{figures/statechart_elements/SubmachineState.png}
+	\caption{Állapottérkép újrafelhasználása Submachine State segítségével}
+	\label{fig:SubmachineState}
+\end{figure}
+\linebreak Logikailag állapotátmenetek is összetartozhatnak, ezért célszerű bizonyos esetekben egyesíteni, vagy szétbontani őket több alternatív átmenetre.
+\begin{itemize}
+	%-------------
+	% Csomópont
+	%-------------
+	\item \emph{Csomópont (Junction)}: pszeudoállapot, több állapotátmenet összekapcsolása és egyként kezelése, például ha a cél állapotuk ugyan az és logikailag összetartoznak vagy egy beérkező átmenet szétbontása több átmenetre. Ilyenkor lehetőség van őrfeltételt rakni az átmenetekre, ezeknek a kiértékelése viszont még azelőtt történik, hogy bármelyik átmenet végrehajtásra kerülne, ezért egy ilyen ágat szokás statikus feltételes ágnak nevezni.
+	%------------
+	% Elágazás
+	%-----------
+	\item \emph{Döntés (Choice)}: hasonló mint a csomópont, viszont az őrfeltételek az elágazásba való belépéskor értékelődnek ki dinamikusan. Ezt jellemzően alternatív útvonalak megadására használjuk, hasonló mint a programozási nyelvekben \emph{"if than else"} elágazás. Fontos megjegyezni, hogy az elágazás és a csomópont esetében is lehetséges, hogy több átmenet is tüzelhetne, ilyenkor az érvényre jutó átmenet kiválasztása nem determinisztikus módon történik ezért elkerülendő, például \emph{else} őrfeltétel alkalmazásával.
+	
+	%-----------------
+	% Ábra
+	%-----------------
+	%\begin{figure}[!ht]
+	%	\centering
+	%	\includegraphics[keepaspectratio]{figures/statechart_elements/composit.png}
+	%	\caption{Összetett állapot (balra), ortogonális állapot (jobbra) és submachine state (alul)}
+	%\end{figure}
+	
+	
 	
 \end{itemize}
 
 \section{MagicDraw}
-A MagicDraw a No Magic nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de pluginnal lehetőségünk van SysML modelleket is készíteni. A SysML egy általános-célú modellezési nyelv ami az UML egy részhalmazának a kiterjesztésével keletkezett. A SysML 9 diagramtípus támogat, amelyből néhány UML ben is létezik. Ezek:
-\begin{itemize}
-	\item \emph{Block Definíciós Diagram (BDD)}
-	\item \emph{Internal Block Diagram (IBD)}
-	\item Package Diagram
-	\item Use Case Diagram
-	\item Activity Diagram
-	\item Sequence Diagram
-	\item \emph{State Machine Diagram (Statechart)}
-	\item Parametric Diagram
-\end{itemize}
-Az állapottérképeket vagy \emph{statechartokat} én mint SysML modellek részeként vizsgálom, tehát a \emph{statechart} egy ún. \emph{Block} viselkedéseként van megadva.
+A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni.
+
+A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével fejlesztettek. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok és portjaik között tudunk kapcsolatokat definiálni.
+
+\subsection{Állapottérképek SysMLben}
+Az állapottérképeket SysML modellek részeiként, más modell elemekhez vannak viselkedésként hozzárendelve, a triggereket aktiváló események a modell strukturális leírásában vannak definiálva. Mivel a dolgozat kizárólag állapottérképekkel foglalkozik ezért implicit feltételezzük, hogy minden állapottérképhez tartozik egy Blokk, egy Blokk viselkedését pontosan egy állapottérkép írja le. A Blokkon definiálva van egy Port ami az események fogadásáért felelős. Minden állapotátmenet ettől a Porttól várja az eseményeket.
+
+\subsection{Plug-in fejlesztése MagicDrawhoz}
+A MagicDraw lehetővé teszi, hogy harmadik fél plusz funkciókat adhasson az eszközhöz plug-inok formájában. A MagicDraw Java nyelven íródott, plug-int is ezen a nyelven van lehetőség írni, ehhez egy API-t kapunk amit Open Api-nak \cite{OpenApi} hívnak, ez teszi lehetővé, hogy a modell elemek kód szintű hozzáférését, és plusz menü pontok beszúrását.
+
+A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát használ, de a létrehozott elemek a MagicDraw UML meta-modellje szerint lesznek példányosítva megfelelően sztereotipizálva, ezért kód szinten is eszerint érhetőek el.
+
+A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF \footnote{Eclipse Modelling Framework https://www.eclipse.org/modeling/emf/}-es interfaceket is realizálnak ezért lehetőségünk van EMF Apijának használatára a plugin fejlesztése során.
+
+\section{Viatra}
+
+Az Eclipse Viatra Framework egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és a transzformációk futtathatók.
+
+\subsection{Viatra for MagicDraw}
+Viatra használatában MagicDraw plugin fejlesztése során is lehetőség van. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra API használatát saját plug-inunkban.
+
+\section{Formális verifikáció}
+
+A modell alapú fejlesztés egyik nagy előnye, hogy már tervezési fázisban tudjuk vizsgálni rendszerünk egyes aspektusait. A rendszer helyes működésének ellenőrzését verifikációnak hívják. Ez történhet tesztekkel, szimulációkkal, vagy formális matematikai módszerekkel.
+
+A formális módszerek előnye, hogy a helyességük matematikailag garantált, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek, nem függnek teszt lefedettségtől. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett.
+
+Hátránya, hogy általában nehezen skálázható, és nem mindig egyszerű összetett rendszereket formális módszerekre visszavezetni.
+
+Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes Uppaal segítségével erre.
+
+\section{Gamma}
+
+
+
+
