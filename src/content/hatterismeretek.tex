@@ -178,13 +178,37 @@ Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kez
 \section{MagicDraw}
 A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni.
 
-A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével fejlesztettek. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok és portjaik között tudunk kapcsolatokat definiálni.
+A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok és portjaik között tudunk kapcsolatokat definiálni.
+
+Viselkedést Állapottérképekkel és Activity Diagrammokkal szokás leírni SysMLben. Utóbbival munka- és adatfolyamokat, ahol a folyamat lépései activityk és actionök. Állapottérképekkel reaktív rendszereket szokás leírni, a rendszer eseményekre reagál, ezek határozzák meg a viselkedését, szemben az Activity Diagrammokkal, amivel adott bemenetből valamilyen kimenet előállításának folyamatát írjuk le.
 
 \subsection{Állapottérképek SysMLben}
 Az állapottérképeket SysML modellek részeiként, más modell elemekhez vannak viselkedésként hozzárendelve, a triggereket aktiváló események a modell strukturális leírásában vannak definiálva. Mivel a dolgozat kizárólag állapottérképekkel foglalkozik ezért implicit feltételezzük, hogy minden állapottérképhez tartozik egy Blokk, egy Blokk viselkedését pontosan egy állapottérkép írja le. A Blokkon definiálva van egy Port ami az események fogadásáért felelős. Minden állapotátmenet ettől a Porttól várja az eseményeket.
 
 \subsection{Plug-in fejlesztése MagicDrawhoz}
-A MagicDraw lehetővé teszi, hogy harmadik fél plusz funkciókat adhasson az eszközhöz plug-inok formájában. A MagicDraw Java nyelven íródott, plug-int is ezen a nyelven van lehetőség írni, ehhez egy API-t kapunk amit Open Api-nak \cite{OpenApi} hívnak, ez teszi lehetővé, hogy a modell elemek kód szintű hozzáférését, és plusz menü pontok beszúrását.
+A MagicDraw lehetővé teszi, hogy harmadik fél plusz funkciókat adhasson az eszközhöz plug-inok formájában. A MagicDraw Java nyelven íródott, plug-int is ezen a nyelven van lehetőség fejleszteni, ehhez egy Api-t kapunk amit Open Api-nak \cite{OpenApi} hívnak, ez teszi lehetővé, a modell elemek kóddal történő manipulációját, és a grafikus interfész kiegészítését, saját funkcionalitással.
+
+A MagicDraw indulásakor bejárja a plug-in könyvtárat plug-in leíró fájlokat tartalmazó könyvtárak után. Ezek írják le melyik Java osztály reprezentálja a plug-int, ennek le kell öröklődnie a \emph{com.nomagic.magicdraw.plugins.Plugin} osztályból. A MagicDraw plug-ins managere meghívja ennek az osztálynak az init metódusát, amiben GUI elemeket tudunk regisztrálni, vagy egyéb funkcionalitást hozzáadni az eszközhöz.
+
+\lstset{style=javacode}
+\begin{lstlisting}
+public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
+
+	public void init(){
+		//plugin belépési pontja
+	}
+	
+	public boolean close(){
+		//plugin leáll
+	}
+	
+	public boolean isSupported(){
+		//feltételek teljesülése a plug-in betöltéséhez
+		return true;
+	}
+	
+}
+\end{lstlisting}
 
 A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát használ, de a létrehozott elemek a MagicDraw UML meta-modellje szerint lesznek példányosítva megfelelően sztereotipizálva, ezért kód szinten is eszerint érhetőek el.
 
@@ -195,20 +219,22 @@ A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF 
 Az Eclipse Viatra Framework egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és a transzformációk futtathatók.
 
 \subsection{Viatra for MagicDraw}
-Viatra használatában MagicDraw plugin fejlesztése során is lehetőség van. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra API használatát saját plug-inunkban.
+Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra API használatát MagicDraw plug-inokban.
 
 \section{Formális verifikáció}
 
 A modell alapú fejlesztés egyik nagy előnye, hogy már tervezési fázisban tudjuk vizsgálni rendszerünk egyes aspektusait. A rendszer helyes működésének ellenőrzését verifikációnak hívják. Ez történhet tesztekkel, szimulációkkal, vagy formális matematikai módszerekkel.
 
-A formális módszerek előnye, hogy a helyességük matematikailag garantált, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek, nem függnek teszt lefedettségtől. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett.
+A formális módszerek előnye, hogy a helyességük matematikailag garantált, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek ezért nem kell lefedettséggel foglalkozni mint tesztelésnél. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett.
 
-Hátránya, hogy általában nehezen skálázható, és nem mindig egyszerű összetett rendszereket formális módszerekre visszavezetni.
+Hátránya, hogy nehezen skálázható, erőforrás igényes és egy összetett rendszert formális módszerekre való visszavezetése gyakran nehézkes.
 
-Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes Uppaal segítségével erre.
+Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes Uppaal segítségével erre, a feladat végrehajtásához ezt az eszközt használtam fel.
 
 \section{Gamma}
 
+A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. A komponensek viselkedését állapottérképek írják le. Az eszköz egyik legnagyobb erőssége, hogy egy domén specifikus kompozíciós nyelv segítségével lehetővé teszi egy egész rendszer felépítését a leírt komponensekből.
 
+Mivel a dolgozat rendszerek dekomponálására és felépítésével nem foglalkozik, ezért egyenlőre a Gamma keretrendszert csak korlátozott funkcionalitással használja.
 
 
