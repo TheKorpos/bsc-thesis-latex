@@ -6,6 +6,7 @@ Modelleket az élet számos területén alkalmazunk, ez lehetővé teszi az elő
 A jelölési rendszer vagy modellezési formalizmus lehet egy szöveges leírás is, például egy programkód, de sokszor célszerű vizuális megoldást használni, szimbólumokat tartalmazó diagramokat alkalmazni. Ezek sok esetben kifejezőbbek, lényegre törőbbek, és elsősorban könnyebben értelmezhetőek mint a szöveges leírások.
 
 \section{Statechart formalizmus}
+
 Az állapottérkép egy diagram ami irányított gráfot tartalmaz, ahol a csomópontok állapotokat, az élek állapotátmeneteket definiálnak. Az állapotok és átmenetek egy állapot alapú viselkedést írnak le amit állapotgépnek nevezünk. Az állapotátmenetek állapotok közötti lehetséges átjárásokat definiálnak és általában feltételhez kötöttek, ami jellemzően valamilyen esemény bekövetkezése vagy logikai feltétel teljesülése. A feltételek teljesülésekor az állapotváltás bekövetkezik, ezt szokás \emph{tüzelésnek} is hívni. Az állapotgép legfőbb jellemzője, hogy adott időpillanatban melyik állapotok aktívak, állapotváltások aktív állapotból történnek, ilyenkor az állapot inaktívvá válik a cél pedig aktívvá (hurok él is lehetséges).
 
 A viselkedés indulásakor az első aktív állapotot kezdő állapotnak hívják, ez egy különleges ún. pszeudoállapot, ami az állapotgép belépési pontja és általában azonnal átléptetésre kerül egy másik állapotba.
@@ -59,7 +60,7 @@ Fontos megjegyezni, hogy a dolgozat nem tér ki részletesen az események kivá
 	%----------------
 	% Guard
 	%----------------
-	\item \emph{Őrfeltétel (Guard)}: egy logikai kifejezés, melynek teljesülnie kell, hogy az adott állapotátmenet bekövetkezhessen.
+	\item\label{sec:guard} \emph{Őrfeltétel (Guard)}: tágabb értelemben egy logikai kifejezés, melynek teljesülnie kell, hogy az adott állapotátmenet bekövetkezhessen. UML-ben ezek megszoríráskén \emph{(Constraint)} vannak értelmezve, ebben az értelemben a megszorításnak való megfelelés az állapotváltás feltétele.
 	%----------------
 	%Action
 	%----------------
@@ -216,10 +217,9 @@ A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF 
 
 \section{Viatra}
 
-Az Eclipse Viatra Framework egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és a transzformációk futtathatók.
+Az Eclipse Viatra Framework egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és transzformációk futtathatók.
 
-\subsection{Viatra for MagicDraw}
-Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra API használatát MagicDraw plug-inokban.
+Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra Api használatát más plug-inokban. 
 
 \section{Formális verifikáció}
 
@@ -233,8 +233,12 @@ Hátránya, hogy nehezen skálázható, erőforrás igényes és egy összetett 
 
 \section{Gamma}
 
-A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. A komponensek viselkedését állapottérképek írják le. Az eszköz egyik legnagyobb erőssége, hogy egy domén specifikus kompozíciós nyelv segítségével lehetővé teszi egy egész rendszer felépítését a leírt komponensekből.
+A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz egyik alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools, aminek a modelljeit Gamma képes a saját nyelvére transzformálni és feldolgozni.
 
-Mivel a dolgozat rendszerek dekomponálására és felépítésével nem foglalkozik, ezért egyenlőre a Gamma keretrendszert csak korlátozott funkcionalitással használja.
+Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését az állapottérképek portjait, az azok által realizált interfészeket és a közöttük definiált kapcsolatokat.
+
+A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amiven constrainteket lehet definiálni, ami egy általános módja típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásához.
+
+A másik nyelv pedig Gamma Interface Language, ami interfészek definiálását teszi lehetővé, amik a kapcsolódó komponensek egymás felé nyújtanak. Az interfész határozza meg, hogy milyen események fogadhatóak, vagy küldhetőek. Ezek az interfészekben deklarálandók és irányuk lehet, \emph{in, out, inout}.
 
 
