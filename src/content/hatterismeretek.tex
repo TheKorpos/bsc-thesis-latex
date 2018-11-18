@@ -217,7 +217,7 @@ A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF 
 
 \section{Viatra}
 
-Az Eclipse Viatra Framework egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és transzformációk futtathatók.
+Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projects/modeling.viatra} egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és transzformációk futtathatók.
 
 Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra Api használatát más plug-inokban. 
 
@@ -229,16 +229,18 @@ A formális módszerek előnye, hogy a helyességük matematikailag garantált, 
 
 Hátránya, hogy nehezen skálázható, erőforrás igényes és egy összetett rendszert formális módszerekre való visszavezetése gyakran nehézkes.
 
-Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes Uppaal segítségével erre, a feladat végrehajtásához ezt az eszközt használtam fel.
+Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes állapottérképek verifikációjának elvégzésére. Ehhez az Uppaal \cite{bengtsson1995uppaal} \cite{bengtsson1998new} nevű eszközt használja fel.
 
-\section{Gamma}
+\section{Gamma Framework\cite{gammaf}}
 
-A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz egyik alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools, aminek a modelljeit Gamma képes a saját nyelvére transzformálni és feldolgozni.
+A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz egyik alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools \cite{toolsyakindu}, aminek a modelljeit Gamma képes a saját nyelvére transzformálni és feldolgozni.
 
 Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését az állapottérképek portjait, az azok által realizált interfészeket és a közöttük definiált kapcsolatokat.
 
 A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amiven constrainteket lehet definiálni, ami egy általános módja típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásához.
 
 A másik nyelv pedig Gamma Interface Language, ami interfészek definiálását teszi lehetővé, amik a kapcsolódó komponensek egymás felé nyújtanak. Az interfész határozza meg, hogy milyen események fogadhatóak, vagy küldhetőek. Ezek az interfészekben deklarálandók és irányuk lehet, \emph{in, out, inout}.
+
+[kép gamma absztract szintaxis]
 
 
