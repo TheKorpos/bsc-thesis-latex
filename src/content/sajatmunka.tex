@@ -6,8 +6,8 @@
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[keepaspectratio, width=120mm]{figures/plan.png}
-	\caption{Architektúra koncepció}
+	\includegraphics[keepaspectratio, width=150mm]{figures/concept.png}
+	\caption{Koncepció}
 	\label{fig:used-gamma}
 \end{figure}
 
@@ -32,7 +32,7 @@ Az eszköz ezután Viatra Queryk segítségével megkeresi az állapotgépeket a
 
 A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Workspace-ben egy külön az állapottérkép nevével megegyező könyvtárba kerülnek, ugyan ezen a néven .gsm kiterjesztéssel (\ref{fig:filestructure}-es ábra). (A Resource gyökere nem egy StatechartDefinition, hanem egy Package, ennek a neve szintén megegyezik az állapottérkép nevével)
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[keepaspectratio, width=90mm]{figures/filestructure.png}
 	\caption{Létrehozott fájlstruktúra}
@@ -57,7 +57,7 @@ A 2. lépésben a Trace Modell alapján megkeressük a már leképzett régiót 
 
 A tartalmazási gráf összefüggővé válását \aref{fig:state-transformation} ábra szemlélteti.
 
-\begin{figure}[!h]
+\begin{figure}[H]
 Az irányított nyilak tartalmazást jelölnek, a bekeretezett téglalap StatechartDefinition, a szagatott vonallal körbevett Region és a körök Statek.
 
 \centering
@@ -70,7 +70,7 @@ Az irányított nyilak tartalmazást jelölnek, a bekeretezett téglalap Statech
 \subparagraph{Pszeudoállapotok átalakítása:}
 Az állapotátmenetek leképzése előtt a pszeudoállapotok kerülnek leképzésre, ezen a ponton már létezik minden régió amit tartalmazhatja őket. A leképzés legtöbb esetben támogatott viszont, egyes elemek tartalmazása esetén nem lehet a verifikációt végrehajtani. Az elemeket és párjaikat \aref{table:pseudo} táblázat mutatja.
 
-\begin{table}[ht]
+\begin{table}[!h]
 	\footnotesize
 	\centering
 	\begin{tabular}{ l c c }
@@ -116,10 +116,16 @@ Az átmenetek leképzése után már elérhetőséget lehet is vizsgálni.
 
 \subparagraph{Triggerek leképzése:}
 
-\subparagraph{Guardok leképzése:}
+\subparagraph{Őrfeltételek leképzése:} őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú Constraint Modell példánymodellt fordítani. A MagicDrawToGamma ezen verziója az őrfeltételek leképzéséhez egy saját egyszerűsített implementációt használ. Ennek vannak megkötései is: kifejezések nem ágyazhatók, vagy láncolhatók, változókra és paraméterekre lehet hivatkozni, de csak a gazda StatechartDefinitionban ezen felül csak logikai és Long értékeket lehet használni.
 
 \subparagraph{Akciók leképzése:}
+Ez még nincs.
 
 \subsection{Trace Model}
-
 \label{sec:trace_model}
+A leképzések végrehajtása során fontos követni, hogy mely elemek képződtek le és mely elemekké. Erre a célra a MagicDrawToGamma bevezet egy Trace modell nevű segédstruktúrát, ami lehetővé teszi a megfeleltetések visszakereshetőségét Viatrával, továbbá a modell sorosítása és háttértáron való tárolása is megoldott. A modell három féle Trace-t különbötet meg. FOLYT...
+
+\section{A Verifikáció végrehajtása}
+
+\section{Plulgin működés közben}
+
