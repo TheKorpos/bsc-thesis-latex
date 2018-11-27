@@ -1,24 +1,24 @@
 \chapter{Háttérismeretek}
 \section{Modellek}
 
-Modelleket az élet számos területén alkalmazunk, ez lehetővé teszi az előtt vizsgálni a megvalósítandó rendszert, hogy azt ténylegesen létre kellene hozni. A vizsgálatoknak számos módja és célja lehetséges. A látvány tervező bemutat egy látványtervet és a megfelelő stakeholderek ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan standardizált jelölési rendszert alkalmazni, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
+Modelleket a tudomány számos területén alkalmazunk, ez lehetővé teszi az előtt vizsgálni a megvalósítandó rendszert, hogy azt ténylegesen létre kellene hozni. A vizsgálatoknak számos módja és célja lehet. A látványtervező bemutat egy látványtervet és a megfelelő \emph{stakeholderek} ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan standardizált jelölési rendszert alkalmazni, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
 
 A jelölési rendszer vagy modellezési formalizmus lehet egy szöveges leírás is, például egy programkód, de sokszor célszerű vizuális megoldást használni, szimbólumokat tartalmazó diagramokat alkalmazni. Ezek sok esetben kifejezőbbek, lényegre törőbbek, és elsősorban könnyebben értelmezhetőek mint a szöveges leírások.
 
-\section{Statechart formalizmus}
+\section{Állapot alapú modellezés}
 
-Az állapottérkép egy diagram ami irányított gráfot tartalmaz, ahol a csomópontok állapotokat, az élek állapotátmeneteket definiálnak. Az állapotok és átmenetek egy állapot alapú viselkedést írnak le amit állapotgépnek nevezünk. Az állapotátmenetek állapotok közötti lehetséges átjárásokat definiálnak és általában feltételhez kötöttek, ami jellemzően valamilyen esemény bekövetkezése vagy logikai feltétel teljesülése. A feltételek teljesülésekor az állapotváltás bekövetkezik, ezt szokás \emph{tüzelésnek} is hívni. Az állapotgép legfőbb jellemzője, hogy adott időpillanatban melyik állapotok aktívak, állapotváltások aktív állapotból történnek, ilyenkor az állapot inaktívvá válik a cél pedig aktívvá (hurok él is lehetséges).
+Az állapottérkép egy diagram ami irányított gráfot tartalmaz, ahol a csomópontok állapotokat, az élek állapotátmeneteket definiálnak. Az így kapott gráfot állapotgépnek nevezzük. Az állapotátmenetek állapotok közötti lehetséges átjárásokat definiálnak és általában feltételhez kötöttek, ami jellemzően valamilyen esemény bekövetkezése vagy logikai feltétel teljesülése. A feltételek teljesülésekor az állapotváltás bekövetkezik, ezt szokás \emph{tüzelésnek} is hívni. Az állapotgép legfőbb jellemzője, hogy adott időpillanatban melyik állapotok aktívak. Állapotváltások aktív állapotból történnek, ilyenkor a kiindulási állapot inaktívvá válik a célállapot pedig aktívvá (a kiinduló és célállapot megegyezhet).
 
-A viselkedés indulásakor az első aktív állapotot kezdő állapotnak hívják, ez egy különleges ún. pszeudoállapot, ami az állapotgép belépési pontja és általában azonnal átléptetésre kerül egy másik állapotba.
+A működés kezdetekor az első aktív állapotot kezdő állapotnak hívják, ez egy különleges ún. pszeudoállapot, ami az állapotgép belépési pontja és általában azonnal átléptetésre kerül egy másik állapotba.
 
 \subsection{Állapottérképek UML 2-ben}
-Előzőekben az állapot alapú modellezés kvázi alapjai kerültek bemutatásra. A következőkben az állapottérképek egy konkrét specifikációja kerül bemutatásra az UML 2 szerint.
+Előzőekben az állapot alapú modellezés alapjai kerültek bemutatásra. A következőkben az állapottérképek egy konkrét specifikációja kerül bemutatásra az UML 2 szerint.
 
 \begin{itemize}
 	%--------------
 	% Állapot
 	%--------------
-	\item \emph{Állapot (State)}: az állapottérképek csomópontjai, a rendszer működésének egyfajta jól megkülönböztethető fázisai, amelyek valamilyen esemény bekövetkezésére várnak. Az állapotok rendelkeznek:
+	\item \emph{Állapot (State)}: az állapottérképek csomópontjai, melyeket UML 2-ben is állapotoknak hívnak. Az állapotok rendelkeznek:
 	\begin{itemize}
 		\item név: az állapot neve
 		\item be/kilépési akció: be és kilépés során végrehajtandó cselekvés.
@@ -27,7 +27,7 @@ Előzőekben az állapot alapú modellezés kvázi alapjai kerültek bemutatásr
 	%-----------------
 	% Kezdő állapot
 	%-----------------
-	\item \emph{Kezdő állapot (Initial State)}: pszeudoállapot, régiónként egy szerepelhet belőle és a régió belépési pontjaként szolgál. Szintaktikája fekete színezett kör (\ref{fig:pseudo-and-final} ábra).
+	\item \emph{Kezdő állapot (Initial State)}: pszeudoállapot, régiónként egy szerepelhet belőle és a régió belépési pontjaként szolgál. Jelölése fekete színezett kör (\ref{fig:pseudo-and-final} ábra).
 	%-----------------
 	% Végső állapot
 	%-----------------
@@ -35,7 +35,7 @@ Előzőekben az állapot alapú modellezés kvázi alapjai kerültek bemutatásr
 	%----------------
 	% Termináló állapot
 	%----------------
-	\item \emph{Termináló állapot (Terminal State)}: pszeudoállapot, ami az egész állapotgépet azonnal terminálja, ezt hibák lekezelésére lehet például alkalmazni, szintaktikája kis kereszt (\ref{fig:pseudo-and-final} ábra).
+	\item \emph{Termináló állapot (Terminal State)}: pszeudoállapot, ami az egész állapotgépet azonnal terminálja. Ezt hibák lekezelésére lehet például alkalmazni, jelölése kis kereszt (\ref{fig:pseudo-and-final} ábra).
 	%--------------
 	% Állapot átmenet
 	%--------------
@@ -49,8 +49,8 @@ Előzőekben az állapot alapú modellezés kvázi alapjai kerültek bemutatásr
 	%---------------
 	\item \emph{Trigger}: Állapot váltást kiváltó esemény amely lehet:
 	\begin{itemize}
-		\item Változás esemény (Change Event): valamilyen értéknek a megváltozása.
-		\item Üzenet esemény (Message Event): valamilyen üzenet típusú objektumnak az érkezése, amit ebben a kontextusban kérésnek felel meg. Az ilyen típusú kommunikáció kétféle eseménytől függ, az üzenet elküldésétől és annak küldőjétől és az üzenet fogadásától és fogadójától. A kérés lehet egy metódus hívás, egy jelnek (\emph{Signal}) a fogadása.
+		\item Változás esemény (Change Event): valamely változó értéknek a megváltozása.
+		\item Üzenet esemény (Message Event): üzenet típusú objektumnak az érkezése, ami ebben a kontextusban kérésnek felel meg. Az ilyen típusú kommunikáció kétféle eseménytől függ, az üzenet elküldésétől és annak küldőjétől és az üzenet fogadásától és fogadójától. A kérés lehet egy metódus hívás vagy egy jel (\emph{Signal}) fogadása.
 		\item Időzítés esemény (Time Event): idő változásához kötött esemény.
 	\end{itemize}
 
@@ -120,7 +120,7 @@ Rendszerünket egy időpillanatban több egymástól független állapot is jell
 	%---------
 	\item \emph{Join}: pszeudoállapot, ami több beérkező átmenetet kapcsol össze eggyé. Az átmenetek ortogonális régiókból kell, hogy induljanak és nem lehet rajtuk trigger vagy őrfeltétel. A join szinkronizációs funkcionalitással bír: addig nem lehet tovább lépni belőle amíg minden beérkező átmenet végre nem hajtódott.
 	
-	\emph{Fork/Join} alkalmazásával ki tudjuk kényszeríteni, hogy részrendszereink elérjenek egy adott állapotot, mielőtt a végrehajtás folytatódhatna. Szintaktikájuk \aref{fig:forkjoin} ábrán látható. 
+	\emph{Fork/Join} alkalmazásával ki tudjuk kényszeríteni, hogy részrendszereink elérjenek egy adott állapotot, mielőtt a végrehajtás folytatódhatna. Jelölésük \aref{fig:forkjoin} ábrán látható. 
 	
 	%------------
 	% Ábra: fork - join
@@ -142,11 +142,11 @@ Rendszereink leírásakor előfordulhatnak ismétlődő részek, amiket célszer
 	%---------------
 	% Belépési pont
 	%---------------
-	\item \emph{Belépési pont(Entry Point)}: egy pszeudoállapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Továbbá léteznie kell egy állapotátmenetnek közte és egy az állapot vagy állapottérkép fő régiója között. Szintaktikája kis fehér kör.
+	\item \emph{Belépési pont(Entry Point)}: egy pszeudoállapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Továbbá léteznie kell egy állapotátmenetnek közte és egy az állapot vagy állapottérkép fő régiója között. Jele kis fehér kör.
 	%--------------
 	% Kilépési pont
 	%---------------
-	\item \emph{Kilépési pont(Exit point)}: mint a belépési pont, de ez kilépési pontot reprezentál, szintaktikája kis fehér kör áthúzással.
+	\item \emph{Kilépési pont(Exit point)}: mint a belépési pont, de ez kilépési pontot reprezentál, jele kis fehér kör áthúzással.
 	%---------------
 	% kapcsolódási pont
 	%---------------
@@ -231,6 +231,15 @@ A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát 
 
 A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF \footnote{Eclipse Modelling Framework https://www.eclipse.org/modeling/emf/}-es interfaceket is realizálnak ezért lehetőségünk van EMF Apijának használatára a plugin fejlesztése során.
 
+\section{Eclipse Modelling Framework}
+Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a meta-modellt és példány modellt. A példány modell struktúráját a meta-modell írja le. A modell egy konkrét példánya a meta-modellnek.
+
+Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz.
+
+Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekben találhatók. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
+
+Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját DSL-eket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
+
 \section{Viatra}
 
 Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projects/modeling.viatra} egy modell transzformációs eszköz ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és transzformációk futtathatók.
@@ -238,18 +247,18 @@ Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projec
 Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw egy plug-in ami lehetővé teszi a Viatra Api használatát más plug-inokban. 
 
 \section{Formális verifikáció}
+\label{sec:formal-verif}
+A modell alapú fejlesztés egyik nagy előnye, hogy már tervezési fázisban tudjuk vizsgálni rendszerünk egyes aspektusait. A rendszer helyes működésének ellenőrzését verifikációnak hívják. Ez történhet tesztekkel, szimulációval, vagy formális módszerekkel.
 
-A modell alapú fejlesztés egyik nagy előnye, hogy már tervezési fázisban tudjuk vizsgálni rendszerünk egyes aspektusait. A rendszer helyes működésének ellenőrzését verifikációnak hívják. Ez történhet tesztekkel, szimulációkkal, vagy formális matematikai módszerekkel.
-
-A formális módszerek előnye, hogy a helyességük matematikailag garantált, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek ezért nem kell lefedettséggel foglalkozni mint tesztelésnél. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett.
+A formális módszerek előnye, hogy a rendszer helyességéről matematikailag precíz bizonyítást adnak, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek ezért nem kell lefedettséggel foglalkozni mint tesztelésnél. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett (\emph{execusion trace}).
 
 Hátránya, hogy nehezen skálázható, erőforrás igényes és egy összetett rendszert formális módszerekre való visszavezetése gyakran nehézkes.
 
 Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes állapottérképek verifikációjának elvégzésére. Ehhez az Uppaal \cite{bengtsson1995uppaal} \cite{bengtsson1998new} nevű eszközt használja fel.
 
-\section{Gamma Framework\cite{gammaf}}
+\section{Gamma Framework}
 
-A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz egyik alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget (\ref{fig:gamma-syntax} ábra) definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools \cite{toolsyakindu}, aminek a modelljeit Gamma képes a saját maga által definiált modellekké (\ref{fig:gamma_statechart_model} ábra) transzformálni és feldolgozni.
+A Gamma Statechart Composition Framework\cite{gammaf} komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz egyik alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget (\ref{fig:gamma-syntax} ábra) definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools \cite{toolsyakindu}, aminek a modelljeit Gamma képes a saját maga által definiált modellekké (\ref{fig:gamma_statechart_model} ábra) transzformálni és feldolgozni.
 
 Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését az állapottérképek portjait, az azok által realizált interfészeket és a közöttük definiált kapcsolatokat.
 
