@@ -1,5 +1,33 @@
 \chapter{Továbbfejleszthetőség}
 
 \section{Alternatíva - kódgenerálás}
+A Gamma saját nyelvtanokkal rendelkezik, melyek Xtext segítségével vannak implementálva. Ez a technológia lehetővé teszi, hogy saját szintaxis alapján, lehessen kódot írni és EMF példánymodellt generálni a leírásból.
+
+Ezt a mechanikát ki lehet használni a modell transzformáció alternatívájaként: a MagicDraw modellből Gamma Statechart Language szintaxisának megfelelő kódot lehetne generálni és ezt Xtext segítségével leparseolni.
+
+A visszakövethetőség is megoldható, ehhez a nyelvtant annotációkkal kéne kibővíteni, amik jelölnék az eredeti elemeket.
+
+Ennek előnye, hogy a kimeneteket utána tovább lehetne importálni Eclipse-be és abban folytatni a fejlesztést.
+
+Hátránya viszont, hogy a skálázhatóságot sokkal nehezebb megoldani, és kevésbé flexibilis mint a transzformáció.
+
+\section{Kifejezések kifejező erejének növelése}
+A MagicDrawToGamma által támogatott Guard és Action definíciók sokkal korlátozottabban használhatók a jelenlegi implementációban, mint amit egyébként a Gamma támogatni tudna, ezért célszerű lenne ezek bővítése, hogy ugyan azzal a kifejező erővel bírjanak mint a Gammában megfogalmazható párjaik.
+
+Ennek megvalósítására potenciálisan lehetne használni Xtextet és a már létező nyelvtant, az ez irányba tett kísérletek, azonban a megoldás túlzott komplexitását látszanak igazolni. A komplikációk fő oka az volt, hogy a nyelvtant alkotó egy szabály szerint parse-olt kódrészletek esetében a referenciák nem oldódtak fel.
+
+A jelenlegi implementáció egy saját implementálású String parser aminek a kimenete megfelelően összeállított Gamma modell elemek, ennek az implementációnak a kibővítése, egy egyszerű, de nem túl ideális megoldása lehet a problémának.
 
 \section{IBD - Composition Language}
+A Gamma Statechart Composition Framework egyik legfontosabb funkciója, hogy lehetővé teszi állapottérképekből, mint komponensekből egy komplett rendszer leírását. Ilyesfajta leírás SysML-ben az Internal Block Diagram(IBD).
+
+Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komplex reaktív rendszereket leírni és verifikálni.
+
+\section{Szimuláció generálása}
+
+Az UPPAAL opcionálisan előállítja azokat az utakat melyek sértik a megkötéseket. A Gamma Framework képes ezekből kódot és Yakindu szimulációt előállítani.
+
+A MagicDraw is rendelkezik egy szimulátorral Cameo Simulation Toolkit\footnote{Cameo simulation toolkit: https://www.nomagic.com/product-addons/magicdraw-addons/cameo-simulation-toolkit} néven. A Cameo szimulátor plug-in a No Magic terméke. Segítségével modelleket lehet debugolni, szimulálni és UI prototyping funkcionalítással rendelkezik.
+
+A szimulációkat modell elemekkel is fel lehet konfigurálni Execution Configuration Classok segítségével, ezért potenciálisan modell transzformációkkal elő lehet állítani szimulációt.
+
