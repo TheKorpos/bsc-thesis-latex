@@ -24,7 +24,7 @@ Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít 
 
 A MagicDraw - Gamma transzfromációt egy menü elemmel lehet elindítani. Ehhez szükséges, hogy a projekthez hozzá legyen rendelve egy külső könyvtár (Gamma Workspace) ami a leképzett és perzisztensen eltárolandó modellek helyét jelöli. A hozzárendelt könyvtár abszolút elérését String formában a projekt tárolja, emiatt sem a projekt nem migrálható, sem pedig maga a Gamma Workspace. Továbbá a könyvtár karbantartása ebben a verzióban még a felhasználó felelőssége, ugyanis a plug-in nem töröl a könyvtárból csak hozzáad és módosít, ennek akkor van jelentősége, ha leképzés után egy állapottérkép el lett távolítva a MagicDraw modellből és utána újra le lett képezve. Ebben az esetben a régebben leképzett Gamma állapottérképek is megmaradnak.
 
-\subparagraph{Gyökér elemek létrehozása:}
+\subsection{Gyökér elemek létrehozása:}
 
 A plugin a transzformáió elején létrehoz egy \emph{ResourceSet}-et, amibe készít egy \emph{Resource}-t a \emph{Gamma Workpace} gyökerébe .s.md2g néven, továbbá egy Resource-t \verb+interfaces.gms+ néven. Az előbbi Resource egy segédstruktúrát tartalmaz ami a leképzett elemek visszakereshetőségéül szolgál (ld. \refstruc{sec:trace_model}), utóbbi pedig a modellben definiált interfaceket tárolja.
 
@@ -39,7 +39,7 @@ A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Work
 	\label{fig:filestructure}
 \end{figure}
 
-\subparagraph{Alap struktúra kialakítása:}
+\subsection{Alap struktúra kialakítása:}
 
 Az előző lépések során azok az elemek állnak elő, melyek a modellek gyökér elemeiként fognak szolgálni. A következő lépés létrehozni az állapottérképek egy belső, alap struktúráját, amit az állapotok és állapotátmenetek határoznak meg. A Viatra for MagicDraw projekt megnyitásakor készít egy ViatraQueryEngine-t aminek a Scope-ja a megnyitott modellre terjed ki. A transzformációs szabályok regisztrálása ezen az engine-en történik, létrejön azonban még egy aminek a Scope-ja magába foglalja az első lépésben lérehozott \emph{Resource}okat és a MagicDraw modellt is. A készülő modellben történő keresések, és a visszakövetések ezzel az engine-el történnek. Alap struktúra kialakításának lépcsői:
 
@@ -67,7 +67,7 @@ Az irányított nyilak tartalmazást jelölnek, a bekeretezett téglalap Statech
 \end{figure}
 
 
-\subparagraph{Pszeudoállapotok átalakítása:}
+\subsection{Pszeudoállapotok átalakítása:}
 Az állapotátmenetek leképzése előtt a pszeudoállapotok kerülnek leképzésre. Ezen a ponton már létezik minden régió amit tartalmazhatja őket. A leképzés legtöbb esetben támogatott viszont, egyes elemek tartalmazása esetén nem lehet a verifikációt végrehajtani. Az elemeket és párjaikat \aref{table:pseudo} táblázat mutatja.
 
 \begin{table}[!h]
@@ -90,7 +90,8 @@ Az állapotátmenetek leképzése előtt a pszeudoállapotok kerülnek leképzé
 	\label{table:pseudo}
 \end{table}
 
-\subparagraph{Állapotátmenetek leképzése:} A következő lépés az állapotátmenetek átalakítása. Ezen a ponton már az összes olyan elem leképzésre került, amely az állapotátmenetek kezdő, vagy végpontjaként szolgálhat. Egy MagicDraw modellben az állapotátmenetek régiók tartalmazzák, szemben Gammával, ahol a StatechartDefinition közvetlen gyerekei. A tartalmazó-tartalmazott, Statemahcine - Tranisiton párok megkeresése a következő patternekkel történik.
+\subsection{Állapotátmenetek leképzése:} A következő lépés az állapotátmenetek átalakítása. Ezen a ponton már az összes olyan elem leképzésre került, amely az állapotátmenetek kezdő, vagy végpontjaként szolgálhat. Egy MagicDraw modellben az állapotátmenetek régiók tartalmazzák, szemben Gammával, ahol a StatechartDefinition közvetlen gyerekei. A tartalmazó-tartalmazott, Statemahcine - Tranisiton párok megkeresése a következő patternekkel történik.
+\lstset{style=VQL}
 \begin{lstlisting}
 pattern RegionsInRegion(container: Region, region: Region){
 	Region.subvertex(container, vertex);
@@ -117,14 +118,14 @@ Változókat MagicDraw-ben attribútumként van lehetősége definiálni. FOLYT
 %TODO FOLYT
 
 
-\subparagraph{Triggerek leképzése:} A MagicDrawban definiálható \emph{Triggerek} pontosabban az őket kiváltó események közül jelenleg kettő támogatott. Egyik a \emph{SignalEvent} a másik pedig \emph{Time Event}. Előbbi \emph{EventTriggerre} képződik le. A felhasználónak a \emph{SignalEvent} forrásával most még nem kell foglalkoznia, hiszen ezekhez automatikusan generálódik egy \emph{Interface} és egy \emph{Port}.
+\subsection{Triggerek leképzése:} A MagicDrawban definiálható \emph{Triggerek} pontosabban az őket kiváltó események közül jelenleg kettő támogatott. Egyik a \emph{SignalEvent} a másik pedig \emph{Time Event}. Előbbi \emph{EventTriggerre} képződik le. A felhasználónak a \emph{SignalEvent} forrásával most még nem kell foglalkoznia, hiszen ezekhez automatikusan generálódik egy \emph{Interface} és egy \emph{Port}.
 
 A \emph{Time Eventek} MagicDraw-ban két féle típusúak lehetnek: relatív és abszolút. Utóbbit a plugin-in még nem támogatja.
 A relatív típusú \emph{Time Eventek} a Gamma \emph{Timeout} mechanizmusának feleltethető meg. Ez három részből áll: \emph{StatechartDefinition}-ön definiált \emph{TimeoutDeclaration}, akció ami ennek beállítja az értékét (ami lehet szekundumban, vagy milliszekundumban mért) és maga a \emph{Trigger} ami hivatkozik a deklarációra. A \emph{TimeoutDeclaration} és az érték beállítása implicit történik a felhasználónak az időt kell megadnia trigger felvételekor a MagicDraw modellben.
 
-\subparagraph{Őrfeltételek leképzése:} őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú Constraint Modell példánymodellt fordítani. A MagicDrawToGamma ezen verziója az őrfeltételek leképzéséhez egy saját egyszerűsített implementációt használ. Ennek vannak megkötései is: kifejezések nem ágyazhatók, vagy láncolhatók, változókra és paraméterekre lehet hivatkozni, de csak a gazda StatechartDefinitionban ezen felül csak logikai és Long értékeket lehet használni.
+\subsection{Őrfeltételek leképzése:} őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú Constraint Modell példánymodellt fordítani. A MagicDrawToGamma ezen verziója az őrfeltételek leképzéséhez egy saját egyszerűsített implementációt használ. Ennek vannak megkötései is: kifejezések nem ágyazhatók, vagy láncolhatók, változókra és paraméterekre lehet hivatkozni, de csak a gazda StatechartDefinitionban ezen felül csak logikai és Long értékeket lehet használni.
 
-\subparagraph{Akciók leképzése:} A MagicDraw akciói viselkedések (\emph{Behavior}) lehetnek, ezek leképzését a MagicDrawToGamma nem támogatja, kivéve a \emph{Functional Behavior} viselkedést, amit egy \emph{Opaque Expression} definiál. Ebben kétféle akciót lehet végrehajtani: értékadást és \emph{Signal} küldést. Ezek szintaktikája a következő:
+\subsection{Akciók leképzése:} A MagicDraw akciói viselkedések (\emph{Behavior}) lehetnek, ezek leképzését a MagicDrawToGamma nem támogatja, kivéve a \emph{Functional Behavior} viselkedést, amit egy \emph{Opaque Expression} definiál. Ebben kétféle akciót lehet végrehajtani: értékadást és \emph{Signal} küldést. Ezek szintaktikája a következő:
 
 \begin{lstlisting}
 	set variableName := 1;
