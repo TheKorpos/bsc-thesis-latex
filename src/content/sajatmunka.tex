@@ -1,5 +1,6 @@
 \chapter{MagicDrawToGamma plugin}\label{chap:contrib}
 
+Ebben a fejezetben bemutatom a munkám során elkészített alkalmazást kitérve, az alapkoncepcióra, az elméleti és gyakorlati problémákra és megoldásaikra. Továbbá kitérek a fejlesztés során felmerülő szoftver-infrastruktúra és implementáció okozta komplikációkra.
 
 \section{Koncepció}
 Állapottérképek formális verifikációjának támogatása MagicDraw-ban, egy plug-in fejlesztésével lett megvalósítva. A plug-in függ a Viatra For MagicDraw-tól, ami lehetővé teszi modellek transzformációját Viatra segítségével. A plug-in legfontosabb funkciója MagicDraw modellek Gamma modellekké való transzformációja. A letranszformált Gamma nyelvű modelleket az keretrendszer kezelni tudja, a verifikáció elvégzéséhez az eszköznek csak egyes részei szükségesek. A megoldást a \ref{fig:used-gamma} ábra szemlélteti. A felhasználónak lehetősége van megkötések megfogalmazására a plugin-al és elvégezni a verifikációt és megtekinteni az eredményt azaz, hogy teljesülnek-e a megkötések vagy sem.
@@ -18,7 +19,7 @@ A skeleton egy Eclipse project, viszont Gradlet használ a projekt fordításáh
 
 A dolgozat elkészítése idején a MagicDraw 19-es verziója is elérhető volt a plug-in azonban még nem ehhez, hanem a 18.5-ös verziójához készült. A kódbázis azonban kompatibilis lehet még az újabb verziókkal is, amennyiben az állapottérképeket érintő meta-modellek nem változnak.
 
-Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít egy leírást a rendszerről és egy queryt ami a rendszerrel szemben támasztott követelményeket írja le. Utóbbi megírásához biztosít egy UI elemet amivel a felhasználó az Uppaal ismerete nélkül is képes a követelmények definiálására. Ez a funkció teljesen át lett emelve Gammából módosított implementációval a MagicDrawToGammába. A Gamma az Uppaalra az operációs rendszeren keresztül hív át, ezért az Uppaalt külön kell telepíteni és konfigurálni.
+Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít egy leírást a rendszerről és egy queryt ami a rendszerrel szemben támasztott követelményeket írja le. Ezen követelmények megírásához biztosít egy UI elemet amivel a felhasználó az Uppaal ismerete nélkül is képes a követelmények definiálására. Ez a funkció teljesen át lett emelve Gammából módosított implementációval a MagicDrawToGammába. A Gamma az Uppaalra az operációs rendszeren keresztül hív át, ezért az Uppaalt külön kell telepíteni és konfigurálni.
 
 \section{MagicDraw - Gamma transzformáció}
 
@@ -165,7 +166,8 @@ Első lehetőség időzített automaták leírásának előállítása amit a fe
 StatechartToUppaalTransformer transformer = new StatechartToUppaalTransformer(p);
 SimpleEntry<NTA, G2UTrace> entry = transformer.execute();
 \end{lstlisting}
-Ennek a kimenete két EMF alapú modell, egy \emph{trace modell} (\verb+GU2Trace+) és egy időzített autómata (\verb+NTA+). Az \textbf{időzített autómata}\footnote{a formális verifikáció az időzített autómaták formalizmusán törénik} modelljét ezután egy formális leírásként kell szerializálni amit az UPPAAL képes beolvasni. Ez a Gamma \verb+UppaalModelSerializer+ osztálya állítja elő. 
+Ennek a kimenete két EMF alapú modell, egy \emph{trace modell} (\verb+GU2Trace+) és egy időzített auto
+mata (\verb+NTA+). Az \textbf{időzített automata}\footnote{a formális verifikáció az időzített autómaták formalizmusán törénik} modelljét ezután egy formális leírásként kell szerializálni amit az UPPAAL képes beolvasni. Ez a Gamma \verb+UppaalModelSerializer+ osztálya állítja elő. 
 \begin{lstlisting}
 //NTA, parentFolder, fileName
 UppaalModelSerializer.saveToXML(entry.getKey(), selected.getPath() , name +".xml");

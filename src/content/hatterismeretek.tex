@@ -192,6 +192,17 @@ Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kez
 	
 \end{itemize}
 
+\section{Eclipse Modelling Framework}
+Az Eclipse egy nyílt forráskódú platform független keretrendszer és fejlesztőkörnyezet ami kiterjeszthető, hogy Java mellett más programnyelveket(pl. C, PHP, Ruby, Python, Erlang) is támogasson, de modellező eszközként is használható (pl. Yakindu, Papyrus, Gamma).
+
+Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a meta-modellt és példány modellt. A példány modell struktúráját a meta-modell írja le. A modell egy konkrét példánya a meta-modellnek.
+
+Az Eclipse Modelling Framework  működése meglehetősen komplex ezért részletes bemutatása nem célja a dolgozatnak (szakirodalom a keretrendszer kapcsán: \emph{EMF: Eclipse Modelling Framework}\cite{steinberg2008emf}), csak azoknak az alap fogalmakat és működési mechanikáknak az ismertetésre amik szükségesek a dolgozat megértéséhez.
+
+Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekben találhatók. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
+
+Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
+
 \section{MagicDraw}
 A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni.
 
@@ -231,15 +242,6 @@ A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát 
 
 A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF \footnote{Eclipse Modelling Framework https://www.eclipse.org/modeling/emf/}-es interfaceket is realizálnak ezért lehetőségünk van EMF Apijának használatára a plugin fejlesztése során.
 
-\section{Eclipse Modelling Framework}
-Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a meta-modellt és példány modellt. A példány modell struktúráját a meta-modell írja le. A modell egy konkrét példánya a meta-modellnek.
-
-Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz.
-
-Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekben találhatók. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
-
-Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját DSL-eket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
-
 \section{Viatra}
 
 Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projects/modeling.viatra} egy modell transzformációs eszköz, ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak, melyek segítségével a lekérdezések és transzformációk futtathatók.
@@ -250,11 +252,9 @@ Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. 
 \label{sec:formal-verif}
 A modell alapú fejlesztés egyik nagy előnye, hogy már tervezési fázisban tudjuk vizsgálni rendszerünk egyes aspektusait. A rendszer helyes működésének ellenőrzését verifikációnak hívják. Ez történhet tesztekkel, szimulációval, vagy formális módszerekkel.
 
-A formális módszerek előnye, hogy a rendszer helyességéről matematikailag precíz bizonyítást adnak, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek ezért nem kell lefedettséggel foglalkozni mint tesztelésnél. Megkötés sérülésekor, vissza lehet követni, azt az utat ami a megszorítás megsértéséhez vezetett (\emph{execusion trace}).
+A formális módszerek előnye, hogy a rendszer helyességéről matematikailag precíz bizonyítást adnak, nem szükséges az elvárt kimenetek meghatározása, csak megkötések megfogalmazása. Továbbá teljesek ezért nem kell lefedettséggel foglalkozni mint tesztelésnél. Megkötés sérülésekor, vissza lehet követni, azt végrehajtási útvonalat(\emph{execusion trace}) ami a megszorítás megsértéséhez vezetett. Hátrányuk, hogy nehezen skálázható, erőforrás igényes és egy összetett rendszert formális módszerekre való visszavezetése gyakran nehézkes.
 
-Hátránya, hogy nehezen skálázható, erőforrás igényes és egy összetett rendszert formális módszerekre való visszavezetése gyakran nehézkes.
-
-Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes állapottérképek verifikációjának elvégzésére. Ehhez az Uppaal \cite{bengtsson1995uppaal} \cite{bengtsson1998new} nevű eszközt használja fel.
+Állapottérképek formális verifikációjára már léteznek megoldások. A Gamma keretrendszer például képes állapottérképek verifikációjának elvégzésére. Ehhez az Uppaal \cite{bengtsson1995uppaal, bengtsson1998new} nevű eszközt használja fel.
 
 \section{Gamma Framework}
 
@@ -262,9 +262,11 @@ A Gamma Statechart Composition Framework\cite{gammaf} komponens alapú reaktív 
 
 Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését az állapottérképek portjait, az azok által realizált interfészeket és a közöttük definiált kapcsolatokat.
 
-A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amiven constrainteket lehet definiálni, ami egy általános módja típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásához.
+A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amivel megszorításokat lehet definiálni, ami egy általános megoldása típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásának.
 
 A másik nyelv pedig Gamma Interface Language, ami interfészek definiálását teszi lehetővé, amik a kapcsolódó komponensek egymás felé nyújtanak. Az interfész határozza meg, hogy milyen események fogadhatóak, vagy küldhetőek. Ezek az interfészekben deklarálandók és irányuk lehet, \emph{IN, OUT, INOUT}.
+
+Munkámban a egy MagicDraw plug-int hozok létre ami a formális verifikáció végrehajtásához a Gamma keretrendszert használja azáltal, hogy \emph{VIATRA} segítségével áttranszformálja a MagicDraw modelljeit Gamma modellekké.
 
 \begin{figure}[!ht]
 \begin{lstlisting}
