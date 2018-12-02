@@ -11,10 +11,3 @@ Ennek előnye, hogy a kimeneteket utána tovább lehetne importálni Eclipse-be 
 
 Hátránya viszont, hogy a skálázhatóságot sokkal nehezebb megoldani, és kevésbé flexibilis mint a transzformáció.
 
-\section{Kifejezések kifejező ereje}
-A MagicDrawToGamma által támogatott Guard és Action definíciók korlátozottabban használhatók a jelenlegi implementációban, mint amit egyébként a Gamma támogatni tudna, ezért célszerű lenne ezek bővítése, hogy ugyan azzal a kifejező erővel bírjanak mint a Gammában megfogalmazható párjaik.
-
-A jelenlegi implementáció egy saját készítésű String parser ami Gamma Expressionöket állít elő. Ennek a bővítése igen nehézkes, viszont  viszonylagos egyszerűsége miatt nem jár túl nagy overhaedel és nem ad hozzá még több dependenciát a projekthez.
-
-Alternatív megvalósításként potenciálisan lehetne használni Xtextet és a már létező nyelvtant, az ez irányba tett kísérletek, azonban a megoldás túlzott komplexitását látszanak igazolni. A komplikációk fő oka az volt, hogy a nyelvtant alkotó egy szabály szerint parse-olt kódrészletek esetében a referenciák nem oldódtak fel.
-

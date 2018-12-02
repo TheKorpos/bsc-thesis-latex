@@ -114,28 +114,90 @@ A StateMachine Gamma modellbeli párját a \emph{Trace modell} segítségével l
 
 Az átmenetek leképzése után már elérhetőséget lehet is vizsgálni.
 
-\subparagraph{Változók leképzése}
-Változókat MagicDraw-ben attribútumként van lehetősége definiálni. FOLYT
-%TODO FOLYT
+\subsection{Változók leképzése}
+Változókat MagicDraw-ban attribútumként lehet definiálni. Ezeknek a következő tulajdonságait lehet beállítani: láthatóság, típus, statikusság, alapértelmezett érték.
+
+A láthatóság és a statikusság, a jelen verzióban nem bírnak jelentőséggel, hiszen minden állapottérkép \emph{singleton}nak tekinthető és egymástól független léteznek. A típus lehet bármilyen beépített vagy felhasználó által definiált típus vagy valamilyen primitív. A során kétféle primitív típus esetén támogatott: \emph{Integer} és \emph{Boolean}, egyéb típusok leképzése még nem támogatott. A változók tulajdonságaira vonatkozó megkötéséket \aref{table:variables} táblázat foglalja össze.
+
+\begin{table}[!h]
+	\footnotesize
+	\centering
+	\begin{tabular}{ l r }
+		Tulajdonság & Lehetséges érték\\ \hline
+		Name & tetszőleges, de egyedi az állapotgépben\\
+		Type & Integer, Boolean\\
+		Static & tetszőleges, de mindig statikusnak tekintendő\\
+		Visibility & tetszőleges, de mindig private-nak tekintendő
+	\end{tabular}
+	\caption{Változók lehetséges értékei.}
+	\label{table:variables}
+\end{table}
 
 
-\subsection{Triggerek leképzése:} A MagicDrawban definiálható \emph{Triggerek} pontosabban az őket kiváltó események közül jelenleg kettő támogatott. Egyik a \emph{SignalEvent} a másik pedig \emph{Time Event}. Előbbi \emph{EventTriggerre} képződik le. A felhasználónak a \emph{SignalEvent} forrásával most még nem kell foglalkoznia, hiszen ezekhez automatikusan generálódik egy \emph{Interface} és egy \emph{Port}.
+
+\subsection{Események, triggerek leképzése:} A MagicDrawban definiálható \emph{Triggerek} pontosabban az őket kiváltó események közül jelenleg kettő támogatott. Egyik a \emph{SignalEvent} a másik pedig \emph{TimeEvent}. Előbbi \emph{EventTriggerre} képződik le. A felhasználónak a \emph{SignalEvent} forrásával most még nem kell foglalkoznia, hiszen ezekhez automatikusan generálódik egy \emph{Interface} és egy \emph{Port}.
 
 A \emph{Time Eventek} MagicDraw-ban két féle típusúak lehetnek: relatív és abszolút. Utóbbit a plugin-in még nem támogatja.
 A relatív típusú \emph{Time Eventek} a Gamma \emph{Timeout} mechanizmusának feleltethető meg. Ez három részből áll: \emph{StatechartDefinition}-ön definiált \emph{TimeoutDeclaration}, akció ami ennek beállítja az értékét (ami lehet szekundumban, vagy milliszekundumban mért) és maga a \emph{Trigger} ami hivatkozik a deklarációra. A \emph{TimeoutDeclaration} és az érték beállítása implicit történik a felhasználónak az időt kell megadnia trigger felvételekor a MagicDraw modellben.
 
-\subsection{Őrfeltételek leképzése:} őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú Constraint Modell példánymodellt fordítani. A MagicDrawToGamma ezen verziója az őrfeltételek leképzéséhez egy saját egyszerűsített implementációt használ. Ennek vannak megkötései is: kifejezések nem ágyazhatók, vagy láncolhatók, változókra és paraméterekre lehet hivatkozni, de csak a gazda StatechartDefinitionban ezen felül csak logikai és Long értékeket lehet használni.
 
-\subsection{Akciók leképzése:} A MagicDraw akciói viselkedések (\emph{Behavior}) lehetnek, ezek leképzését a MagicDrawToGamma nem támogatja, kivéve a \emph{Functional Behavior} viselkedést, amit egy \emph{Opaque Expression} definiál. Ebben kétféle akciót lehet végrehajtani: értékadást és \emph{Signal} küldést. Ezek szintaktikája a következő:
 
+
+\subsection{Őrfeltételek leképzése:}
+Őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú \emph{Constraint Modell} példánymodellt fordítani.
+
+A leképzéshez a \emph{Constraint Model Expressio}n szabálya lett felhasználva, amely alapján az Xtext parser előállítja a szöveges bemenetből a megfelelő \emph{expression} példányt.
+\lstset{style=javacode}
 \begin{lstlisting}
-	set variableName := 1;
-	raise Event
+Injector injector = new StatechartLanguageStandaloneSetup()
+						.createInjectorAndDoEMFRegistration();
+						
+ParserRule rule = injector.getInstance(StatechartLanguageGrammarAccess.class)
+						.getExpressionRule();
+						
+IParseResult result = injector.getInstance(StatechartLanguageParser.class)
+						.parse(rule, new StringReader(guardString));
 \end{lstlisting}
 
-%TODO FOLYT
-FOLYT
+A referenciák viszont nem lesznek feloldva ezért ezek feloldása \emph{VIATRA} segítségével utólagosan történik a deklarációk név szerinti megkeresésével az előálló Gamma példánymodellekből. Mivel a guardok megírása implicit a gamma nyelvével történik azért ugyan azokat az operátorokat támogatja.
 
+\begin{table}[!h]
+	\footnotesize
+	\centering
+	\begin{tabular}{ l l l l }
+		Név & Operátor& leírás & Csoportosítás \\ \hline
+		 Imlikáció & imply & implikáció & jobbról balra \\
+		 Diszjunkció & or & logikai vagy & n-szeres\\
+		 Konjunkció & and & logikai és & n-szeres \\
+		 Negálás & not & logikai nem & jobbról balra \\
+		 Egyenlőség & =, /= & egyenlőség, egyenlőtlenség & jobbról balra \\
+		 Reláció & <, >, <=, >= & relációs operátorok & balról jobbra \\  
+		 Hozzáadás & +, - & hozzáadás, kivonás & balról jobbra \\
+		 Skálázás & *, / & szorzás, osztás & balról jobbra \\
+		 Maradék & mod & maradékos osztás & balról jobbra \\
+		 Egész osztás & div & egész osztás & balról jobbra \\
+		 Előjel & +, - & egyváltozós +, egyváltozós - & balról jobbra
+	\end{tabular}
+	\caption{Támogatott operátorok.}
+	\label{table:operators}
+\end{table}
+
+
+\subsection{Akciók leképzése:}
+A MagicDraw akciói viselkedések (\emph{Behavior}) lehetnek: pl. \emph{StateMachine}, \emph{Activity}, \textbf{OpaqueBehavior}. Az OpaqueBehavior pontosabban ennek egy része az OpaqueExpression lehetővé teszi, hogy valamilyen szöveges szintaxissal írjunk le viselkedést. Ennek felhasználásával, hasonlóan az őrfeltételek esetében Xtext segítségével elő tudjuk állítani a megfelelő EMF modellt a Gamma szintaxisa szerint. Ehhez a \verb+ActionRule+ szabályra van szükség.
+
+Kétféle akció támogatott: értékadás és event küldés. Ezek szintaxisa az alábbi:
+
+\begin{lstlisting}
+	//assignment action
+	variableName := 1;
+	//raise event action
+	raise All.Event
+\end{lstlisting}
+
+Az \emph{All} nem Gamma specifikus jelölése az össze portnak, ebből jelenleg csak egy van egy implicit generált üzenet fogadáshoz, így ennek nem szükséges tudni a nevét.
+
+\subparagraph{Megjegyzés:} a küldött eseményeknek nincs hatása, nem fogadja őket az állapottérkép, még akkor sem ha az interfészén az eseemények \emph{INOUT}-ként vannak definiálva.
 
 \subsection{Trace Modell}
 \label{sec:trace_model}
@@ -183,22 +245,73 @@ A második lehetőség az \emph{Uppaal Query Genertor} (\ref{fig:upp-query-gen} 
 	\label{fig:upp-query-gen}
 \end{figure}
 
-A Query Generátor implementációja a Gammából át lett emelve a MagicDraw plug-inba és az implementáció módosítva lett, hogy ebben a környezetben is tudjon működni. A Gamma egyik funkciója, hogy a formális verifikáció során esetleg keletkező ellenpéldákból képes teszteseteket és szimulációt generálni Yakinduhoz, ez a MagicDrawToGamma plug-in jelenlegi verziójában le van tiltva.
+A Query Generátor implementációja a Gammából át lett emelve a MagicDraw plug-inba és az implementáció módosítva lett, hogy ebben a környezetben is tudjon működni. A Gamma egyik funkciója, hogy a formális verifikáció során esetleg keletkező ellenpéldákból képes Java nyelvű teszteseteket és szimulációt generálni Yakinduhoz. A MagicDrawToGammában a kódgenerálást még nem támogatja és a modellek nem Yakinduból származnak ezért ez a funkció nem használható a jelenlegi verzióban.
 
-\section{Plulgin működés közben}
+\section{Esettanulmány}
 
 Az előző alfejezetek a MagicDrawToGamma főbb funkcióinak ismertetéséről és a funkciók megvalósítását mutatták be. Ebben az alfejezetben a  tényleges működéséről lesz szó egy példán keresztül.
 
 \subsection{Szemléltető példa}
 
-\paragraph{Példa specifikációja:} egy kerti világítórendszer mozgás érzékelővel van felszerelve, ha a rendszer aktív és mozgást érzékel tíz másodpercre bekapcsolja a lámpákat majd ezután kikapcsolja azokat. A rendszer inaktív állapotában nem ég egyetlen lámpa sem. 
+\paragraph{Példa specifikációja:} egy munkagépbe valamilyen anyagot lehet tölteni amit a gép tíz másodperc alatt feldolgoz. A gép az első bekapcsoláskor előbb szerviz állapotba kapcsol, ilyenkor kinyílik egy ajtó ami a gép szervizelését teszi lehetővé. Ahhoz, hogy a munkafolyamat elindulhasson a gépet üzem állapotba kell helyezni. Ilyenkor a gép ajtaja becsukódik és egy jel hatására feldolgozza a bemenetén elhelyezett anyagot. A gép kikapcsolásnál megjegyzi hogy szerviz vagy üzem állapotban volt-e és abba kapcsol vissza.
 
-\paragraph{Rendszer állapot alapú definíciója:} A rendszer két jól megkülönböztethető állapotból áll \verb+Acitve+ és \verb+Inactive+. Az \verb+Active+ állapot felbontható két belső állapotra, hogy égnek-e vagy sem a lámpák: \verb+LightsOn+, \verb+LightsOff+. Ezeken kívül bevezethető még két állapot, hogy érzékel-e épp mozgást a rendszer vagy sem: \verb+Idle+, \verb+Movement+. Ezek alapján a rendszer egy lehetséges leírása lehet:
+\paragraph{Rendszer állapot alapú definíciója:} A rendszer két jól megkülönböztethető állapotból áll \verb+Acitve+ és \verb+Inactive+. Az \verb+Active+ állapot felbontható két belső állapotra, hogy szerviz vagy üzem módba van: \verb+Maintentece+, \verb+Operation+. Ezeken kívül bevezethető még két állapot, hogy feldogoz-e épp anyagot a rendszer vagy sem: \verb+Idle+, \verb+Processing+. \verb+Maintenance+ állapotban a \verb+Processing+ való belépést egy logikai változóval \verb+enabled+ tiltjuk. Ezek alapján a rendszer egy lehetséges leírása lehet:
 \begin{figure}[H]
 	\centering
-	\includegraphics[keepaspectratio, width=150mm]{figures/example1.png}
+	\includegraphics[keepaspectratio, width=150mm]{figures/machine1.png}
 	\caption{Lehetséges leírás}
+	\label{fig:leiras}
 \end{figure}
-\subparagraph{Megjegyzés}Az egyszerűség kedvéért tekintsük, úgy hogy a folytonos mozgás során bekövetkezett \verb+LightsOn+ - \verb+LigtsOff+ - \verb+LightsOn+ váltások olyan gyorsan végbe mennek, hogy fizikailag nem képesek a lámpák lekapcsolni, hogy a villodzással ne kelljen foglalkozni
+\subparagraph{Megjegyzés} Az \verb+OpenDoor+ és \verb+CloseDoor+ akciók csak szemléltetés jellegűek, ezek nem kerülnek leképzésre.
+\subparagraph{Feladat:} Ellenőrizni szeretnénk, hogy ne forduljon elő, hogy egyszerre van \verb+Maintentance+ és \verb+Processing+ állapotban a rendszer, tehát nyitva van az ajtó miközben még feldolgoz a rendszer, hiszen ez
+veszélynek tenné ki a dolgozókat.
+\subsection{Verifikáció menete}
+Ahhoz, hogy le tudjuk ellenőrizni, hogy a leírt működés megfelel-e a támasztott feltételeknek végre kell hajtanunk a MagicDraw - Gamma transzformációt. Ezt a MD2G menüpont alatt található \verb+Perform Gamma Transformation+ kiválasztásával lehet megtenni (\ref{fig:md2g} ábra).
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio, width=70mm]{figures/GammaTrafo.png}
+	\caption{MD2G menüpontok}
+	\label{fig:md2g}
+\end{figure}
+
+A menüpontot kiválasztva előállíthatjuk az általunk kiválasztott Gamma Workspacebe a Gamma példánymodelleket, ez viszont önmagában még nem elég ezeket formális modellekké kell alakítanunk, hogy UPPAAL-al is fel lehessen őket dolgozni. Ezt a \verb+Generate formal model+ menüponttal tudjuk végrehajtani. Ez feldob egy könyvtárválasztó ablakot amiben a Gamma Workspace-ben található könyvtárak közül ki kell választanunk a megfelelő modellt tartalmazót (jelen példánál maradva a könyvtár nevem most Machine1 ez látható \aref{fig:leiras}. árán címkeként is).
+
+A formális modell előállítása után a \verb+Open Query Generator+ menüponttal tudjuk megnyitni a Query Generator-t, hasonlóan mint az előző lépésben ki kell választanunk újra a megfelelő könyvtárat a Gamma Workspace-ünkből, ami a formális modellt tartalmazza.
+
+\paragraph{Feltétel megfogalmazása: } a feltétel amit megszeretnénk fogalmazni, hogy nem lehet a rendszer egyszerre \verb+Maintenance+ és \verb+Processing+ állapotban.
+\[ \neg(Maintenance  \land Processing) = \neg Maintenance \lor \neg Processing \]
+A kifejezést a Gamma Query Generátorba a következő alakba kell bevinnünk:
+\begin{lstlisting}
+	!(Active_1.Maintenance) || !(Active_2.Processing)
+\end{lstlisting}
+Ennek megírásához a Query Generator segítséget nyújt a hivatkozható elemek és a köztük megfogalmazható relációk felsorolásával. A feltételtől azt várjuk, hogy mindig teljesüljön ezért a \verb+query mode+-ot \emph{Must Always}ra állítjuk. A verifikációt a \verb+verify+ gomb megnyomásával hajthatjuk végre az eredményt . ábra szemlélteti.
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio, width=150mm]{figures/query-gen-result.png}
+	\caption{Verifikáció eredménye}
+	\label{fig:query-gen-res}
+\end{figure}
+
+\paragraph{Eredmény:} A megszorítások nem teljesülnek, ennek okát sajnos a plug-in még nem képes levezetni, ezt nekünk kell kitalálni vagy az UPPAAL segítségével megnyithatjuk a formális modellt és az generált UPPAAL query segítségével azon belül is el tudjuk végezni a verifikációt és tanulmányozni a generált végrehajtási útvonalakat. Ehhez azonban az UPPAAL és a leképzések ismerete szükséges.
+\subsection{A probléma:} A példa esetében a megszorítások megsértését a következő okozza: az állapotgép belép Operation állapotba, ilyenkor az ajtók zárva vannak a működés pedig engedélyezve. Megkezdődik a feldolgozás viszont a tíz másodperc letelte előtt a gépet szerviz állapotba kapcsolják így egyszerre lesz Maintenance és Processing állapotban amíg a feldolgozásra szánt idő le nem telik.
+
+\subsection{Megoldás}
+
+Lehetséges megoldás lehet a probléma kiküszöbölésére egy köztes állapot bevezetése az \verb+Active+ ortogonlis állapot felső régiójába. A gép szerviz állapotba kapcsoláskor előbb ide lép át az állapotgép, ilyenkor a feldolgozás letiltódik. Itt várakozik, méghozzá annyi időt, amennyi a feldolgozáshoz legalább szükséges. Ez a működés tehát megvárja a még folyamatban lévő feldolgozás befejezését és csak utána lép át a \verb+Maintenance+ állapotba. A módosított állapottérképet az új állapottal (\verb+Switching+) \aref{fig:machine2}. ábra mutatja.
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio, width=150mm]{figures/machine2.png}
+	\includegraphics[keepaspectratio, width=150mm]{figures/fixed-result.png}
+	\caption{Módosított állapottérkép és a verifikáció eredménye}
+	\label{fig:machine2}
+\end{figure}
+
+
+
+
+
+
+
+
 
 
