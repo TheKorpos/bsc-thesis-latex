@@ -1,13 +1,15 @@
 \chapter{Értékelés}
-
+\label{chap:ertekeles}
 \section{Alternatíva - kódgenerálás}
 A Gamma saját nyelvtanokkal rendelkezik, melyek Xtext segítségével vannak implementálva. Ez a technológia lehetővé teszi, hogy saját szintaxis alapján, lehessen kódot írni és EMF példánymodellt generálni a leírásból.
 
-Ezt a mechanikát ki lehet használni a modell transzformáció alternatívájaként: a MagicDraw modellből Gamma Statechart Language szintaxisának megfelelő kódot lehetne generálni és ezt Xtext segítségével leparseolni.
+Ezt a mechanikát ki lehet használni a modell transzformáció alternatívájaként: a MagicDraw modellből Gamma Statechart Language szintaxisának megfelelő kódot lehetne generálni és ezt Xtext segítségével leparse-olni.
 
 A visszakövethetőség is megoldható, ehhez a nyelvtant annotációkkal kéne kibővíteni, amik jelölnék az eredeti elemeket.
 
 Ennek előnye, hogy a kimeneteket utána tovább lehetne importálni Eclipse-be és abban folytatni a fejlesztést.
 
 Hátránya viszont, hogy a skálázhatóságot sokkal nehezebb megoldani, és kevésbé flexibilis mint a transzformáció.
+
+\section{Plug-in teljesítménye}
 

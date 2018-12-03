@@ -159,7 +159,15 @@ IParseResult result = injector.getInstance(StatechartLanguageParser.class)
 						.parse(rule, new StringReader(guardString));
 \end{lstlisting}
 
-A referenciák viszont nem lesznek feloldva ezért ezek feloldása \emph{VIATRA} segítségével utólagosan történik a deklarációk név szerinti megkeresésével az előálló Gamma példánymodellekből. Mivel a guardok megírása implicit a gamma nyelvével történik azért ugyan azokat az operátorokat támogatja.
+A referenciák viszont nem lesznek feloldva ezért ezek feloldása \emph{VIATRA} segítségével utólagosan történik a deklarációk név szerinti megkeresésével az előálló Gamma példánymodellekből.
+\lstset{style=VQL}
+\begin{lstlisting}
+pattern DeclarationsByName(statechartDefinition: StatechartDefinition, name: java String, declaration: Declaration){
+	StatechartDefinition.variableDeclarations(statechartDefinition, declaration);
+	Declaration.name(declaration, name);
+}
+\end{lstlisting}
+ Mivel a guardok megírása implicit a gamma nyelvével történik azért ugyan azokat az operátorokat támogatja, mint a gamma.
 
 \begin{table}[!h]
 	\footnotesize

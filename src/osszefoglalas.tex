@@ -1,24 +1,49 @@
 \chapter{Összefoglalás}
-
+\label{chap:osszefoglalas}
 %fleadat lap pontjainak összefoglalása
 
 %pontokba szedve kontribúciók
 
 \begin{itemize}
-	\item Leképzés megvalósítása
+	\item Megfeleltetések megtervezése
 	\begin{itemize}
+		\item Összevetettem a két eszköz Meta-modelljét
+		\item Kiválasztottam az egymásnak megfeleltethető elemeket
 		\item Odafigyeltem a szemantikai különbségekre
-		\item Meta-modell elemeinek megfeleltetése
 	\end{itemize}
-	\item leképzés implementációja
-	\item fejlesztőkörnyezet kialakítása
+	\item Leképzés implementációja
+		\begin{itemize}
+		\item modell transzformációkra specializált technológiát használtam
+		\item az eszközt MagicDraw plug-in formájában valósítottam meg
+	\end{itemize}
+	\item Fejlesztőkörnyezet kialakítása
+		\begin{itemize}
+			\item összegyűjtöttem a szükséges dependenciákat
+			\item odafigyeltem a tranzitív dependenciák helyes menedzselésére
+		\end{itemize}
+	\item Lehetővé tettem, hogy a MagicDraw-n belül elvégezhető legyen a verifikáció
+			\begin{itemize}
+			\item átvettem és módosítottam a Gamma Query Generátor funkcióját
+		\end{itemize}
+
+	\item Elméleti megközelítésből értékeltem a munkám
+		\begin{itemize}
+			\item esettanulmányon mutatom be az elkészült eszközt
+			\item áttekintetem az alternatív megvalósítási lehetőségeket
+		\end{itemize}
 	%\item mérés
-	\item elméleti megközelítésből értékeltem a munkám
-	\item lehetővé tettem, hogy az eszközön belül elvégezhető legyen a verifikáció
+	
 \end{itemize}
 
-Ennek eredményeként létrejött egy olyan MagicDraw plug-in amivel lehetőség nyílik az állapottérképek formális verifikációjának végrehajtásába.
+Munkám eredményéül létrejött egy olyan MagicDraw plug-in amivel lehetőség nyílik állapottérképek formális verifikációjának végrehajtásába.
 
-\section{Future work}
+\section{Jövőben elvégzendő munka}
+\begin{enumerate}
+	\item Komponens alapú modellezés támogatása
+	\item Megkötések megsértéséhez vezető utak megjelenítése
+	\item Leképezhető elemek validációja
+	\item Újrahasznosíthatóság támogatása (\emph{Submachine State})
+\end{enumerate}
+
 
 %tervezett
