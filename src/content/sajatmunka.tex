@@ -188,6 +188,15 @@ pattern DeclarationsByName(statechartDefinition: StatechartDefinition, name: jav
 
 
 \subsection{Akciók leképzése:}
+Az akciók viselkedések amiket négyféle helyen lehet végrehajtani egy állapottérképen:
+
+\begin{enumerate}
+	\item Állapotvátáskor: a viselkedés állapotváltáskor hajtódik végre.
+	\item Állapotba való belépéskor (\emph{Entry}): a viselkedés akkor hajtódik végre amikor az állapot aktívvá válik.
+	\item Állapotban maradva (\emph{Do}): a viselkedés addig hajtódik végre amíg az állapot aktív.
+	\item Állapotból kilépve (\emph{Exit}): a viselkedés állapotból való kilépéskor hajtódik végre.
+\end{enumerate}
+
 A MagicDraw akciói viselkedések (\emph{Behavior}) lehetnek: pl. \emph{StateMachine}, \emph{Activity}, \textbf{OpaqueBehavior}. Az OpaqueBehavior pontosabban ennek egy része az OpaqueExpression lehetővé teszi, hogy valamilyen szöveges szintaxissal írjunk le viselkedést. Ennek felhasználásával, hasonlóan az őrfeltételek esetében Xtext segítségével elő tudjuk állítani a megfelelő EMF modellt a Gamma szintaxisa szerint. Ehhez a \verb+ActionRule+ szabályra van szükség.
 
 Jelenleg kétféle akció támogatott: értékadás és az eseményküldés. Ezek szintaxisa az alábbi:
@@ -297,6 +306,11 @@ Ennek megírásához a \emph{Query Generator} segítséget nyújt a hivatkozhat�
 
 \paragraph{Eredmény:} A megszorítások nem teljesülnek, ennek okát sajnos a plug-in még nem képes levezetni, ezt nekünk kell kitalálni vagy az UPPAAL segítségével megnyithatjuk a formális modellt és az generált UPPAAL query segítségével azon belül is el tudjuk végezni a verifikációt és tanulmányozni a generált végrehajtási útvonalakat. Ehhez azonban az UPPAAL és a leképzések ismerete szükséges.
 \subsection{A probléma:} A példa esetében a megszorítások megsértését a következő okozza: az állapotgép belép \verb+Operation+ állapotba, ilyenkor az ajtók zárva vannak a működés pedig engedélyezve. Megkezdődik a feldolgozás viszont mielőtt letelne a tíz másodperc a gépet szerviz állapotba kapcsolják így egyszerre lesz \verb+Maintenance+ és \verb+Processing+ állapotban amíg a feldolgozás maradék ideje le nem telik.
+
+\begin{figure}[H]
+	\includegraphics[keepaspectratio, width=150mm]{figures/trace.png}
+	\caption{A megkötés megsértéséhez vezető út}
+\end{figure}
 
 \subsection{Megoldás}
 Lehetséges megoldás lehet a probléma kiküszöbölésére egy köztes állapot bevezetése az \verb+Active+ ortogonális állapot felső régiójába. A gép szerviz állapotba kapcsoláskor előbb ide lép át, ilyenkor a feldolgozás letiltódik. Itt várakozik, méghozzá annyi időt, amennyi a feldolgozáshoz legalább szükséges. Ez a működés tehát megvárja a még folyamatban lévő feldolgozás befejezését és csak utána lép át a \verb+Maintenance+ állapotba. A módosított állapottérképet az új állapottal (\verb+Switching+) és a verifikáció eredményét \aref{fig:machine2}. ábra mutatja.

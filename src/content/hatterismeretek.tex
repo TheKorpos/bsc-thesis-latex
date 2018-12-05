@@ -75,7 +75,7 @@ Fontos megjegyezni, hogy a dolgozat nem tér ki részletesen az események kivá
 	%----------------
 	%Action
 	%----------------
-	\item \emph{Akció}: Különböző események bekövetkezésekor, mint állapotváltások, belépés állapotokba, kilépés állapotokból, vagy maga az állapotban maradás, lehetőségünk van viselkedéseket végrehajtani. UML szerint ezek lehetnek: Activityk, Állapotgépek, Interakció\footnote{Interakció modell elemek között, leírásához a jellegétől függően többféle diagram használható(Szekvencia, Kommunikációs, Időzítés).} OpaqueBehavior\footnote{ szöveges, UML-től eltérő nyelvvel specifikált viselkedés.}
+	\item \emph{Akció}: Különböző események bekövetkezésekor, mint állapotváltások, belépés állapotokba, kilépés állapotokból, vagy maga az állapotban maradás, lehetőségünk van viselkedéseket végrehajtani. UML szerint ezek lehetnek: Activityk, Állapotgépek, Interakció\footnote{Interakció modell elemek között, leírásához a jellegétől függően többféle diagram használható(Szekvencia, Kommunikációs, Időzítés).} OpaqueBehavior\footnote{ szöveges, UML-től eltérő nyelvvel specifikált viselkedés.} Állapotváltáskor, állapotba való be-, kilépéskor a viselkedés végrehajtódik, míg állapotban maradáskor addig hajtódik végre, amíg az állapot aktív, egyébként megszakításra kerül.
 	
 	%-----------------
 	% Ábra: állapot-atmenet-trigger-guard-action
@@ -215,11 +215,18 @@ Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll.
 Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
 
 \section{MagicDraw}
-A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni.
+A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez egy az eszköz fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
 
 A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok és portjaik között tudunk kapcsolatokat definiálni.
 
 Viselkedést Állapottérképekkel és Activity Diagrammokkal szokás leírni SysMLben. Utóbbival munka- és adatfolyamokat, ahol a folyamat lépései activityk és actionök. Állapottérképekkel reaktív rendszereket szokás leírni, a rendszer eseményekre reagál, ezek határozzák meg a viselkedését, szemben az Activity Diagrammokkal, amivel adott bemenetből valamilyen kimenet előállításának folyamatát írjuk le.
+
+\begin{figure}
+	\centering
+	\includegraphics[keepaspectratio, width=150mm]{figures/magicdrawgui.png}
+	\caption{MagicDraw felhasználói felülete}
+	\label{fig:mdgui}
+\end{figure}
 
 \subsection{Állapottérképek SysMLben}
 Az állapottérképeket SysML modellek részeiként, más modell elemekhez vannak viselkedésként hozzárendelve, a triggereket aktiváló események a modell strukturális leírásában vannak definiálva, az elvégezhető akciók pedig más modell elemek által leírt viselkedések. Mivel a dolgozat kizárólag állapottérképekkel foglalkozik ezért implicit feltételezzük, hogy az állapottérképen használt szignálok definiálva vannak és ezeket az állapotgép fogadni tudja, azaz rendelkezik a megfelelő portokkal és interfészekkel amelyek ezt lehetővé teszik.

@@ -53,7 +53,7 @@ A mérések egymás után lettek futtatva ugyan azon a modellen új elemek felv�
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[keepaspectratio, width=140mm]{figures/meres1.png}
+	\includegraphics[keepaspectratio, width=150mm]{figures/meres1.png}
 	\caption{Első mérés: transzformációk egymás után növekvő modellen}
 	\label{fig:meres1}
 \end{figure}
@@ -85,19 +85,19 @@ A következő mérések során az állapotátmenetekre őrfeltételek kerülnek.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[keepaspectratio, width=140mm]{figures/meres2.png}
+	\includegraphics[keepaspectratio, width=150mm]{figures/meres2.png}
 	\caption{Második mérés: futási idők őrfeltételekkel}
 	\label{fig:meres2}
 \end{figure}
 
-Az őrfeltételek alkalmazása minden állapotátmeneten jelentősen megnövelte a futási időt átlag 20-25\%-al, ennek különösen a nagy modellek esetében lehet jelentősége.
+Az őrfeltételek alkalmazásával keletkezett méréshez tartozó lineáris regresszió meredekebb, minta az őrfeltételek nélküli esetben. Ebből arra lehet következtetni, hogy az őrfeltételek alkalmazása nagyobb mértékben lassítja a leképzést.
 
-\section{Továbbfejlesztési lehetőségek}
+\clearpage\section{Továbbfejlesztési lehetőségek}
 \label{sec:jovoben}
 \section{IBD - Composition Language}
-A Gamma Statechart Composition Framework egyik legfontosabb funkciója, hogy lehetővé teszi állapottérképekből, mint komponensekből egy komplett rendszer leírását. Ilyesfajta leírás SysML-ben az Internal Block Diagram(IBD).
+A Gamma Statechart Composition Framework egyik legfontosabb funkciója, hogy lehetővé teszi állapottérképekből, mint komponensekből egy komplett rendszer leírását. Ilyesfajta leírás SysML-ben az Internal Block Diagram(IBD), amivel egy Block felépítését lehet leírni, és a blokk részei között fennálló kapcsolatokat lehet ábrázolni.
 
-Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komplex reaktív rendszereket leírni és verifikálni.
+Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komponens alapú modelleket definiálni és formálisan verifikálni.
 
 \subsection{Szimuláció generálása}
 
