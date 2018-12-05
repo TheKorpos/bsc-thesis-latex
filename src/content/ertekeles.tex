@@ -92,7 +92,26 @@ A következő mérések során az állapotátmenetekre őrfeltételek kerülnek.
 
 Az őrfeltételek alkalmazása minden állapotátmeneten jelentősen megnövelte a futási időt átlag 20-25\%-al, ennek különösen a nagy modellek esetében lehet jelentősége.
 
+\section{Továbbfejlesztési lehetőségek}
+\label{sec:jovoben}
+\section{IBD - Composition Language}
+A Gamma Statechart Composition Framework egyik legfontosabb funkciója, hogy lehetővé teszi állapottérképekből, mint komponensekből egy komplett rendszer leírását. Ilyesfajta leírás SysML-ben az Internal Block Diagram(IBD).
 
+Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komplex reaktív rendszereket leírni és verifikálni.
+
+\subsection{Szimuláció generálása}
+
+Az UPPAAL opcionálisan előállítja azokat az utakat melyek sértik a megkötéseket. A Gamma Framework képes ezekből kódot és Yakindu szimulációt előállítani.
+
+A MagicDraw is rendelkezik egy szimulátorral Cameo Simulation Toolkit\footnote{Cameo simulation toolkit: https://www.nomagic.com/product-addons/magicdraw-addons/cameo-simulation-toolkit} néven. A Cameo szimulátor plug-in a No Magic terméke. Segítségével modelleket lehet debugolni, szimulálni és UI prototyping funkcionalítással rendelkezik.
+
+A szimulációkat modell elemekkel is fel lehet konfigurálni Execution Configuration Classok segítségével, ezért potenciálisan modell transzformációkkal elő lehet állítani szimulációt.
+
+\subsection{Validation kit}
+
+A VIATRA-va inkrementális és reaktív tulajdonsági lehetővé teszik modell transzformációk végrehajtását, ha a modellt változik. Ezt a funkcionalitást kihasználva lehetőséget kapunk, hogy létrehozzuk validációs szabályok VQL-ben leírt halmazát és ezeket futás időben folyamatosan ellenőrizve a MagicDraw API-ján keresztül felannotálhatjuk azokat az elemeket amik nem felelnek meg a ezeknek szabályoknak. Ezeket a MagicDraw megjeleníti a GUI-ján.
+
+Ezek a validációs szabályok lehetnek figyelmeztetések, hogy melyik elemek nem képezhetőek le, vagy leképezhetőek de nem támogatott a verifikációjuk, ezzel növelve a felhasználói élményt, hogy ne a transzformációk végrehajtása alatt értesüljenek a potenciális hibákról.
 
 
 
