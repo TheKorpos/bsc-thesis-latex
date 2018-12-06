@@ -7,7 +7,7 @@ A Gamma Statechart Composition Framework\cite{gammaf} egy tanszéken fejlesztett
 
 \subsection{TismTool}
 
-TismTool\cite{veugen2012framework} egy többszálú, komponens alapú rendszerek fejlesztését támogató eszköz, ami képes UML modellekből kódot generálni különböző nyelveken (C\#, Java, C++ vagy C) és ezeket verifikálni. Az eszküz képes különböző UML modellező eszközök modelljeit feldolgozni, az egyetlen megkötés, hogy ezek képesek legyenek az UML model XML Metadata Interchange (XMI) szabvány szerint modellt sorosítani: a MagicDrawra ez teljesül.
+TismTool\cite{veugen2012framework} egy többszálú, komponens alapú rendszerek fejlesztését támogató eszköz, ami képes UML modellekből kódot generálni különböző nyelveken (C\#, Java, C++ vagy C) és ezeket verifikálni. Az eszköz képes különböző UML modellező eszközök modelljeit feldolgozni, az egyetlen megkötés, hogy ezek képesek legyenek az UML model XML Metadata Interchange (XMI) szabvány szerint modellt sorosítani: a MagicDrawra ez teljesül.
 
 Az eszköz azáltal végzi el a verifikációt, hogy kódot generál az XMI fájlokból amit egy futtatókörnyezettel kell végrehajtatni továbbá nem formális alapokon hajtja végre a verifikációt, hanem ún. futás idejű verifikációt\footnote{http://www.tismtool.com/tooling.html} használ.
 \section{Modellek}
@@ -102,7 +102,7 @@ Gyakran előfordul, hogy általánosabb állapotot célszerű felbontani részá
 	%---------------
 	% History state
 	%--------------
-	\item \emph{History State}: olyan pszeudo állapot, amely egy régióban megjegyzi az utolsó aktív állapotot, kilépéskor, ha a régióba visszalépünk a history state visszaállítja a megjegyzett állapotot. Amennyiben nincs előző állapot az ő belőle húzott állapotátmenet cél állapota lesz aktív. Két féle History Statet különböztetünk meg Shallow és Deep Historyt. Előbbi csak adott régión belül jegyzi meg az állapotot míg utóbbi a tartalmazott régiók állapotait is megjegyzi és visszaállítja.
+	\item \emph{History State}: olyan pszeudo állapot, amely egy régióban megjegyzi az utolsó aktív állapotot kilépéskor. A régióba visszalépve a history state visszaállítja a megjegyzett állapotot. Amennyiben nincs előző állapot az ő belőle húzott állapotátmenet cél állapota lesz aktív. Kétféle History Statet különböztetünk meg Shallow és Deep Historyt. Előbbi csak adott régión belül jegyzi meg az állapotot míg utóbbi a tartalmazott régiók állapotait is megjegyzi és visszaállítja.
 	
 	A \emph{HistroyStatek} szintaktikája \aref{fig:pseudo-and-final} ábrán látható.
 	
@@ -179,11 +179,11 @@ Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kez
 	%-------------
 	% Csomópont
 	%-------------
-	\item \emph{Csomópont (Junction)}: pszeudoállapot, több állapotátmenet összekapcsolása és egyként kezelése, például ha a cél állapotuk ugyan az és logikailag összetartoznak vagy egy beérkező átmenet szétbontása több átmenetre. Ilyenkor lehetőség van őrfeltételt rakni az átmenetekre, ezeknek a kiértékelése viszont még azelőtt történik, hogy bármelyik átmenet végrehajtásra kerülne, ezért egy ilyen ágat szokás statikus feltételes ágnak nevezni.
+	\item \emph{Csomópont (Junction)}: pszeudoállapot, több állapotátmenet összekapcsolása és egyként kezelése, például ha a cél állapotuk ugyan az és logikailag összetartoznak vagy egy beérkező átmenet szétbontása több átmenetre. Ilyenkor lehetőség van őrfeltételt rakni az átmenetekre, ezeknek a kiértékelése viszont még azelőtt történik, hogy bármelyik átmenet végrehajtásra kerülne, ezért egy ilyen ágat szokás \emph{statikus feltételes ág}nak nevezni.
 	%------------
 	% Elágazás
 	%-----------
-	\item \emph{Döntés (Choice)}: hasonló mint a csomópont, viszont az őrfeltételek az elágazásba való belépéskor értékelődnek ki dinamikusan. Ezt jellemzően alternatív útvonalak megadására használjuk, hasonló mint a programozási nyelvekben \emph{"if than else"} elágazás. Fontos megjegyezni, hogy az elágazás és a csomópont esetében is lehetséges, hogy több átmenet is tüzelhetne, ilyenkor az érvényre jutó átmenet kiválasztása nem determinisztikus módon történik ezért elkerülendő, például \emph{else} őrfeltétel alkalmazásával.
+	\item \emph{Döntés (Choice)}: hasonló mint a csomópont, viszont az őrfeltételek az elágazásba való belépéskor értékelődnek ki \emph{dinamikus}an. Ezt jellemzően alternatív útvonalak megadására használjuk, hasonló mint a programozási nyelvekben \emph{"if than else"} elágazás. Fontos megjegyezni, hogy az elágazás és a csomópont esetében is lehetséges, hogy több átmenet is tüzelhetne, ilyenkor az érvényre jutó átmenet kiválasztása nem determinisztikus módon történik ezért elkerülendő, például \emph{else} őrfeltétel alkalmazásával.
 	
 	A csomópont szintaxisa egy a kezdő állapotnál kisebb színezett kör, a döntésé pedig egy rombusz. (\ref{fig:choice-junction} ábra).
 	
@@ -210,16 +210,16 @@ Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehető
 
 Az Eclipse Modelling Framework  működése meglehetősen komplex ezért részletes bemutatása nem célja a dolgozatnak (szakirodalom a keretrendszer kapcsán: \emph{EMF: Eclipse Modelling Framework}\cite{steinberg2008emf}), csak azoknak az alap fogalmakat és működési mechanikáknak az ismertetésre amik szükségesek a dolgozat megértéséhez.
 
-Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekben találhatók. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
+Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekbe helyezhetők. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
 
 Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
 
 \section{MagicDraw}
 A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez egy az eszköz fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
 
-A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok és portjaik között tudunk kapcsolatokat definiálni.
+A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok belső felépítését és komponenseinek kapcsolatait lehet leírni portok segítségével.
 
-Viselkedést Állapottérképekkel és Activity Diagrammokkal szokás leírni SysMLben. Utóbbival munka- és adatfolyamokat, ahol a folyamat lépései activityk és actionök. Állapottérképekkel reaktív rendszereket szokás leírni, a rendszer eseményekre reagál, ezek határozzák meg a viselkedését, szemben az Activity Diagrammokkal, amivel adott bemenetből valamilyen kimenet előállításának folyamatát írjuk le.
+Viselkedést Állapottérképekkel és Activity Diagrammokkal szokás leírni SysMLben. Utóbbival munka- és adatfolyamokat, ahol a folyamat lépései \emph{Activity}k és \emph{Action}ök. Állapottérképekkel reaktív rendszereket szokás leírni, a rendszer eseményekre reagál, ezek határozzák meg a viselkedését, szemben az Activity Diagrammokkal, amivel adott bemenetből valamilyen kimenet előállításának folyamatát írjuk le.
 
 \begin{figure}
 	\centering
@@ -278,7 +278,7 @@ A formális módszerek előnye, hogy a rendszer helyességéről matematikailag 
 \label{sec:gamma-framework}
 A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek tervezésére, validálására, verifikálására és kód generálásra lett létrehozva. Az eszköz alap komponensei az állapottérlépek amiknek a leírásához egy saját nyelvet Gamma Statechart Languaget (\ref{fig:gamma-syntax}. ábra) definiál, ami lehetővé teszi külső modellező eszközök integrálását is. Az első integrált eszköz a Yakindu Statechart Tools \cite{toolsyakindu}, aminek a modelljeit Gamma képes a saját maga által definiált modellekké (\ref{fig:gamma_statechart_model}. ábra) transzformálni és feldolgozni.
 
-Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését az állapottérképek portjait, az azok által realizált interfészeket és a közöttük definiált kapcsolatokat.
+Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését komponensekre bontva, illetve az ezek portjai és interfészei között definiált kapcsolatokat.
 
 A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amivel megszorításokat lehet definiálni, ami egy általános megoldása típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásának.
 

@@ -13,7 +13,7 @@ Ebben a fejezetben bemutatom a munkám során elkészített alkalmazást kitérv
 \end{figure}
 
 \section{Fejlesztőkörnyezet}
- A fejlesztés megkezdéséhez szükséges volt összeállítani egy olyan fejlesztőkörnyezetet amivel hatékonyan lehet plug-int fejleszteni. MagicDraw biztosít egy ún. \emph{skeletont} Eclipsehez és IntelliJhez is plug-in fejlesztéséhez, de a fejlesztés nem ezek segítségével hanem az IncQueryLabs által készített skeleton felhasználásával valósult meg. Ennek oka, hogy a hivatalos \emph{skeletonok} nem vagy csak részben működtek, a mögöttes infrastruktúra megismerése és javítása pedig túl hosszadalmas és a feladat szempontjából irreleváns lett volna. 
+ A fejlesztés megkezdéséhez szükséges volt összeállítani egy olyan fejlesztőkörnyezetet amivel hatékonyan lehet plug-int fejleszteni. MagicDraw biztosít egy ún. \emph{skeletont} Eclipsehez és IntelliJhez is plug-in fejlesztéséhez, de a fejlesztés nem ezek segítségével hanem az \emph{IncQuery Labs} által készített skeleton felhasználásával valósult meg. Ennek oka, hogy a hivatalos \emph{skeletonok} nem vagy csak részben működtek, a mögöttes infrastruktúra megismerése és javítása pedig túl hosszadalmas és a feladat szempontjából irreleváns lett volna. 
  
 A skeleton egy Eclipse project, viszont Gradlet használ a projekt fordításához és a dependenciák kezeléséhez. Ez sokszor inkonzisztenciákhoz vezetett az egyik legnagyobb probléma a Viatra Querik generálása amiket csak Eclipsel lehet generálni. A kódbázis egy része nem Javában hanem Xtendben íródott, a Viatra modell transzformációk implementálása ezzel a nyelvvel egyszerűbb. Azok az osztályok melyeknél nem volt indokolt, jellemzően a MagicDraw felhasználói felületeinél, azok Java 8-ban lettek implementálva.
 
@@ -23,7 +23,7 @@ Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít 
 
 \section{MagicDraw - Gamma transzformáció}
 
-A MagicDraw - Gamma transzfromációt egy menü elemmel lehet elindítani. Ehhez szükséges, hogy a projekthez hozzá legyen rendelve egy külső könyvtár (Gamma Workspace) ami a leképzett és perzisztensen eltárolandó modellek helyét jelöli. A hozzárendelt könyvtár abszolút elérését String formában a projekt tárolja, emiatt sem a projekt nem migrálható, sem pedig maga a Gamma Workspace. Továbbá a könyvtár karbantartása ebben a verzióban még a felhasználó felelőssége, ugyanis a plug-in nem töröl a könyvtárból csak hozzáad és módosít, ennek akkor van jelentősége, ha leképzés után egy állapottérkép el lett távolítva a MagicDraw modellből és utána újra le lett képezve. Ebben az esetben a régebben leképzett Gamma állapottérképek is megmaradnak.
+A MagicDraw - Gamma transzfromációt egy menüponttal lehet elindítani a MD2G kategória alatt. Ehhez szükséges, hogy a projekthez hozzá legyen rendelve egy külső könyvtár (Gamma Workspace) ami a leképzett és a háttértáron eltárolandó modellek helyét jelöli. A hozzárendelt könyvtár abszolút elérését String formában a projekt tárolja, emiatt sem a projekt nem migrálható, sem pedig maga a Gamma Workspace. Továbbá a könyvtár karbantartása ebben a verzióban még a felhasználó felelőssége, ugyanis a plug-in nem töröl a könyvtárból csak hozzáad és módosít, ennek akkor van jelentősége, ha leképzés után egy állapottérkép el lett távolítva a MagicDraw modellből és utána újra le lett képezve. Ebben az esetben a régebben leképzett Gamma állapottérképek is megmaradnak.
 
 \subsection{Gyökér elemek létrehozása:}
 
@@ -210,11 +210,11 @@ Jelenleg kétféle akció támogatott: értékadás és az eseményküldés. Eze
 
 Az \emph{All} nem Gamma specifikus jelölése az össze portnak, ebből jelenleg csak egy van egy implicit generált az események fogadáshoz, így jelen esetben az \emph{All} megjelölés csak ezt a portot választja ki.
 
-\subparagraph{Megjegyzés:} a küldött eseményeknek nincs hatása, nem fogadja őket az állapottérkép, még akkor sem ha az interfészén az eseemények \emph{INOUT}-ként vannak definiálva.
+\subparagraph{Megjegyzés:} a küldött eseményeknek nincs hatása, nem fogadja őket az állapottérkép, még akkor sem ha az interfészén az események \emph{INOUT}-ként vannak definiálva.
 
 \subsection{Trace Modell}
 \label{sec:trace_model}
-A leképzések végrehajtása során fontos követni, hogy mely elemek képződtek le és mely elemekké. Erre a célra a MagicDrawToGamma bevezet egy Trace modell\footnote{Nem összekeverendő a \aref{sec:formal-verif} fejezetben említett \emph{Execusion Tracel}} nevű segédstruktúrát, ami lehetővé teszi a megfeleltetések visszakereshetőségét VIATRA segítségével, továbbá a modell sorosítása és háttértáron való tárolása is megoldott. A modell EMF-ben van definiálva és  háromféle \emph{Trace}-t különbötet meg. Az Gamma állapottérképek alap elemeit \verb+Trace+-ek, az interfészek elemeit \verb+InterfaceTrace+-k és a \emph{Contraint} modell elemeit \verb+ConstraintTracek+ kötik össze MagicDraw párjukkal, amiből le lettek képezve.
+A leképzések végrehajtása során fontos követni, hogy mely elemek képződtek le és mely elemekké. Erre a célra a MagicDrawToGamma bevezet egy Trace modell\footnote{Nem összekeverendő a \aref{sec:formal-verif} fejezetben említett \emph{Execusion Tracel}} nevű segédstruktúrát, ami lehetővé teszi a megfeleltetések visszakereshetőségét VIATRA segítségével, továbbá a modell sorosítása és háttértáron való tárolása is megoldott. A modell EMF-ben van definiálva és  háromféle \emph{Trace}-t különböztet meg. Az Gamma állapottérképek alap elemeit \verb+Trace+-ek, az interfészek elemeit \verb+InterfaceTrace+-k és a \emph{Contraint} modell elemeit \verb+ConstraintTracek+ kötik össze MagicDraw párjukkal, amiből le lettek képezve.
 
 A három \verb+Trace+ típust egy \verb+AbstractTrace+ osztály fogja össze, és \verb+MD2GTrace+-ben tárolhatók. (\ref{fig:trace-model} ábra)
 
@@ -235,21 +235,20 @@ A verifikáció végrehajtásához két dologra van szükség. A modellnek egy l
 	\label{en:fels}
 \end{enumerate}
 
-Első lehetőség időzített automaták leírásának előállítása amit a felhasználó megnyithat \emph{UPPAAL}-al. Ennek végrehajtása két részből áll. Először a Gamma modellt át kell alakítani, ez a \verb+StatechartToUppaalTransformer+ osztályon keresztül történik, ami a Gamma része.
+Első lehetőség időzített automaták leírásának előállítása amit a felhasználó megnyithat \emph{UPPAAL}-al. Ennek végrehajtása két részből áll. Először a Gamma modellt át kell alakítani, ez a \verb+StatechartToUppaalTransformer+ osztályon keresztül történik, ami a \emph{Gamma része}.
 \begin{lstlisting}
 //initialize with a Gamma Package
 StatechartToUppaalTransformer transformer = new StatechartToUppaalTransformer(p);
 SimpleEntry<NTA, G2UTrace> entry = transformer.execute();
 \end{lstlisting}
-Ennek a kimenete két EMF alapú modell, egy \emph{trace modell} (\verb+GU2Trace+) és egy időzített auto
-mata (\verb+NTA+). Az \textbf{időzített automata}\footnote{a formális verifikáció az időzített autómaták formalizmusán törénik} modelljét ezután egy formális leírásként kell szerializálni amit az UPPAAL képes beolvasni. Ez a Gamma \verb+UppaalModelSerializer+ osztálya állítja elő. 
+Ennek a kimenete két EMF alapú modell, egy \emph{trace modell} (\verb+GU2Trace+) és egy időzített automata (\verb+NTA+). Az \textbf{időzített automata}\footnote{a formális verifikáció az időzített automaták formalizmusán történik} modelljét ezután egy formális leírásként kell szerializálni amit az UPPAAL képes beolvasni. Ez a Gamma \verb+UppaalModelSerializer+ osztálya állítja elő. 
 \begin{lstlisting}
 //NTA, parentFolder, fileName
 UppaalModelSerializer.saveToXML(entry.getKey(), selected.getPath() , name +".xml");
 \end{lstlisting}
 A kimenetek a \emph{Gamma Workspace-ben} az állapottérkép könyvtárába kerülnek, ahonnan a felhasználó megnyithatja őket \emph{UPPAAL}-ban.
 
-A második lehetőség az \emph{Uppaal Query Genertor} (\ref{fig:upp-query-gen} ábra) használata. Ez egy segédablak amivel a felhasználó egy grafikus felhaszálói interfészen tud \emph{UPPAAL Query}-ket definiálni, így a felhasználónak nem szükséges elsajátítania az \emph{UPPAAL Query}-k szintaxisát.
+A második lehetőség az \emph{Uppaal Query Genertor} (\ref{fig:upp-query-gen} ábra) használata. Ez egy segédablak amivel a felhasználó egy grafikus felhasználói interfészen tud \emph{UPPAAL Query}-ket definiálni, így a felhasználónak nem szükséges elsajátítania az \emph{UPPAAL Query}-k szintaxisát.
 
 \begin{figure}[!ht]
 	\centering
@@ -286,7 +285,7 @@ Ahhoz, hogy le tudjuk ellenőrizni, hogy a leírt működés megfelel-e a támas
 	\label{fig:md2g}
 \end{figure}
 
-A menüpontot kiválasztva előállíthatjuk az általunk kiválasztott Gamma Workspacebe a Gamma példánymodelleket, ez viszont önmagában még nem elég ezeket formális modellekké kell alakítanunk, hogy UPPAAL-al is fel lehessen őket dolgozni. Ezt a \verb+Generate formal model+ menüponttal tudjuk végrehajtani. Ez feldob egy könyvtárválasztó ablakot amiben a Gamma Workspace-ben található könyvtárak közül ki kell választanunk a megfelelő modellt tartalmazót (jelen példánál maradva a könyvtár nevem most Machine1 ez látható \aref{fig:leiras}. árán címkeként is).
+A menüpontot kiválasztva előállíthatjuk az általunk kiválasztott Gamma Workspacebe a Gamma példánymodelleket, ez viszont önmagában még nem elég ezeket formális modellekké kell alakítanunk, hogy UPPAAL-al is fel lehessen őket dolgozni. Ezt a \verb+Generate formal model+ menüponttal tudjuk végrehajtani. Ez feldob egy könyvtárválasztó ablakot amiben a Gamma Workspace-ben található könyvtárak közül ki kell választanunk a megfelelő modellt tartalmazót (jelen példánál maradva a könyvtár neve Machine1 ez látható \aref{fig:leiras}. ábrán címkeként is).
 
 A formális modell előállítása után a \verb+Open Query Generator+ menüponttal tudjuk megnyitni a \emph{Query Generator}-t, hasonlóan mint az előző lépésben ki kell választanunk újra a megfelelő könyvtárat a Gamma Workspace-ünkből, ami a formális modellt tartalmazza.
 
@@ -309,7 +308,7 @@ Ennek megírásához a \emph{Query Generator} segítséget nyújt a hivatkozhat�
 
 \begin{figure}[H]
 	\includegraphics[keepaspectratio, width=150mm]{figures/trace.png}
-	\caption{A megkötés megsértéséhez vezető út}
+	\caption{A megkötés megsértésének lépési}
 \end{figure}
 
 \subsection{Megoldás}
