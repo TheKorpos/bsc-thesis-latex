@@ -1,15 +1,10 @@
 \chapter{Értékelés}
 \label{chap:ertekeles}
+Ebben a fejezetben megvizsgálom a plug-in teljesítményét a transzformáció végrehajtási idejét alapul véve, továbbá bemutatok egy alternatív megvalósítási lehetőséget amit a modell transzformációk helyett lehetne alkalmazni. Végül ismertetek pár funkciót amivel az eszköz továbbfejleszthető.
 \section{Alternatíva - kódgenerálás}
-A Gamma saját nyelvtanokkal rendelkezik, melyek Xtext segítségével vannak implementálva. Ez a technológia lehetővé teszi, hogy saját szintaxis alapján, lehessen kódot írni és EMF példánymodellt generálni a leírásból.
+A Gamma saját nyelvtanokkal rendelkezik, melyek Xtext segítségével vannak implementálva. Ez a technológia lehetővé teszi, hogy saját szintaxis alapján, lehessen kódot írni és EMF példánymodellt generálni a leírásból. Ezt a mechanikát ki lehet használni a modell transzformáció alternatívájaként: a MagicDraw modellből \emph{Gamma Statechart Language} szintaxisának megfelelő kódot lehetne generálni és ezt Xtext segítségével leparse-olni.
 
-Ezt a mechanikát ki lehet használni a modell transzformáció alternatívájaként: a MagicDraw modellből \emph{Gamma Statechart Language} szintaxisának megfelelő kódot lehetne generálni és ezt Xtext segítségével leparse-olni.
-
-A visszakövethetőség is megoldható, ehhez a nyelvtant annotációkkal kéne kibővíteni, amik jelölnék az eredeti elemeket.
-
-Ennek előnye, hogy a kimeneteket utána tovább lehetne importálni Eclipse-be és abban folytatni a fejlesztést.
-
-Hátránya viszont, hogy a skálázhatóságot sokkal nehezebb megoldani, és kevésbé flexibilis mint a transzformáció.
+A visszakövethetőség is megoldható, ehhez a nyelvtant annotációkkal kéne kibővíteni, amik jelölnék az eredeti elemeket. Ennek előnye, hogy a kimeneteket utána tovább lehetne importálni Eclipse-be és abban folytatni a fejlesztést. Hátránya viszont, hogy a skálázhatóságot sokkal nehezebb megoldani, és kevésbé flexibilis mint a transzformáció.
 
 \section{Plug-in teljesítménye}
 
@@ -90,28 +85,26 @@ A következő mérések során az állapotátmenetekre őrfeltételek kerülnek.
 	\label{fig:meres2}
 \end{figure}
 
-Az őrfeltételek alkalmazásával keletkezett méréshez tartozó lineáris regresszió meredekebb, minta az őrfeltételek nélküli esetben. Ebből arra lehet következtetni, hogy az őrfeltételek alkalmazása nagyobb mértékben lassítja a leképzést.
+Az őrfeltételek alkalmazásával keletkezett méréshez tartozó lineáris regresszió meredekebb, minta az őrfeltételek nélküli esetben. Ebből arra lehet következtetni, hogy az őrfeltételek alkalmazása nagyobb mértékben lassítja a leképzést. A mérések alapján megállapítható, hogy a mért végrehajtási idők a modellek méreteinek függvényében lineárisan növekszenek, tehát a transzformáció minden esetben jól skálázódik.
 
 \clearpage\section{Továbbfejlesztési lehetőségek}
 \label{sec:jovoben}
-\section{IBD - Composition Language}
+\subsection{IBD - Composition Language}
 A Gamma Statechart Composition Framework egyik célja, hogy lehetővé tegye állapottérképekből, mint komponensekből egy komplett rendszer leírását és ennek vizsgálatát. Ilyesfajta leírás SysML-ben az Internal Block Diagram(IBD), amivel egy Block felépítését lehet leírni, és a blokk részei között fennálló kapcsolatokat lehet ábrázolni.
 
-Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komponens alapú modelleket definiálni és formálisan verifikálni.
+Az IBD-k leképzésének támogatásával a felhasználók képessé válnának komponens alapú modelleket definiálni és ezeket formálisan verifikálni, ami különösen hasznos ilyen modellek esetében hiszen a különböző viselkedések külön-külön diagramokon vannak: egymásra gyakorolt hatásuk nehezen kielemezhető.
 
 \subsection{Szimuláció generálása}
 
-Az UPPAAL opcionálisan előállítja azokat az utakat melyek sértik a megkötéseket. A Gamma Framework képes ezekből kódot és Yakindu szimulációt előállítani.
+Az UPPAAL opcionálisan előállítja azokat az utakat melyek sértik a megkötéseket. A Gamma Framework képes ezekből kódot és Yakindu szimulációt előállítani. A MagicDraw is rendelkezik egy szimulátorral Cameo Simulation Toolkit\footnote{Cameo simulation toolkit: https://www.nomagic.com/product-addons/magicdraw-addons/cameo-simulation-toolkit} néven amely plug-in a No Magic terméke. Segítségével modelleket lehet debugolni, szimulálni és UI prototyping funkcionalítással rendelkezik. A szimulációkat modell elemekkel is fel lehet konfigurálni Execution Configuration Classok segítségével, ezért potenciálisan modell transzformációkkal elő lehet állítani szimulációt.
 
-A MagicDraw is rendelkezik egy szimulátorral Cameo Simulation Toolkit\footnote{Cameo simulation toolkit: https://www.nomagic.com/product-addons/magicdraw-addons/cameo-simulation-toolkit} néven. A Cameo szimulátor plug-in a No Magic terméke. Segítségével modelleket lehet debugolni, szimulálni és UI prototyping funkcionalítással rendelkezik.
-
-A szimulációkat modell elemekkel is fel lehet konfigurálni Execution Configuration Classok segítségével, ezért potenciálisan modell transzformációkkal elő lehet állítani szimulációt.
+A megkötéseket sértő utak megjelenítése a szimulátor segítségével hasznos lenne, a modell debugolását illetően.
 
 \subsection{Validation kit}
 
-A VIATRA-va inkrementális és reaktív tulajdonsági lehetővé teszik modell transzformációk végrehajtását, ha a modellt változik. Ezt a funkcionalitást kihasználva lehetőséget kapunk, hogy létrehozzuk validációs szabályok VQL-ben leírt halmazát és ezeket futás időben folyamatosan ellenőrizve a MagicDraw API-ján keresztül felannotálhatjuk azokat az elemeket amik nem felelnek meg a ezeknek szabályoknak. Ezeket a MagicDraw megjeleníti a GUI-ján.
+A VIATRA-va inkrementális és reaktív tulajdonsági lehetővé teszik modell transzformációk végrehajtását, ha a modellt változik. Ezt a funkcionalitást kihasználva lehetőséget kapunk, hogy létrehozzuk validációs szabályok VQL-ben leírt halmazát és ezeket futás időben folyamatosan ellenőrizve a MagicDraw API-ján keresztül felannotálhatjuk azokat az elemeket amik nem felelnek meg a ezeknek szabályoknak. Ezeket a MagicDraw megjeleníti a GUI-ján. 
 
-Ezek a validációs szabályok lehetnek figyelmeztetések, hogy melyik elemek nem képezhetőek le, vagy leképezhetőek de nem támogatott a verifikációjuk, ezzel növelve a felhasználói élményt, hogy ne a transzformációk végrehajtása alatt értesüljenek a potenciális hibákról.
+A validációs szabályok lehetnek figyelmeztetések, hogy melyik elemek nem képezhetőek le, vagy leképezhetőek de nem támogatott a verifikációjuk, ezzel növelve a felhasználói élményt, hogy ne a transzformációk végrehajtása alatt értesüljenek a potenciális hibákról.
 
 
 

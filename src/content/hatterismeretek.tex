@@ -1,18 +1,20 @@
 \chapter{Háttérismeretek}\label{chap:hatter}
+Ebben a fejezetben bemutatom a dolgozat megértéséhez szükséges háttérismereteket, köztük az állapottérképek formalizmusát és azokat a technológiákat amiket a feladat végrehajtásához használtam.
 
 \section{Kapcsolódó munkák}
 \label{sec:related-work}
+Legjobb tudomásom szerint még nem létezik olyan eszköz ami MagicDrawban képes formális verifikációt végrehajtani. Felhasználhatóság és megvalósítás szempontjából hasonló munkák közül az alábbiakat érdemes kiemelni.
 \subsection{Gamma Statechart Composition Framework}
-A Gamma Statechart Composition Framework\cite{gammaf} egy tanszéken fejlesztett eszköz, ami komponenst alapú viselkedés modellezést tesz lehetővé. Az eszköz képes kódot generálni és a formális verifikáció végrehajtani, továbbá képes Yakindu modelleket áttranszformálni Gamma modellekké. A Yakindu-Gamma transzformáció megvalósítása hasonló mint az általam implementált MagicDraw-gamma transzformáció. A Gamma keretrendszerrel \aref{sec:gamma-framework} szakasz foglalkozik részletesebben. 
+A Gamma Statechart Composition Framework\cite{gammaf} egy tanszéken fejlesztett eszköz, ami komponenst alapú viselkedés modellek fejlesztését teszi lehetővé olyan funkciókkal támogatva, mint a kód generálás és a formális verifikáció. Továbbá képes Yakindu modelleket áttranszformálni Gamma modellekké, melynek a megvalósítása hasonló mint az általam implementált MagicDraw-Gamma transzformáció. A Gamma keretrendszerrel \aref{sec:gamma-framework} szakasz foglalkozik részletesebben.
 
 \subsection{TismTool}
 
 TismTool\cite{veugen2012framework} egy többszálú, komponens alapú rendszerek fejlesztését támogató eszköz, ami képes UML modellekből kódot generálni különböző nyelveken (C\#, Java, C++ vagy C) és ezeket verifikálni. Az eszköz képes különböző UML modellező eszközök modelljeit feldolgozni, az egyetlen megkötés, hogy ezek képesek legyenek az UML model XML Metadata Interchange (XMI) szabvány szerint modellt sorosítani: a MagicDrawra ez teljesül.
 
-Az eszköz azáltal végzi el a verifikációt, hogy kódot generál az XMI fájlokból amit egy futtatókörnyezettel kell végrehajtatni továbbá nem formális alapokon hajtja végre a verifikációt, hanem ún. futás idejű verifikációt\footnote{http://www.tismtool.com/tooling.html} használ.
+Az eszköz azáltal végzi el a verifikációt, hogy kódot generál az XMI fájlokból amit egy futtatókörnyezettel kell végrehajtatni, továbbá nem formális alapokon hajtja végre a verifikációt, hanem ún. futás idejű verifikációt\footnote{http://www.tismtool.com/tooling.html} használ.
 \section{Modellek}
 
-Modelleket a tudomány számos területén alkalmazunk, ez lehetővé teszi az előtt vizsgálni a megvalósítandó rendszert, hogy azt ténylegesen létre kellene hozni. A vizsgálatoknak számos módja és célja lehet. A látványtervező bemutat egy látványtervet és a megfelelő \emph{stakeholderek} ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan standardizált jelölési rendszert alkalmazni, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
+Modelleket a tudomány számos területén alkalmazunk. Ez lehetővé teszi a megvalósítandó rendszer vizsgálatát még azelőtt, hogy azt ténylegesen létre kellene hozni. A vizsgálatoknak számos módja és célja lehet. A látványtervező bemutat egy látványtervet és a megfelelő \emph{stakeholderek} ezt értékelik, vagy egy rendszerről komplex matematikai módszerekkel kell eldönteni, hogy stabil-e. A modellek leírása sokféle módon történhet, de célszerű egy olyan standardizált jelölési rendszert alkalmazni, hogy a többi szakember is értelmezni, vizsgálni tudja a modellt.
 
 A jelölési rendszer vagy modellezési formalizmus lehet egy szöveges leírás is, például egy programkód, de sokszor célszerű vizuális megoldást használni, szimbólumokat tartalmazó diagramokat alkalmazni. Ezek sok esetben kifejezőbbek, lényegre törőbbek, és elsősorban könnyebben értelmezhetőek mint a szöveges leírások.
 
@@ -204,18 +206,18 @@ Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kez
 \end{itemize}
 
 \section{Eclipse Modelling Framework}
-Az Eclipse egy nyílt forráskódú platform független keretrendszer és fejlesztőkörnyezet ami kiterjeszthető, hogy Java mellett más programnyelveket(pl. C, PHP, Ruby, Python, Erlang) is támogasson, de modellező eszközként is használható (pl. Yakindu, Papyrus, Gamma).
+Az Eclipse egy nyílt forráskódú platform független keretrendszer és fejlesztőkörnyezet, ami kiterjeszthető, hogy Java mellett más programnyelveket(pl. C, PHP, Ruby, Python, Erlang) is támogasson, de modellező eszközként is használható (pl. Yakindu, Papyrus, Gamma).
 
-Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a meta-modellt és példány modellt. A példány modell struktúráját a meta-modell írja le. A modell egy konkrét példánya a meta-modellnek.
+Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a metamodellt és példány modellt. A példány modell struktúráját a metamodell írja le. A modell egy konkrét példánya a metamodellnek.
 
 Az Eclipse Modelling Framework  működése meglehetősen komplex ezért részletes bemutatása nem célja a dolgozatnak (szakirodalom a keretrendszer kapcsán: \emph{EMF: Eclipse Modelling Framework}\cite{steinberg2008emf}), csak azoknak az alap fogalmakat és működési mechanikáknak az ismertetésre amik szükségesek a dolgozat megértéséhez.
 
-Egy EMF meta-modell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF persistence framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekbe helyezhetők. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
+Egy EMF metamodell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF Persistence Framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekbe helyezhetők. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
 
-Eclipses környezetekben az EMF-nek nagy jelentősége van. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
+Eclipses környezetekben az EMF-nek nagy jelentőséggel bír. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
 
 \section{MagicDraw}
-A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni, vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez egy az eszköz fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
+A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez egy az eszköz fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
 
 A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok belső felépítését és komponenseinek kapcsolatait lehet leírni portok segítségével.
 
@@ -256,13 +258,13 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 }
 \end{lstlisting}
 
-A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát használ, de a létrehozott elemek a MagicDraw UML meta-modellje szerint lesznek példányosítva megfelelően sztereotipizálva, ezért kód szinten is eszerint érhetőek el.
+A SysML elemei sztereotipizált UML elemek, a SysML plug-in SysML szintaktikát használ, de a létrehozott elemek a MagicDraw UML metamodellje szerint lesznek példányosítva megfelelően sztereotipizálva, ezért kód szinten is eszerint érhetőek el.
 
 A modell elemek ugyan saját MagicDraws implementációval rendelkeznek, de EMF \footnote{Eclipse Modelling Framework https://www.eclipse.org/modeling/emf/}-es interfaceket is realizálnak ezért lehetőségünk van EMF Apijának használatára a plugin fejlesztése során.
 
 \section{Viatra}
 
-Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projects/modeling.viatra} egy Eclipse alapú keretrendszer ami lehetővé teszi modellek hatékony eseményvezérelt transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak: ezek a lekérdezek java kódbeli reprezentációi, melyek felhasználása lehetővé teszi modell transzformációk hatékony implementációját és a lekérdezésekre illeszkedő elemek lekérdezését a modellből.
+Az Eclipse Viatra Framework\footnote{Viatra: https://projects.eclipse.org/projects/modeling.viatra} egy Eclipse alapú keretrendszer ami lehetővé teszi modellek hatékony transzformációját és lekérdezését. A modell lekérdezésekhez egy külön nyelvet Viatra Query Language(VQL)-t használ. VQL lekérdezésekből Java osztályok generálódnak: ezek a lekérdezek java kódbeli reprezentációi, melyek felhasználása lehetővé teszi modell transzformációk hatékony implementációját és a lekérdezésekre illeszkedő elemek lekérdezését a modellből.
 
 Viatra használatában MagicDraw plugin fejlesztése során is van lehetőség. A Viatra for MagicDraw (V4MD) egy plug-in ami lehetővé teszi a Viatra Api használatát más plug-inokban. A V4MD projekt megnyitásakor létrehozza azokat a VIATRA specifikus objektumokat amelyeken keresztül lekérdezéseinkkel hozzá férhetünk a MagicDraw projekt modelljeihez.
 
@@ -280,9 +282,7 @@ A Gamma Statechart Composition Framework komponens alapú reaktív rendszerek te
 
 Az eszköz egy másik komponensei az ún. Kompozit komponensek, amiket Gamma Composition Languagel lehet definiálni. Ezek írják le a rendszer felépítését komponensekre bontva, illetve az ezek portjai és interfészei között definiált kapcsolatokat.
 
-A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language amivel megszorításokat lehet definiálni, ami egy általános megoldása típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásának.
-
-A másik nyelv pedig Gamma Interface Language, ami interfészek definiálását teszi lehetővé, amik a kapcsolódó komponensek egymás felé nyújtanak. Az interfész határozza meg, hogy milyen események fogadhatóak, vagy küldhetőek. Ezek az interfészekben deklarálandók és irányuk lehet, \emph{IN, OUT, INOUT}.
+A keretrendszer még két saját nyelvet definiál. Az egyik a Gamma Constraint Language, amivel megszorításokat lehet definiálni, ami egy általános megoldása típus definíciók, változók, függvények deklarálásához és kifejezések specifikálásának. A másik nyelv pedig Gamma Interface Language, ami interfészek definiálását teszi lehetővé, amik a kapcsolódó komponensek egymás felé nyújtanak. Az interfész határozza meg, hogy milyen események fogadhatóak, vagy küldhetőek. Ezek az interfészekben deklarálandók és irányuk lehet, \emph{IN, OUT, INOUT}.
 
 Munkámban a egy MagicDraw plug-int hozok létre ami a formális verifikáció végrehajtásához a Gamma keretrendszert használja azáltal, hogy \emph{VIATRA} segítségével áttranszformálja a MagicDraw modelljeit Gamma modellekké.
 

@@ -3,7 +3,7 @@
 Ebben a fejezetben bemutatom a munkám során elkészített alkalmazást kitérve, az alapkoncepcióra, az elméleti és gyakorlati problémákra és megoldásaikra. Továbbá kitérek a fejlesztés során felmerülő szoftver-infrastruktúra és implementáció okozta komplikációkra.
 
 \section{Koncepció}
-Állapottérképek formális verifikációjának támogatása MagicDraw-ban, egy plug-in fejlesztésével lett megvalósítva. A plug-in függ a Viatra For MagicDraw-tól, ami lehetővé teszi modellek transzformációját Viatra segítségével. A plug-in legfontosabb funkciója MagicDraw modellek Gamma modellekké való transzformációja. A letranszformált Gamma nyelvű modelleket az keretrendszer kezelni tudja, a verifikáció elvégzéséhez az eszköznek csak egyes részei szükségesek. A megoldást a \ref{fig:used-gamma} ábra szemlélteti. A felhasználónak lehetősége van megkötések megfogalmazására a plugin-al és elvégezni a verifikációt és megtekinteni az eredményt azaz, hogy teljesülnek-e a megkötések vagy sem.
+Állapottérképek formális verifikációjának támogatása MagicDraw-ban, egy plug-in fejlesztésével lett megvalósítva. A plug-in függ a Viatra For MagicDraw-tól, ami lehetővé teszi modellek transzformációját Viatra segítségével. A plug-in legfontosabb funkciója MagicDraw modellek Gamma modellekké való transzformációja. A letranszformált Gamma nyelvű modelleket a keretrendszer kezelni tudja. A verifikáció elvégzéséhez az eszköznek csak egyes részei szükségesek. A megoldást a \ref{fig:used-gamma} ábra szemlélteti. A felhasználónak lehetősége van megkötések megfogalmazására a plugin-al és elvégezni a verifikációt és megtekinteni az eredményt azaz, hogy teljesülnek-e a megkötések vagy sem.
 
 \begin{figure}[!ht]
 	\centering
@@ -13,23 +13,23 @@ Ebben a fejezetben bemutatom a munkám során elkészített alkalmazást kitérv
 \end{figure}
 
 \section{Fejlesztőkörnyezet}
- A fejlesztés megkezdéséhez szükséges volt összeállítani egy olyan fejlesztőkörnyezetet amivel hatékonyan lehet plug-int fejleszteni. MagicDraw biztosít egy ún. \emph{skeletont} Eclipsehez és IntelliJhez is plug-in fejlesztéséhez, de a fejlesztés nem ezek segítségével hanem az \emph{IncQuery Labs} által készített skeleton felhasználásával valósult meg. Ennek oka, hogy a hivatalos \emph{skeletonok} nem vagy csak részben működtek, a mögöttes infrastruktúra megismerése és javítása pedig túl hosszadalmas és a feladat szempontjából irreleváns lett volna. 
+ A fejlesztés megkezdéséhez szükséges volt összeállítani egy olyan fejlesztőkörnyezetet amivel hatékonyan lehet plug-int fejleszteni. A MagicDraw biztosít egy ún. \emph{skeletont} Eclipsehez és IntelliJhez is plug-in fejlesztéséhez, de a fejlesztés nem ezek segítségével hanem az \emph{IncQuery Labs} által készített skeleton felhasználásával valósult meg. Ennek oka, hogy a hivatalos \emph{skeletonok} nem vagy csak részben működtek, a mögöttes infrastruktúra megismerése és javítása pedig túl hosszadalmas és a feladat szempontjából irreleváns lett volna. 
  
-A skeleton egy Eclipse project, viszont Gradlet használ a projekt fordításához és a dependenciák kezeléséhez. Ez sokszor inkonzisztenciákhoz vezetett az egyik legnagyobb probléma a Viatra Querik generálása amiket csak Eclipsel lehet generálni. A kódbázis egy része nem Javában hanem Xtendben íródott, a Viatra modell transzformációk implementálása ezzel a nyelvvel egyszerűbb. Azok az osztályok melyeknél nem volt indokolt, jellemzően a MagicDraw felhasználói felületeinél, azok Java 8-ban lettek implementálva.
+A skeleton egy Eclipse projekt, ami Gradlet használ a projekt fordításához és a dependenciák kezeléséhez. Ez sokszor inkonzisztenciákhoz vezetett melyek közül az egyik legnagyobb problémát a Viatra Query-k okozták, mivel csak Eclipsel generálhatók. A kódbázis egy része nem Javában hanem Xtendben íródott, a Viatra modell transzformációk implementálása ezzel a nyelvvel egyszerűbb. Azok az osztályok melyeknél nem volt indokolt, jellemzően a MagicDraw felhasználói felületeinél, azok Java 8-ban lettek implementálva.
 
-A dolgozat elkészítése idején a MagicDraw 19-es verziója is elérhető volt a plug-in azonban még nem ehhez, hanem a 18.5-ös verziójához készült. A kódbázis azonban kompatibilis lehet még az újabb verziókkal is, amennyiben az állapottérképeket érintő meta-modellek nem változnak.
+A dolgozat elkészítése idején a MagicDraw 19-es verziója is elérhető volt a plug-in azonban még nem ehhez, hanem a 18.5-ös verziójához készült. A kódbázis azonban kompatibilis lehet még az újabb verziókkal is, amennyiben az állapottérképeket érintő metamodellek nem változnak.
 
-Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít egy formális leírást a rendszerről és egy \emph{query}-t ami a rendszerrel szemben támasztott követelményeket írja le. A követelmények megírásához biztosít egy UI elemet amivel a felhasználó az Uppaal ismerete nélkül is képes a követelmények definiálására. Ez a funkció teljesen át lett emelve Gammából módosított implementációval a MagicDrawToGammába. A Gamma az Uppaalra az operációs rendszeren keresztül hív át, ezért az Uppaalt külön kell telepíteni és konfigurálni.
+Gamma(2.0) a verifikációt Uppaal segítségével végzi el. Ehhez előállít egy formális leírást a rendszerről és egy \emph{query}-t ami a rendszerrel szemben támasztott követelményeket írja le. A követelmények megírásához biztosít egy UI elemet amivel a felhasználó az Uppaal ismerete nélkül is képes a követelmények definiálására. Ez a funkció teljesen átkerült a Gammából módosított implementációval a MagicDrawToGammába. A Gamma az Uppaalra az operációs rendszeren keresztül hív át, ezért az Uppaalt külön kell telepíteni és konfigurálni.
 
 \section{MagicDraw - Gamma transzformáció}
 
-A MagicDraw - Gamma transzfromációt egy menüponttal lehet elindítani a MD2G kategória alatt. Ehhez szükséges, hogy a projekthez hozzá legyen rendelve egy külső könyvtár (Gamma Workspace) ami a leképzett és a háttértáron eltárolandó modellek helyét jelöli. A hozzárendelt könyvtár abszolút elérését String formában a projekt tárolja, emiatt sem a projekt nem migrálható, sem pedig maga a Gamma Workspace. Továbbá a könyvtár karbantartása ebben a verzióban még a felhasználó felelőssége, ugyanis a plug-in nem töröl a könyvtárból csak hozzáad és módosít, ennek akkor van jelentősége, ha leképzés után egy állapottérkép el lett távolítva a MagicDraw modellből és utána újra le lett képezve. Ebben az esetben a régebben leképzett Gamma állapottérképek is megmaradnak.
+A MagicDraw - Gamma transzformációt egy menüponttal lehet elindítani a MD2G kategória alatt. Ehhez szükséges, hogy a projekthez hozzá legyen rendelve egy külső könyvtár (Gamma Workspace) ami a leképzett és a háttértáron eltárolandó modellek helyét jelöli. A hozzárendelt könyvtár abszolút elérését String formában a projekt tárolja, emiatt sem a projekt nem migrálható, sem pedig maga a Gamma Workspace. Továbbá a könyvtár karbantartása ebben a verzióban még a felhasználó felelőssége, ugyanis a plug-in nem töröl a könyvtárból csak hozzáad és módosít. Ennek akkor van jelentősége, ha leképzés után egy állapottérképet eltávolítanak a MagicDraw modellből és utána újra leképzik az egész modellt. Ebben az esetben a régebben leképzett Gamma állapottérképek is megmaradnak.
 
 \subsection{Gyökér elemek létrehozása:}
 
-A plugin a transzformáió kezdetekor létrehoz egy \emph{ResourceSet}-et, amivel készít egy \emph{Resource}-t a \emph{Gamma Workpace} gyökerébe .s.md2g néven, továbbá egy Resource-t \verb+interfaces.gms+ néven. Az előbbi Resource egy segédstruktúrát tartalmaz ami a leképzett elemek visszakereshetőségéül szolgál (ld. \refstruc{sec:trace_model}), utóbbi pedig a modellben definiált interfaceket tárolja.
+A plug-in a transzformáció kezdetekor létrehoz egy \emph{ResourceSet}-et, amivel készít egy \emph{Resource}-t a \emph{Gamma Workpace} gyökerébe .s.md2g néven, továbbá egy Resource-t \verb+interfaces.gms+ néven. Az előbbi Resource egy segédstruktúrát tartalmaz ami a leképzett elemek visszakereshetőségéül szolgál (ld. \refstruc{sec:trace_model}), utóbbi pedig a modellben definiált interfaceket tárolja.
 
-Az eszköz ezután Viatra Queryk segítségével megkeresi az állapotgépeket a MagicDrawban és végig iterál rajtuk. Minden állapottérképen kigyűjti az éleken használt \emph{SignalEventek}et és létrehoz a \emph{Signal}éval azonos néven egy Eventet a Gamma meta-modelljének megfelelően. Ez az Event a \emph{Signal} Gammabeli megfelelője.  A létrehozott eventek egy Interfacen kerülnek definiálásra aminek a neve megegyezik az állapottérképével. Az interface ezután belekerül az interfaceket tároló \emph{Resourceba}. Az eventek iránya INOUT ez lehetővé teszi, hogy az állapotképek küldhessenek és fogadhassanak.
+Az eszköz ezután Viatra Queryk segítségével megkeresi az állapotgépeket a MagicDrawban és végig iterál rajtuk. Minden állapottérképen kigyűjti az éleken használt \emph{SignalEventek}et és létrehoz a \emph{Signal}éval azonos néven egy Eventet a Gamma metamodelljének megfelelően. Ez az Event a \emph{Signal} Gammabeli megfelelője.  A létrehozott eventek egy Interfacen kerülnek definiálásra aminek a neve megegyezik az állapottérképével. Az interface ezután belekerül az interfaceket tároló \emph{Resourceba}. Az eventek iránya INOUT ez lehetővé teszi, hogy az állapotképek küldhessenek és fogadhassanak.
 
 A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Workspace-ben egy külön az állapottérkép nevével megegyező könyvtárba kerülnek, ugyan ezen a néven .gsm kiterjesztéssel (\ref{fig:filestructure}-es ábra). (A Resource gyökere nem egy StatechartDefinition, hanem egy Package, ennek a neve szintén megegyezik az állapottérkép nevével)
 
@@ -42,7 +42,7 @@ A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Work
 
 \subsection{Alap struktúra kialakítása:}
 
-Az előző lépések során azok az elemek állnak elő, melyek a modellek gyökér elemeiként fognak szolgálni. A következő lépés létrehozni az állapottérképek egy belső, alap struktúráját, amit az állapotok és állapotátmenetek határoznak meg. A Viatra for MagicDraw projekt megnyitásakor készít egy ViatraQueryEngine-t aminek a \emph{Scope}-ja a megnyitott modellre terjed ki. A transzformációs szabályok regisztrálása ezen az engine-en történik, létrejön azonban még egy aminek a \emph{Scope}-ja magába foglalja az első lépésben létrehozott \emph{Resource}okat és a MagicDraw modellt is. A készülő modellben történő keresések, és a visszakövetések ezzel az \emph{engine}-el történnek. Alap struktúra kialakításának lépcsői:
+Az előző lépések során azok az elemek állnak elő, melyek a modellek gyökér elemeiként fognak szolgálni. A következő lépés létrehozni az állapottérképek egy belső, alap struktúráját, amit az állapotok és állapotátmenetek határoznak meg. A Viatra for MagicDraw projekt megnyitásakor készít egy ViatraQueryEngine-t aminek a \emph{Scope}-ja a megnyitott modellre terjed ki. A transzformációs szabályok regisztrálása ezen az engine-en történik, létrejön azonban még egy aminek a \emph{Scope}-ja magába foglalja az első lépésben létrehozott \emph{Resource}okat és a MagicDraw modellt is. A készülő modellben végzett keresések és a és a visszakövetéseket ez az \emph{engine} végzi el. A struktúra kialakításának lépcsői a következők:
 
 \begin{enumerate}
 	\item Fő régiók leképzése (olyan régió aminek a szülője állapotgép).
@@ -54,7 +54,7 @@ Az előző lépések során azok az elemek állnak elő, melyek a modellek gyök
 \end{enumerate}
 
 
-A második lépésben a \emph{Trace Modell} alapján megkeressük a már leképzett régiót a Gamma Modellben és beletesszük az újonnan létrehozott és a MagicDraw modellnek megfelelően elnevezett állapotot, ha a régió még nincs leképezve akkor létrejön, és abba kerül bele az állapotot. Ez a lépés olyan részgráfokat is eredményezhet amikbe nem vezet út a gyökér elemekből. Ennek kiküszöbölése a harmadik. lépés ami, ugyanezt a műveletet hajtja végre csak a másik irányból, tehát az állapotok párjait keressük meg, amikbe régiókat helyezünk el. Ezek a régiók már létezhetnek ilyenkor nem új régió jön létre hanem a már meglévő kerül az állapotba. A működés során a MagicDraw modell jól formáltsága kihasznált és elvárt, továbbá az is ki van használva, hogy régió csak \emph{State}ben és \emph{StateMacine}-ban lehet. A régiókat tartalmazó állapotok kompozit és ortogonális állapotnak tekintendők.
+A második lépésben a \emph{Trace Modell} alapján megkeressük a már leképzett régiót a Gamma Modellben és beletesszük az újonnan létrehozott és a MagicDraw modellnek megfelelően elnevezett állapotot, ha a régió még nincs leképezve akkor létrejön, és abba kerül bele az állapotot. Ez a lépés olyan részgráfokat is eredményezhet amikbe nem vezet út a gyökér elemekből. Ennek kiküszöbölése a harmadik lépés ami, ugyanezt a műveletet hajtja végre csak a másik irányból, tehát az állapotok párjait keressük meg, amikbe régiókat helyezünk el. Ezek a régiók már létezhetnek ilyenkor nem új régió jön létre hanem a már meglévő kerül az állapotba. A működés során a MagicDraw modell jól formáltsága elvárt, azaz régió csak \emph{State}ben és \emph{StateMacine}-ban fordulhat elő. A régiókat tartalmazó állapotok kompozit és ortogonális állapotnak tekintendők.
 
 A tartalmazási gráf összefüggővé válását \aref{fig:state-transformation} ábra szemlélteti.
 
@@ -137,7 +137,7 @@ A láthatóság és a statikusság, a jelen verzióban nem bírnak jelentőségg
 \subsection{Események, triggerek leképzése:} A MagicDrawban definiálható \emph{Triggerek} pontosabban az őket kiváltó események közül jelenleg kettő támogatott. Egyik a \emph{SignalEvent} a másik pedig \emph{TimeEvent}. Előbbi \emph{EventTriggerre} képződik le. A felhasználónak a \emph{SignalEvent} forrásával most még nem kell foglalkoznia, hiszen ezekhez automatikusan generálódik egy \emph{Interface} és egy \emph{Port}.
 
 A \emph{Time Eventek} MagicDraw-ban kétféle típusúak lehetnek: relatív és abszolút. Utóbbit a plugin-in még nem támogatja.
-A relatív típusú \emph{Time Eventek} a Gamma \emph{Timeout} mechanizmusának feleltethető meg. Ez három részből áll: \emph{StatechartDefinition}-ön definiált \emph{TimeoutDeclaration}, akció ami ennek beállítja az értékét (ami lehet szekundumban, vagy milliszekundumban mért) és maga a \emph{Trigger} ami hivatkozik a deklarációra. A \emph{TimeoutDeclaration} és az érték beállítása implicit történik a felhasználónak az időt kell megadnia trigger felvételekor a MagicDraw modellben.
+A relatív típusú \emph{Time Eventek} a Gamma \emph{Timeout} mechanizmusának feleltethető meg. Ez három részből áll: \emph{StatechartDefinition}-ön definiált \emph{TimeoutDeclaration}, akció ami ennek beállítja az értékét (ami lehet szekundumban, vagy milliszekundumban mért) és maga a \emph{Trigger} ami hivatkozik a deklarációra. A \emph{TimeoutDeclaration} és az érték beállítása implicit történik. A felhasználónak csak az időt kell megadnia trigger felvételekor a MagicDraw modellben.
 
 \subsection{Őrfeltételek leképzése:}
 Őrfeltételek definiálása MagicDraw állapottérképeken Opaque Expressionökkel\footnote{Szöveges nyelvel leírt kifejezés} történik, ezért ezt le kell fordítani és modell alapú leírássá konvertálni. Kifejezéseket Gammában a Constraint modellel lehet leírni. Ehhez tartozik egy nyelvtan is ami Xtext segítségével képes a Gamma Constraint nyelvből EMF alapú \emph{Constraint} példánymodellt fordítani.
@@ -154,7 +154,6 @@ ParserRule rule = injector.getInstance(StatechartLanguageGrammarAccess.class)
 IParseResult result = injector.getInstance(StatechartLanguageParser.class)
 						.parse(rule, new StringReader(guardString));
 \end{lstlisting}
-
 A referenciák viszont nem lesznek feloldva ezért ezek feloldása \emph{VIATRA} segítségével utólagosan történik a deklarációk név szerinti megkeresésével az előálló Gamma modellekből.
 \lstset{style=VQL}
 \begin{lstlisting}
@@ -188,7 +187,7 @@ pattern DeclarationsByName(statechartDefinition: StatechartDefinition, name: jav
 
 
 \subsection{Akciók leképzése:}
-Az akciók viselkedések amiket négyféle helyen lehet végrehajtani egy állapottérképen:
+Az akciók viselkedések amiket négyféle helyen lehet végrehajtatni egy állapottérképen:
 
 \begin{enumerate}
 	\item Állapotvátáskor: a viselkedés állapotváltáskor hajtódik végre.
@@ -214,7 +213,7 @@ Az \emph{All} nem Gamma specifikus jelölése az össze portnak, ebből jelenleg
 
 \subsection{Trace Modell}
 \label{sec:trace_model}
-A leképzések végrehajtása során fontos követni, hogy mely elemek képződtek le és mely elemekké. Erre a célra a MagicDrawToGamma bevezet egy Trace modell\footnote{Nem összekeverendő a \aref{sec:formal-verif} fejezetben említett \emph{Execusion Tracel}} nevű segédstruktúrát, ami lehetővé teszi a megfeleltetések visszakereshetőségét VIATRA segítségével, továbbá a modell sorosítása és háttértáron való tárolása is megoldott. A modell EMF-ben van definiálva és  háromféle \emph{Trace}-t különböztet meg. Az Gamma állapottérképek alap elemeit \verb+Trace+-ek, az interfészek elemeit \verb+InterfaceTrace+-k és a \emph{Contraint} modell elemeit \verb+ConstraintTracek+ kötik össze MagicDraw párjukkal, amiből le lettek képezve.
+A leképzések végrehajtása során fontos követni, hogy mely elemek képződtek le és mely elemekké. Erre a célra a MagicDrawToGamma bevezet egy Trace modell\footnote{Nem összekeverendő a \aref{sec:formal-verif} fejezetben említett \emph{Execusion Tracel}} nevű segédstruktúrát, ami lehetővé teszi a megfeleltetések visszakereshetőségét VIATRA segítségével, továbbá a modell sorosítása és háttértáron való tárolása is megoldott. A modell EMF-ben van definiálva és  háromféle \emph{Trace}-t különböztet meg. A Gamma állapottérképek alap elemeit \verb+Trace+-ek, az interfészek elemeit \verb+InterfaceTrace+-k és a \emph{Contraint} modell elemeit \verb+ConstraintTracek+ kötik össze MagicDraw párjukkal, amiből le lettek képezve.
 
 A három \verb+Trace+ típust egy \verb+AbstractTrace+ osztály fogja össze, és \verb+MD2GTrace+-ben tárolhatók. (\ref{fig:trace-model} ábra)
 
@@ -257,11 +256,11 @@ A második lehetőség az \emph{Uppaal Query Genertor} (\ref{fig:upp-query-gen} 
 	\label{fig:upp-query-gen}
 \end{figure}
 
-A Query Generátor implementációja a Gammából át lett emelve a MagicDraw plug-inba és az implementáció módosítva lett, hogy ebben a környezetben is tudjon működni. A Gamma egyik funkciója, hogy a formális verifikáció során esetleg keletkező ellenpéldákból képes Java nyelvű teszteseteket és szimulációt generálni Yakinduhoz. A MagicDrawToGammában a kódgenerálást még nem támogatja és a modellek nem Yakinduból származnak ezért ez a funkció nem használható a jelenlegi verzióban.
+A Query Generátor implementációja a Gammából lett átemelve a MagicDraw plug-inba és az implementáció módosítva lett, hogy ebben a környezetben is tudjon működni. A Gamma egyik funkciója, hogy a formális verifikáció során esetleg keletkező ellenpéldákból képes Java nyelvű teszteseteket és szimulációt generálni Yakinduhoz. A MagicDrawToGammában a kódgenerálást még nem támogatja és a modellek nem Yakinduból származnak ezért ez a funkció nem használható a jelenlegi verzióban.
 
 \section{Esettanulmány}
 
-Az előző alfejezetek a MagicDrawToGamma főbb funkcióinak ismertetéséről és a funkciók megvalósítását mutatták be. Ebben az alfejezetben a  tényleges működéséről lesz szó egy példán keresztül.
+Az előző alfejezetek a MagicDrawToGamma főbb funkcióinak ismertetéséről és ezek megvalósítását mutatták be. Ebben az alfejezetben a  tényleges működéséről lesz szó egy példán keresztül.
 
 \subsection{Szemléltető példa}
 
@@ -285,7 +284,7 @@ Ahhoz, hogy le tudjuk ellenőrizni, hogy a leírt működés megfelel-e a támas
 	\label{fig:md2g}
 \end{figure}
 
-A menüpontot kiválasztva előállíthatjuk az általunk kiválasztott Gamma Workspacebe a Gamma példánymodelleket, ez viszont önmagában még nem elég ezeket formális modellekké kell alakítanunk, hogy UPPAAL-al is fel lehessen őket dolgozni. Ezt a \verb+Generate formal model+ menüponttal tudjuk végrehajtani. Ez feldob egy könyvtárválasztó ablakot amiben a Gamma Workspace-ben található könyvtárak közül ki kell választanunk a megfelelő modellt tartalmazót (jelen példánál maradva a könyvtár neve Machine1 ez látható \aref{fig:leiras}. ábrán címkeként is).
+A menüpontot kiválasztva előállíthatjuk az általunk kiválasztott Gamma Workspacebe a Gamma példánymodelleket, ez viszont önmagában még nem elég. Ezeket formális modellekké kell alakítanunk, hogy UPPAAL-al is fel lehessen őket dolgozni. Ezt a \verb+Generate formal model+ menüponttal tudjuk végrehajtani. Ez feldob egy könyvtárválasztó ablakot amiben a Gamma Workspace-ben található könyvtárak közül ki kell választanunk a megfelelő modellt tartalmazót (jelen példánál maradva a könyvtár neve Machine1 ez látható \aref{fig:leiras}. ábrán címkeként is).
 
 A formális modell előállítása után a \verb+Open Query Generator+ menüponttal tudjuk megnyitni a \emph{Query Generator}-t, hasonlóan mint az előző lépésben ki kell választanunk újra a megfelelő könyvtárat a Gamma Workspace-ünkből, ami a formális modellt tartalmazza.
 
@@ -303,8 +302,8 @@ Ennek megírásához a \emph{Query Generator} segítséget nyújt a hivatkozhat�
 	\label{fig:query-gen-res}
 \end{figure}
 
-\paragraph{Eredmény:} A megszorítások nem teljesülnek, ennek okát sajnos a plug-in még nem képes levezetni, ezt nekünk kell kitalálni vagy az UPPAAL segítségével megnyithatjuk a formális modellt és az generált UPPAAL query segítségével azon belül is el tudjuk végezni a verifikációt és tanulmányozni a generált végrehajtási útvonalakat. Ehhez azonban az UPPAAL és a leképzések ismerete szükséges.
-\subsection{A probléma:} A példa esetében a megszorítások megsértését a következő okozza: az állapotgép belép \verb+Operation+ állapotba, ilyenkor az ajtók zárva vannak a működés pedig engedélyezve. Megkezdődik a feldolgozás viszont mielőtt letelne a tíz másodperc a gépet szerviz állapotba kapcsolják így egyszerre lesz \verb+Maintenance+ és \verb+Processing+ állapotban amíg a feldolgozás maradék ideje le nem telik.
+\paragraph{Eredmény:} A megszorítások nem teljesülnek. Ennek okát sajnos a plug-in még nem képes levezetni, ezt nekünk kell kitalálni vagy az UPPAAL segítségével megnyithatjuk a formális modellt és az generált UPPAAL query segítségével azon belül is el tudjuk végezni a verifikációt és tanulmányozni a generált végrehajtási útvonalakat. Ehhez azonban az UPPAAL és a leképzések ismerete szükséges.
+\subsection{A probléma:} A példa esetében a megszorítások megsértését a következő okozza: az állapotgép belép \verb+Operation+ állapotba, ilyenkor az ajtók zárva vannak a működés pedig engedélyezve. Megkezdődik a feldolgozás, viszont mielőtt letelne a tíz másodperc a gépet szerviz állapotba kapcsolják, így egyszerre lesz \verb+Maintenance+ és \verb+Processing+ állapotban amíg a feldolgozásra szánt idő le nem telik.
 
 \begin{figure}[H]
 	\includegraphics[keepaspectratio, width=150mm]{figures/trace.png}
