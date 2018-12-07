@@ -15,7 +15,7 @@ Ebben a fejezetben bemutatom a munkám során elkészített alkalmazást kitérv
 \section{Fejlesztőkörnyezet}
  A fejlesztés megkezdéséhez szükséges volt összeállítani egy olyan fejlesztőkörnyezetet amivel hatékonyan lehet plug-int fejleszteni. A MagicDraw biztosít egy ún. \emph{skeletont} Eclipsehez és IntelliJhez is plug-in fejlesztéséhez, de a fejlesztés nem ezek segítségével hanem az \emph{IncQuery Labs} által készített skeleton felhasználásával valósult meg. Ennek oka, hogy a hivatalos \emph{skeletonok} nem vagy csak részben működtek, a mögöttes infrastruktúra megismerése és javítása pedig túl hosszadalmas és a feladat szempontjából irreleváns lett volna. 
  
-A skeleton egy Eclipse projekt, ami Gradlet használ a projekt fordításához és a dependenciák kezeléséhez. Ez sokszor inkonzisztenciákhoz vezetett melyek közül az egyik legnagyobb problémát a Viatra Query-k okozták, mivel csak Eclipsel generálhatók. A kódbázis egy része nem Javában hanem Xtendben íródott, a Viatra modell transzformációk implementálása ezzel a nyelvvel egyszerűbb. Azok az osztályok melyeknél nem volt indokolt, jellemzően a MagicDraw felhasználói felületeinél, azok Java 8-ban lettek implementálva.
+A skeleton egy Eclipse projekt, ami Gradlet használ a projekt fordításához és a dependenciák kezeléséhez. Ez sokszor inkonzisztenciákhoz vezetett melyek közül az egyik legnagyobb problémát a Viatra Query-k okozták, mivel csak Eclipsel generálhatók. A kódbázis egy része nem Javában hanem Xtendben íródott, a Viatra modell transzformációk implementálása ezzel a nyelvvel egyszerűbb. A MagicDraw felhasználói felületeinél ez nem volt indokol ezért ezek java 8-ban lettek implementálva.
 
 A dolgozat elkészítése idején a MagicDraw 19-es verziója is elérhető volt a plug-in azonban még nem ehhez, hanem a 18.5-ös verziójához készült. A kódbázis azonban kompatibilis lehet még az újabb verziókkal is, amennyiben az állapottérképeket érintő metamodellek nem változnak.
 
@@ -31,7 +31,7 @@ A plug-in a transzformáció kezdetekor létrehoz egy \emph{ResourceSet}-et, ami
 
 Az eszköz ezután Viatra Queryk segítségével megkeresi az állapotgépeket a MagicDrawban és végig iterál rajtuk. Minden állapottérképen kigyűjti az éleken használt \emph{SignalEventek}et és létrehoz a \emph{Signal}éval azonos néven egy Eventet a Gamma metamodelljének megfelelően. Ez az Event a \emph{Signal} Gammabeli megfelelője.  A létrehozott eventek egy Interfacen kerülnek definiálásra aminek a neve megegyezik az állapottérképével. Az interface ezután belekerül az interfaceket tároló \emph{Resourceba}. Az eventek iránya INOUT ez lehetővé teszi, hogy az állapotképek küldhessenek és fogadhassanak.
 
-A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Workspace-ben egy külön az állapottérkép nevével megegyező könyvtárba kerülnek, ugyan ezen a néven .gsm kiterjesztéssel (\ref{fig:filestructure}-es ábra). (A Resource gyökere nem egy StatechartDefinition, hanem egy Package, ennek a neve szintén megegyezik az állapottérkép nevével)
+A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Workspace-ben egy külön az állapottérkép nevével megegyező könyvtárba kerülnek, ugyanezen a néven .gsm kiterjesztéssel (\ref{fig:filestructure}-es ábra). (A Resource gyökere nem egy StatechartDefinition, hanem egy Package, ennek a neve szintén megegyezik az állapottérkép nevével)
 
 \begin{figure}[H]
 	\centering
@@ -42,8 +42,7 @@ A leképzett állapottérképek külön Resourceokba kerülnek amik a Gamma Work
 
 \subsection{Alap struktúra kialakítása:}
 
-Az előző lépések során azok az elemek állnak elő, melyek a modellek gyökér elemeiként fognak szolgálni. A következő lépés létrehozni az állapottérképek egy belső, alap struktúráját, amit az állapotok és állapotátmenetek határoznak meg. A Viatra for MagicDraw projekt megnyitásakor készít egy ViatraQueryEngine-t aminek a \emph{Scope}-ja a megnyitott modellre terjed ki. A transzformációs szabályok regisztrálása ezen az engine-en történik, létrejön azonban még egy aminek a \emph{Scope}-ja magába foglalja az első lépésben létrehozott \emph{Resource}okat és a MagicDraw modellt is. A készülő modellben végzett keresések és a és a visszakövetéseket ez az \emph{engine} végzi el. A struktúra kialakításának lépcsői a következők:
-
+Az előző lépések során azok az elemek állnak elő, melyek a modellek gyökér elemeiként fognak szolgálni. A következő lépés létrehozni az állapottérképek egy belső, alap struktúráját, amit az állapotok és állapotátmenetek határoznak meg. A Viatra for MagicDraw projekt megnyitásakor készít egy ViatraQueryEngine-t aminek a \emph{Scope}-ja a megnyitott modellre terjed ki. A transzformációs szabályok regisztrálása ezen az engine-en történik, létrejön azonban még egy aminek a \emph{Scope}-ja magába foglalja az első lépésben létrehozott \emph{Resource}okat és a MagicDraw modellt is. A készülő modellben végzett keresések és a visszakövetéseket ez az \emph{engine} végzi el. A struktúra kialakításának lépcsői a következők:
 \begin{enumerate}
 	\item Fő régiók leképzése (olyan régió aminek a szülője állapotgép).
 	\label{enum:elso}
@@ -52,11 +51,9 @@ Az előző lépések során azok az elemek állnak elő, melyek a modellek gyök
 	\item Állapotokban található régiók leképzése.
 	\label{enum:harmadik}
 \end{enumerate}
+A második lépésben a \emph{Trace Modell} alapján megkeressük a már leképzett régiót a Gamma Modellben és beletesszük az újonnan létrehozott és a MagicDraw modellnek megfelelően elnevezett állapotot, ha a régió még nincs leképezve akkor létrejön, és abba kerül bele az állapotot. Ez a lépés olyan részgráfokat is eredményezhet amikbe nem vezet út a gyökér elemekből. Ennek kiküszöbölése a harmadik lépés ami, ugyanezt a műveletet hajtja végre csak a másik irányból, tehát az állapotok párjait keressük meg, amikbe régiókat helyezünk el. Ezek a régiók már létezhetnek ilyenkor nem új régió jön létre hanem a már meglévő kerül az állapotba. A működés során a MagicDraw modell jól formáltsága elvárt, azaz régió csak \emph{State}-ben és \emph{StateMacine}-ban fordulhat elő. A régiókat tartalmazó állapotok kompozit és ortogonális állapotnak tekintendők.
 
-
-A második lépésben a \emph{Trace Modell} alapján megkeressük a már leképzett régiót a Gamma Modellben és beletesszük az újonnan létrehozott és a MagicDraw modellnek megfelelően elnevezett állapotot, ha a régió még nincs leképezve akkor létrejön, és abba kerül bele az állapotot. Ez a lépés olyan részgráfokat is eredményezhet amikbe nem vezet út a gyökér elemekből. Ennek kiküszöbölése a harmadik lépés ami, ugyanezt a műveletet hajtja végre csak a másik irányból, tehát az állapotok párjait keressük meg, amikbe régiókat helyezünk el. Ezek a régiók már létezhetnek ilyenkor nem új régió jön létre hanem a már meglévő kerül az állapotba. A működés során a MagicDraw modell jól formáltsága elvárt, azaz régió csak \emph{State}ben és \emph{StateMacine}-ban fordulhat elő. A régiókat tartalmazó állapotok kompozit és ortogonális állapotnak tekintendők.
-
-A tartalmazási gráf összefüggővé válását \aref{fig:state-transformation} ábra szemlélteti.
+A tartalmazási gráf összefüggővé válásának lépcsőit \aref{fig:state-transformation} ábra szemlélteti.
 
 \begin{figure}[H]
 Az irányított nyilak tartalmazást jelölnek, a bekeretezett téglalap \emph{StatechartDefinition}, a szaggatott vonallal körbevett \emph{Region} és a körök \emph{Statek}.
@@ -264,7 +261,7 @@ Az előző alfejezetek a MagicDrawToGamma főbb funkcióinak ismertetéséről �
 
 \subsection{Szemléltető példa}
 
-\paragraph{Példa specifikációja:} egy munkagépbe valamilyen anyagot lehet tölteni amit a gép tíz másodperc alatt feldolgoz. A gép az első bekapcsoláskor előbb szerviz állapotba kapcsol, ilyenkor kinyílik egy ajtó ami a gép szervizelését teszi lehetővé. Ahhoz, hogy a munkafolyamat elindulhasson a gépet üzem állapotba kell helyezni. Ilyenkor a gép ajtaja becsukódik és egy jel hatására feldolgozza a bemenetén elhelyezett anyagot. A gép kikapcsolásnál megjegyzi hogy szerviz vagy üzem állapotban volt-e és abba kapcsol vissza.
+\paragraph{Példa specifikációja:} egy munkagépbe valamilyen anyagot lehet tölteni amit a gép tíz másodperc alatt feldolgoz. A gép az első bekapcsoláskor előbb szerviz állapotba kapcsol, ilyenkor kinyílik egy ajtó ami a gép szervizelését teszi lehetővé. Ahhoz, hogy a munkafolyamat elindulhasson a gépet üzem állapotba kell helyezni. Ilyenkor a gép ajtaja becsukódik és egy jel hatására feldolgozza a bemenetén elhelyezett anyagot. A gép kikapcsolásnál megjegyzi, hogy szerviz vagy üzem állapotban volt-e és abba kapcsol vissza.
 
 \paragraph{Rendszer állapot alapú definíciója:} A rendszer két jól megkülönböztethető állapotból áll \verb+Acitve+ és \verb+Inactive+. Az \verb+Active+ állapot felbontható két belső állapotra, hogy szerviz vagy üzem módba van: \verb+Maintentece+, \verb+Operation+. Ezeken kívül bevezethető még két állapot, hogy feldogoz-e épp anyagot a rendszer vagy sem: \verb+Idle+, \verb+Processing+. \verb+Maintenance+ állapotban a \verb+Processing+ állapotba való belépést egy logikai változóval \verb+enabled+ tiltjuk és engedélyezzük. Ezek alapján a rendszer egy lehetséges leírása lehet:
 \begin{figure}[H]

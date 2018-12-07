@@ -5,7 +5,7 @@ Ebben a fejezetben bemutatom a dolgozat megértéséhez szükséges háttérisme
 \label{sec:related-work}
 Legjobb tudomásom szerint még nem létezik olyan eszköz ami MagicDrawban képes formális verifikációt végrehajtani. Felhasználhatóság és megvalósítás szempontjából hasonló munkák közül az alábbiakat érdemes kiemelni.
 \subsection{Gamma Statechart Composition Framework}
-A Gamma Statechart Composition Framework\cite{gammaf} egy tanszéken fejlesztett eszköz, ami komponenst alapú viselkedés modellek fejlesztését teszi lehetővé olyan funkciókkal támogatva, mint a kód generálás és a formális verifikáció. Továbbá képes Yakindu modelleket áttranszformálni Gamma modellekké, melynek a megvalósítása hasonló mint az általam implementált MagicDraw-Gamma transzformáció. A Gamma keretrendszerrel \aref{sec:gamma-framework} szakasz foglalkozik részletesebben.
+A Gamma Statechart Composition Framework\cite{gammaf} egy tanszéken fejlesztett eszköz, ami komponenst alapú viselkedés modellek fejlesztését teszi lehetővé olyan funkciókkal támogatva ezt, mint a kód generálás és a formális verifikáció. Továbbá képes Yakindu modelleket áttranszformálni Gamma modellekké, melynek a megvalósítása hasonló mint az általam implementált MagicDraw-Gamma transzformáció. A Gamma keretrendszerrel \aref{sec:gamma-framework} szakasz foglalkozik részletesebben.
 
 \subsection{TismTool}
 
@@ -155,7 +155,7 @@ Rendszereink leírásakor előfordulhatnak ismétlődő részek, amiket célszer
 	%---------------
 	% Belépési pont
 	%---------------
-	\item \emph{Belépési pont(Entry Point)}: egy pszeudoállapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Továbbá léteznie kell egy állapotátmenetnek közte és egy az állapot vagy állapottérkép fő régiója között. Jele kis fehér kör.
+	\item \emph{Belépési pont(Entry Point)}: egy pszeudoállapot, ami egy állapotgép vagy egy kompozit állapot belépési pontját reprezentálja, célja egységbe zárni az állapotot vagy az állapotgépet. Állapotátmenet végpontjaként szolgálhat.
 	%--------------
 	% Kilépési pont
 	%---------------
@@ -166,7 +166,7 @@ Rendszereink leírásakor előfordulhatnak ismétlődő részek, amiket célszer
 	\item \emph{Kapcsolódási pont referencia(Connection Point Reference)}: \emph{Submachine Stateben} definiált be és kilépési pontokra tudunk vele hivatkozni, ez lehetővé teszi, hogy a \emph{Submachine Stateben} leírt belső állapotokhoz is felvehessünk állapotátmeneteket.
 	
 \end{itemize}
-Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kezdő illetve végpontjait tudjuk definiálni. Újrafelhasználásnál a behivatkozott állapottérképen ezekre referálhatunk Kapcsolódási Pont Referenciákkal. Az ezekbe húzott állapotátmenetek úgy tekintendők mintha kezdő vagy végpontjuk az az állapot lenne amihez a belépési vagy kilépési rendelve van. A \emph{Submachine State} szintaktikáját és használatát  \aref{fig:SubmachineState} ábra szemlélteti.
+Egy állapottérképen a belépési és kilépési ponttal élek lehetséges kezdő illetve végpontjait tudjuk definiálni. Újrafelhasználásnál a behivatkozott állapottérképen ezekre referálhatunk Kapcsolódási Pont Referenciákkal. Az ezekbe húzott állapotátmenetek úgy tekintendők mintha kezdő vagy végpontjuk az az állapot lenne amihez a belépési vagy kilépési pont rendelve van. A \emph{Submachine State} szintaktikáját és használatát  \aref{fig:SubmachineState} ábra szemlélteti.
 %-----------------
 % Ábra Submachine state usage
 %-----------------
@@ -210,14 +210,14 @@ Az Eclipse egy nyílt forráskódú platform független keretrendszer és fejles
 
 Az Eclipse Modelling Framework (EMF) Eclipse plug-inok egy halmaza, amik lehetővé teszik adatmodellek létrehozását és ebből kód generálását. Az EMF kétféle modellt különböztet meg a metamodellt és példány modellt. A példány modell struktúráját a metamodell írja le. A modell egy konkrét példánya a metamodellnek.
 
-Az Eclipse Modelling Framework  működése meglehetősen komplex ezért részletes bemutatása nem célja a dolgozatnak (szakirodalom a keretrendszer kapcsán: \emph{EMF: Eclipse Modelling Framework}\cite{steinberg2008emf}), csak azoknak az alap fogalmakat és működési mechanikáknak az ismertetésre amik szükségesek a dolgozat megértéséhez.
+Az Eclipse Modelling Framework  működése meglehetősen komplex ezért részletes bemutatása nem célja a dolgozatnak (szakirodalom a keretrendszer kapcsán: \emph{EMF: Eclipse Modelling Framework}\cite{steinberg2008emf}), csak azoknak az alapfogalmakat és működési mechanikáknak az ismertetésre amik szükségesek a dolgozat megértéséhez.
 
 Egy EMF metamodell \verb+ecore+ és egy \verb+genmodel+ leíró fájlból áll. Előbbi magát a modellt utóbbi pedig a modell generálására vonatkozó információkat tartalmaz. Az \emph{EMF Persistence Framework} lehetővé teszi modellek perzisztens tárolását XMI és XML alapokon. A fájlrendszerben található modelleket \emph{Resource}-ok reprezentálnak melyeket egy URI séma azonosít. A \emph{Resource}-ok \emph{ResourceSet}-ekbe helyezhetők. A modellek közötti hivatkozások feloldásához a modelleket tartalmazó \emph{Resource}-oknak azonos \emph{ResourceSet}-ekben kell lenniük.
 
-Eclipses környezetekben az EMF-nek nagy jelentőséggel bír. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
+Eclipses környezetekben az EMF nagy jelentőséggel bír. Xtext\footnote{Xtext: https://www.eclipse.org/Xtext/}-el együtt alkalmazva saját szakterület specifikus nyelveket lehet fejleszteni saját nyelvtannal és absztrakt szintaxissal.
 
 \section{MagicDraw}
-A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni vagy akár kóddá alakítani. Az eszköz első sorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez egy az eszköz fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
+A MagicDraw a No Magic \cite{NoMag} nevű cég által fejlesztett modellező eszköz, amivel a modellek előállításán kívül lehetőségünk van ezeket szimulálni, validálni vagy akár kóddá alakítani. Az eszköz elsősorban UML modelleket lehet készíteni, de plug-innal lehetőségünk van SysML \cite{SysML} modelleket is létrehozni. Ehhez az eszköz egy fejlett grafikus felhasználói interfészt biztosít (\ref{fig:mdgui}. árba), amivel gyorsan és hatékonyan tudunk modelleket létrehozni. 
 
 A SysML egy általános-célú modellezési nyelv ami az UML egy részének kiragadásával és annak kibővítésével keletkezett. SysMLel struktúrát és viselkedést lehet leírni magas szinten. Alapeleme a Blokk, ami UML-ben a Classnak felel meg. A Blokk egy absztrakt egység ami bárminek megfeleltethető, így a modellezendő rendszer is általában egy Blokként jelenik meg. A Blokkok definícióját és tartalmazási hierarchiáját Block Definition Diagramokkal írhatjuk le. Egy másik megemlítendő diagramfajta az Internal Block Diagram, amivel a Blokkok belső felépítését és komponenseinek kapcsolatait lehet leírni portok segítségével.
 
