@@ -8,25 +8,25 @@
 \input{include/packages}
 
 %TODO Set the main variables
-\newcommand{\vikszerzoVezeteknev}{Gipsz}
-\newcommand{\vikszerzoKeresztnev}{Jakab}
+\newcommand{\vikszerzoVezeteknev}{Gáti}
+\newcommand{\vikszerzoKeresztnev}{László Dávid}
 
-\newcommand{\vikkonzulensAMegszolitas}{dr.~}
-\newcommand{\vikkonzulensAVezeteknev}{Konzulens}
-\newcommand{\vikkonzulensAKeresztnev}{Egy}
+\newcommand{\vikkonzulensAMegszolitas}{}
+\newcommand{\vikkonzulensAVezeteknev}{Farkas}
+\newcommand{\vikkonzulensAKeresztnev}{Rebeka}
 
 \newcommand{\vikkonzulensBMegszolitas}{}
-\newcommand{\vikkonzulensBVezeteknev}{Konzulens}
-\newcommand{\vikkonzulensBKeresztnev}{Kettő}
+\newcommand{\vikkonzulensBVezeteknev}{}
+\newcommand{\vikkonzulensBKeresztnev}{}
 
 \newcommand{\vikkonzulensCMegszolitas}{}
 \newcommand{\vikkonzulensCVezeteknev}{}
 \newcommand{\vikkonzulensCKeresztnev}{}
 
-\newcommand{\vikcim}{Elektronikus terelők} % Cím
+\newcommand{\vikcim}{MagicDraw plugin továbbfejlesztése} % Cím
 \newcommand{\viktanszek}{\bmemit} % Tanszék
-\newcommand{\vikdoktipus}{\bsc} % Dokumentum típusa (\bsc vagy \msc)
-\newcommand{\vikmunkatipusat}{szakdolgozatot} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
+\newcommand{\vikdoktipus}{\msconlabi} % Dokumentum típusa (\bsc vagy \msc)
+\newcommand{\vikmunkatipusat}{Önlab 1} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
 
 \input{include/tdk-variables}
 \newcommand{\szerzoMeta}{\vikszerzoVezeteknev{} \vikszerzoKeresztnev} % egy szerző esetén
@@ -36,7 +36,7 @@
 % Beállítások magyar nyelvű dolgozathoz
 %\input{include/thesis-hu}
 % Settings for English documents
-\input{include/thesis-en}
+\input{include/thesis-hu}
 
 \input{include/preamble}
 
@@ -47,8 +47,7 @@
 
 %TODO These define guidelines -- remove these
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\include{include/guideline}
-\include{include/project}
+
 
 \selectthesislanguage
 
@@ -66,8 +65,6 @@
 
 % Declaration and Abstract
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\include{include/declaration} %TODO Hallgatói nyilatkozat -- TDK és OTDK esetén törlendő!
-\include{content/abstract}    %TODO Összefoglaló -- TDK és OTDK esetén nem kötelező
 
 
 % The main part of the thesis
@@ -76,6 +73,7 @@
 
 %TODO import your own content
 \include{content/introduction}
+\include{content/magicdraw}
 \include{content/latex-tools}
 \include{content/thesis-format}
 \include{content/template-usage}
