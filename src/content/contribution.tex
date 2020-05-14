@@ -1,0 +1,31 @@
+\chapter{Plugin továbbfejlesztése}
+
+Ebben a felyezetben ismertetem azokat a fejlesztéseket amelyeket a mesterképzés során az eszközön végeztem.
+
+\section{Fejlesztés céljai}
+
+A fejlesztés három fő célt felé halad. Az egyik, hogy állapottérképeket ne csak izoláltan, egymagukban de egy komplex rendszer részeként lehessen ellenőrizni. Ebben a rendszerben komponensek kommunikálnak egymással a komponensek viselkedését pedig állapottérképek írják le.
+
+%TODO felulbiralni
+A második cél a felhasználói élmény javítás oly módon, hogy a rendszer tulajdonságainak leírásához biztosítson egy Computational Tree Logic nyelvtant és az ezen a nyelven leírt tulajdonságokat a modellben el lehessen tárolni.
+
+A harmadik cél, hogy a \uppaal / Gamma által biztosított ellenpéldákból olyan szimuláció álljon elő ami képes szimulálni és a szimuláción keresztül megmutatni a felhasználónak azt az esemény sort amely sérti valamelyik tulajdonságát a modellnek.
+
+\section{MagicDraw profil}
+
+\section{Kompozíciók transzformációja}
+
+Egy nagy komplex rendszert célszerű nem egyben, hanem részekre bontva modellezni majd a részek egymáshoz illesztéséből, komponálásából képezni a teljes rendszert. Állapottérképek dekomponálását azaz részekre bontását a Gamma is támogatja. A kihívás a SysML és a Gamma közötti megfeleltetések megválasztása oly módon, hogy a szemantika ne sérüljön. A megfeleltetés két szempontól kell vizsgálni, egyszer az elemek tartalmazási hierarchiái szerint, egyszer pedig a köztük modellezett kommunikáció szerint.
+
+\subsection{Struktúra megfeleltetése}
+A struktúrák megfeleltetésénél könnyebb dolgom volt, hiszen mind szintaktikailag mind szemantikailag a két nyelv nagyon hasonló. Ami viszont különbség, hogy a komponensek szinkron, illetve asszinkron volta Gammában explicit jelölt, %TODO 
+
+\subsection{Kommunikáció megfeleltetése}
+
+\section{CTL nyelvtan}
+
+\section{Back-annotation}
+
+\section{Szimuláció}
+
+\section{Példa} %TODO TBD
