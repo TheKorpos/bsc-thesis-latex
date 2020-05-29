@@ -5,31 +5,77 @@
 
 \section{SysML}
 
-A SysML egy általános célú modellezési nyelv, melyet elsősorban rendszermérnökök használnak. A nyelvvel komplex rendszereket tudunk leírni akár magasabb szintű logikai felépítés és viselkedés vagy nagyon alacsony absztrakciókon fizikai felépítést, viselkedést. A különböző absztrakciós szinteken létrehozott modelleket egymáshoz tudjuk rendelni, például egy logikai funkciót milyen fizikai egységek látnak el.
+A System Modeling Language (SysML) egy általános célú architektúra modellező nyelv, melyet elsősorban rendszermérnökök használnak. A nyelvvel különböző komplex rendszereket tudunk leírni többféle megközelítésből mint magas szintű funkcionális modellek mind pedig az alacsonyabb akár fizikai modellekig.
 
-A SysML-t mint ahogyan az UML-t is az OMG fejlesztette annak leszűkítésével majd speciális elemek bevezetésével. Ezzel egy még az UML-nél is általánosabb fogalomrendszert hoztak létre.
-Az adott nyelv által definiált elemeket és azok kapcsolatát metamodell írja le. Az UML metamodellje és ennek ismerete éppen ezért jelentős szerepet töltött be a fejlesztés során, főleg hogy a SysML-nek nincs a hagyományos értelemben vett külön metamodellje, hanem UML profilok segítségével van a nyelv definiálva. 
+A SysML-t mint ahogyan az UML-t is az Object Management Group (OMG) fejleszti, sőt az UML 2-nek egy dialógusa a nyelv, úgynevezett UML profil segítségével van definiálva. Az UML profil a nyelv specializálásának egy módja sztereotípiák (Stereotype), megkötések (Constraint) és címkézett értékek (Tagged Value) segítségével (\refstruc{fig:custom-profile}).
 
-%TODO kifejteni
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/preliminaries/custom-profile.png}
+	\caption{UML nyelv specializálása sztereotípiákkal}
+	\label{fig:custom-profile}
+\end{figure}
 
-%TODO szep kep 
+Egy nyelv lehetséges elemeit és kapcsolatait leíró struktúrát metamodellnek hívjuk, a tényleges elemekből és ezek kapcsolatából álló modellt pedig példánymodellnek.  SysML esetében az UML profil az amit metamodellnek tudunk tekinteni, igaz a metaszintek eléggé összemosódnak és nem elegendő csak a profilt ismerni, hanem az UML metamodellt is ismerni kell. Például egy SysML Block valójában egy sztereotipizált UML Class. Ez azt jelenti, hogy van egy UML példány specifikáció (Instance Specification) aminek az osztája (Classifier) egy Block sztereotípia és ez hozzá van rendelve az UML-s osztály példányunkhoz a modellünkben. Az UML-s osztály példány a sztereotípia és a példány specifikáció tehát hagyományos értelemben azonos metaszinten helyezkednek el (\refstruc{fig:block-stereotype}).
 
-A modellek amikkel a továbbiakban foglalkozok logikai struktúrákat és viselkedést írnak le. A viselkedés modellek főként állapotgépekre szűkülnek melyeket állapottérképek (Statechart Diagram) segítségével tudunk ábrázolni. A rendszer logikai felépítését vagy funkcionális architektúráját (Functional Architecture) pedig Internal Block Diagram (IBD) segítségével.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/preliminaries/block-stereotype.png}
+	\caption{Meta szintek és Block sztereotípia alkalmazása}
+	\label{fig:block-stereotype}
+\end{figure}
+
+SysML segítségével sokféle modellt lehet készíteni a teljesség igénye nélkül: Követelmény modellek, viselkedés modellek, struktúra modellek, allokáció modellek, mindezek közül azonban kettőre koncentrálok a dolgozat elkészítése közben, mégpedig a viselkedés modellek egy részére az állapotgépekre és a funkcionális architektúrára amely funkcionális architektúra egy de-komponált állapotgépet ír le.
 
 
 
-%TODO IBD
+\subsection{Állapotgépek, állapottérképek}
+
+Állapotgépek (State Machine) alatt olyan modelleket értünk amik a rendszert véges számú jól elkülönülő állapotát írják le, illetve az ezek közötti átmeneteket. Az állapotgépeket SysML-ben állapottérkép diagramokon (Statechart Diagram) tudunk definiálni. Szintaktikáját tekintve oválisok amik állapotokat jelentenek illetve az ezeket összekötő nyilak, melyek az állapotok közötti lehetséges váltások. A nyilak általában címkézettek. A címke három részből állhat: esemény (trigger), őrfeltétel (guard), akció (action).
+
+\lstset{framesep=10pt}
+\begin{lstlisting}
+	esemény [örfeltétel] / akció
+\end{lstlisting}
+Állapotváltás egy esemény bekövetkezésekor lehetséges. Amennyiben van őrfeltétel annak igaznak kell lennie. Az állapotváltás bekövetkezését szokás tüzelésnek is nevezni. Ha egy állapotátmenet tüzel és van akció az átmenethez rendelve ez végrehajtódik.
+Akció nem csak állapotátmenetek, hanem állapotok be és kilépésénél is végrehajthatók, illetve létezik olyan akció is ami folyamatosan fut amíg a rendszer adott állapotban van.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=90mm, keepaspectratio]{figures/preliminaries/statechart.png}
+	\caption{Állapottérkép SysML-ben}
+	\label{fig:statechart}
+\end{figure}
+
+Az állapotoknak van egy típusa melyet pszeudo állapotoknak nevezünk. Ezek nem tényleges állapotai a rendszernek olyan értelemben, hogy a rendszer soha nem tartózkodhat ezekben mindig azonnal át kell lépniük belőle egy tényleges állapotba, viszont fontos szemantikai jelentéssel bírnak. A kezdő állapot mely fekete körként jelenik meg egy régió belépési pontjai. Az állapotok mindig régiókban helyezkednek el, ezek tulajdonképpen állapotoknak egy olyan halmaza, amely halmazon belül mindig csak egy állapot lehet aktív, régiókból viszont lehet több is párhuzamosan. Így egy rendszernek lehet egyszerre több aktív állapota is régiónként viszont csak egy (a fork-joinra a dolgozat nem tér ki).
+
+Pszeudo állapotok még a \emph{History Statek} is. Ezek segítségével meg lehet jegyezni, hogy egy összetett állapot mely belső állapota volt aktív, így az állapotba visszalépve nem a belső régió kezdő állapota hanem az utolsó aktív állapot lesz újra aktív. \emph{History State}eknek két változata van \emph{Deep} és \emph{Shallow}. Előbbi egymásba ágyazott esetén minden régióba az utolsó aktív állapotba lép át, míg utóbbi csak a saját régiójának utolsó aktív állapotába. Jelölésük kör benne "H"-val vagy "H*".
+
+
+\subsection{Funkcionális architektúra modellek}
+
+Egy rendszer funkcionális architektúráján olyan modelleket értünk melyek ennek logikai felépítését írják le azaz, hogy milyen funkciói vannak a rendszernek, ezek hogyan kapcsolódnak egymáshoz. Jelen esetben ezeket a modelleket a rendszer állapotgépének a dekomponálására használjuk. Tehát van egy összetett rendszerünk melyeket funkcionális egységekre tudunk bontani úgy, hogy minden funkcionális egység állapot alapú viselkedések egy összessége. A komponensek képesek egymással kommunikálni és egymás viselkedését ezáltal befolyásolni.
+
+%TODO ez igy meg lehet pontatlan
+A rendszert két szempont szerint tudjuk modellezni: komponens definíciók és ezek kompozíciója illetve ezek kapcsolatai szerint. Előbbiek blokkok formájában jelennek meg és SysMLben Blokk definíciós (Block Definition) vagy BDD diagramokon jelennek meg. Azt, hogy a blokkon belüli részek (Part) hogyan kapcsolódnak egymáshoz Internal Block Diagramok (IBD) tartalmazzák. A részek közötti kapcsolatot konnektorok írják le. Ezek jellemzően portokon keresztül kötik össze a részeket. A portok tekinthetők egy adott blokk interfészének is.
+
+A dolgozat elkészítésénél kétféle blokkot különböztetek meg. Azokat melyek állapotgépeket definiálnak és nem bonthatók részekre ezeket állapot blokkoknak nevezem. Illetve olyan blokkokat melyen részekre bonthatók, de nem definiálhatnak saját állapotgépet, ezeket pedig kompozit blokkoknak.
 
 \section{MagicDraw}
 
-A MagicDraw egy modellező eszköz mellyel UML modelleket tudunk készíteni. Ahhoz, hogy SyML-ben is tudjunk modelleket készíteni egy beépülő modulra van szükségünk (kivéve ha Cameo System Modellert használunk ami a SysML pluginnal integrálva szállít). A MagicDraw az iparban egy egyre inkább elterjedt eszköz. Szigorúan követi az UML és SysML szabványt.
+A MagicDraw egy modellező eszköz melyet a NoMagic fejlesztett elsősorban UML modellek készítésére. Ahhoz, hogy SyML-ben is tudjunk modelleket készíteni egy beépülő modulra van szükségünk (kivéve ha Cameo System Modellert használunk ami a SysML pluginnal integrálva szállít). A MagicDraw az iparban egy egyre inkább elterjedt eszköz. Szigorúan követi az UML és SysML szabványt.
+Az modellezőeszköz gazdag funkcionalitással rendelkezik mint fejlett felhasználói interfész (\refstruc{fig:md-gui}), validációs motor - ami képes akár futásidőben a felhasználók által készített szabályok futtatására is, sablon alapú kódgenerátor és még sok egyéb. Ezen felül a funkcionalitás beépülő modulok segítségével bővíthető.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/preliminaries/md-gui.png}
+	\caption{MagicDraw felhasználói felülete}
+	\label{fig:md-gui}
+\end{figure}
+
+MagicDrawhoz lehetőségünk van saját plugin fejlesztésére is, amik lehetővé teszik számunkra, új funkcionalitás integrálását az eszközben illetve modellek manipulálását is. Jelen dolgozat egy ilyen plugin fejlesztési folyamatát mutatja be.
 
 
-%TODO felulet stb...
-
-
-\section{Felhasznált technológiák}
-\subsection{Eclipse Modeling Framework}
 \section{Modelltranszformációk}
 
 Az ipari standardok mellett sok speciális modellezési nyelv is létezik, amelyek megannyi céllal és eszközkészlettel jöttek létre. Ezek között vannak magas absztrakciójú általánosabb nyelvek és alacsony szintűek is amik egy része olyan formalizmusokra épül amik felett bizonyos problémákra matematikai eszközökkel tudunk megoldást keresni.
@@ -38,28 +84,70 @@ A modellvezéreltség egyik alapötlete, hogy különböző modellekből szárma
 
 Fontos megjegyezni, hogy előfordulhatnak olyan esetek is amikor a modell transzformáció komplexitása és elkészítésének költsége, ha egyáltalán lehetséges ilyet készíteni, nagyobb mintha speciálisan az adott nyelvhez készítenénk egy speciális eszközt ami megvalósítja az állvárt funkcionalitást.
 
-\subsection{VIATRA}
+
+\section{Felhasznált technológiák}
+\subsection{Eclipse Modeling Framework}
+
+Az Eclipse Modeling Framework (EMF) egy keretrendszer amellyel metamodelleket tudunk készíteni illetve ezeknek példánymodelljeit. Az EMF-nek van egy meta-metamodellje ami a felhasználók által létrehozott metamodelljeként szolgál ezen felül API-t biztosít modellek manipulálásához és a modell elemekkel kapcsolatos események kezeléséhez.
+
+A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni.
+
+\subsection{Gamma Statechart Composition Framework}
+
+A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez is. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
+
+A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
+
+A dolgozat elkészítése során nagy mértékben támaszkodtam a Gamma nyújtotta lehetőségekre. Ezt a Gamma mint egy köztes nyelv használatával érem el úgy, hogy modell transzformációk segítségével megvalósítok SysML-Gamma leképzést. A Gamma a formális verifikáció elvégzéséhez az UPPAAL nevű eszközt használja. Ez időzített automatákon tudja elvégezni a formális verifikációt (\refstruc{fig:gamma}). Ezeket a Gamma szintén modell transzformációk segítségével állítja elő, összekapcsolva a mérnöki modelleket matematikai modellekkel.
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/preliminaries/gamma.png}
+	\caption[]{A Gamma Statechart Composition Framework\footnotemark}
+	\label{fig:gamma}
+\end{figure}
+
+\newpage
+\footnotetext[1]{Forrás: \href{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}}
+
+\subsection[]{VIATRA\footnotemark}
+\footnotetext{https://www.eclipse.org/viatra/}
+
 
 A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
 
-A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár én elsősorban a modell lekérdezés részére támaszkodtam a dolgozat elkészítése alatt.
+A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár én elsősorban a modell lekérdezés részére támaszkodtam a dolgozat elkészítése alatt. MagicDraw-ban egy pluginon keresztül van lehetőség VIATRA használatára melyet V4MD-nek hívnak. A plugin egy Query Engine-t biztosít számunkra per projekt. Ezen keresztül tudunk lekérdezéseket és transzformációkat regisztrálni. A V4MD leveszi a vállunkról a terhet az Engine életciklus menedzsmentjét illetően, azonban hátránya, hogy nagyon nagy modelleket komplex lekérdezések esetén a memóriaigénye elég jelentősre duzzadhat a háttérben, cserébe viszont az inkrementális működésnek köszönhetően a lekérdezések már csak a VIATRA által karbantartott táblázatokból való kiolvasás ezért költségül elhanyagolható.
+
+\newpage
 
 \section{MagicDraw állapottérkép verifikációs plugin}
 
+Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszközt, mely korábbi egyetemi munkám eredményeként képes volt MagicDraw modellek ellenőrzésére.
+
 \subsection{MagicDraw - Gamma transzformáció}
 
-A MagicDraw beépülő modul fő célja SysML állapottérképek formális verifikációja, ehhez vagy megpróbálunk írni egy eszközt amely képes közvetlen ilyen állapottérképeken dolgozni vagy átalakítani egy olyan modellezési nyelvre amelyhez rendelkezik olyan eszköz ami ezt el tudja végezni. Ilyen lehetett volna például az \uppaal, ez viszont jóval alacsonyabb szintű mint a modellek amiket ellenőrizni szerettem volna ezért a transzformáció elvégzése potenciálisan nagyon komplex lett volna. Ilyen transzformációt azonban már készítettek egy állapottérkép modellező nyelv a Gamma és az \uppaal  között, ezért ahelyett, hogy közvetlen \uppaal modelleket készítenél Gamma modelleket transzformálok. Ezzel nem csak az \uppaal-ra való transzformálhatóságot és a formális verifikációt nyerem, hanem mindenm olyan funkciót ami a Gammához készül és a transzformációhoz szükséges megfeleltetések is egyszerűsödnek valamelyest.
+A MagicDraw beépülő modul fő célja SysML állapottérképek formális verifikációja. A Gamma képes állapotgépek ellenőrzésére ezek viszont a Gamma saját nyelvén kellenek, hogy legyenek definiálva. Modell transzformációk segítségével azonban lehetőségünk nyílik Gamma modellek származtatására SysML modellekből és ezáltal ellenőrizni őket.
+
+Ez a származtatás vagy modell transzformáció képezi az ötlet alapját (\refstruc{fig:preliminaries-md-g}). A kihívás pedig az két nyelv közötti szemantikai különbségek feloldása illetve az elemek megfelelő egymáshoz rendelésének megtervezése és végrehajtása.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/preliminaries/md-g.png}
+	\caption{Példa: egy modell transzformációra MagicDrawról Gammára}
+	\label{fig:preliminaries-md-g}
+\end{figure}
 
 \subsection{Verifikáció menete}
 
-A verifikáció elvégzése a MagicDraw beépülő modul szemszögéből négy lépésből áll : 
+A verifikáció elvégzése a MagicDraw beépülő modul szemszögéből négy lépésből áll: 
 \begin{itemize}
 	\item MagicDraw modellek Gammává transzformálása
 	\item Gamma modellek \uppaal modellé transzformálása (ezt a Gamma keretrendszer végzi el)
 	\item tulajdonságok ellenőrzése UPPAAL segítségével
 	\item Eredmény megjelenítése
 \end{itemize}
-Ezt a folyamatot \refstruc{fig:preliminaries-verif} szemlélteti. A Gamma által elvégzett lépéseket a zöld "Gammák" jelölik a modellben. Az ábrán a verifikációt a "Módosított Query Generátor" kezdeményezi, mely szintén a "Gamma" jelölést kapta. Ennek oka, hogy a beépülő modul ezen verziójában az ellenőrizendő tulajdonságok megadása még nem volt kiforrott ezért egy a Gamma keretrendszerből átemelt megoldás segítségével lehetett ezeket megadni és a verifikációt kezdeményezni. Jelen dolgozatban a továbbiakban szó lesz többek között ennek a kiváltásáról egy előnyösebb ebben a környezetben felhasználóbarátabb megoldással.
+Ezt a folyamatot \refstruc{fig:preliminaries-verif} szemlélteti. A Gamma által elvégzett lépéseket a zöld "Gammák" jelölik a modellben. Az ábrán a verifikációt a "Módosított Query Generátor" kezdeményezi, mely szintén a "Gamma" jelölést kapta. Ennek oka, hogy a beépülő modul ezen verziójában az ellenőrizendő tulajdonságok megadása még nem volt kiforrott ezért egy a Gamma keretrendszerből átemelt megoldás segítségével lehetett ezeket megadni és a verifikációt kezdeményezni. 
 
 \begin{figure}[!ht]
 	\centering
@@ -67,3 +155,12 @@ Ezt a folyamatot \refstruc{fig:preliminaries-verif} szemlélteti. A Gamma által
 	\caption{Verifikáció menete a pluginban}
 	\label{fig:preliminaries-verif}
 \end{figure}
+
+\subsection{Őrfeltételek, akciók}
+
+SysML nem definiál akció nyelvet őrfeltételek és akciók végrehajtásához. Míg akciókat tudunk modellezni bármilyen viselkedést leíró modell segítségével, addig az őrfeltételeket jellemzően valamilyen szöveges nyelvtannal szokás megadni.
+
+Ahhoz, hogy a modell ellenőrzést végre lehessen hajtani ezeknek a Gamma számára érthető kifejezéseknek kell lenniük. A pluginnak ez a verziójában ezért minden őrfeltételt és akciót a Gamma által biztosított nyelvtan segítségével kellett megírni. Ez abból a szempontból nem szerencsés, hogy ez nem egy olyan elterjedt nyelv, mint például a javascript amit a MagicDraw felkínál, továbbá nem áll még rendelkezésre olyan interpreter a MagicDraw-ban ami lehetővé tenné ezek futtatását ami elengedhetetlen többek között a modellek szimulációjához.
+
+
+

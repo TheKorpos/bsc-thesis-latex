@@ -4,14 +4,173 @@ Ebben a felyezetben ismertetem azokat a fejlesztéseket amelyeket a mesterképz�
 
 \section{Fejlesztés céljai}
 
-A fejlesztés három fő célt felé halad. Az egyik, hogy állapottérképeket ne csak izoláltan, egymagukban de egy komplex rendszer részeként lehessen ellenőrizni. Ebben a rendszerben komponensek kommunikálnak egymással a komponensek viselkedését pedig állapottérképek írják le.
+A fejlesztés során hozott alkalmazott megoldások áttekintése előtt érdemes végigmenni a fejlesztés kitűzött céljain és átgondolni ezek létjogosultságát.
 
-%TODO felulbiralni
-A második cél a felhasználói élmény javítás oly módon, hogy a rendszer tulajdonságainak leírásához biztosítson egy Computational Tree Logic nyelvtant és az ezen a nyelven leírt tulajdonságokat a modellben el lehessen tárolni.
+\subsection{Funkcionális dekompozíció transzformálása}
+Egy rendszert állapotait és állapotváltásait le lehetne modellezni egy mindent tartalmazó állapotgéppel, párhuzamos régiókkal és egyéb modellezési megoldásokkal. Ahogy a modell mérete nő a funkcionalitást érdemes feldarabolni és részenként modellezni. Ez nem csak az áttekinthetőséget segíti, de megkönnyíti a modellen való csapatmunkát is a mérnökök számára hiszen a szétbontott részeket külön, egymástól független lehet modellezni, majd ezeket összekapcsolni.
 
-A harmadik cél, hogy a \uppaal / Gamma által biztosított ellenpéldákból olyan szimuláció álljon elő ami képes szimulálni és a szimuláción keresztül megmutatni a felhasználónak azt az esemény sort amely sérti valamelyik tulajdonságát a modellnek.
+Szerencsére a Gamma erre a problémára is megoldást kínál, támogatja az állapot dekompozíció modellezését és formális verifikációját.
+
+\subsection{Eredmények megjelenítése}
+Fontos kérdés, hogy a formális verifikáció eredményét milyen formában kívánjuk megjeleníteni a mérnökök számára. A plugin eddigi verziója csak arra a kérdésre tudott választ adni, hogy teljesülnek-e a modellel szemben támasztott megkötések vagy sem.
+
+Az \uppaal és a Gamma is képes sokkal részletesebb választ adni. Ezt a Gamma Back-annotation formájában teszi azaz a verifikációban előállt időzítések és lépéseket visszavezeti az eredeti modellbe. Ehhez a Gamma egy elég jól értelmezhető nyelvtant definiál, azonban a SysML-t jellemzően rendszermérnökök használják akik inkább a diagramokat mint a szöveges leírásokat preferálják általában.
+
+A Back-annotationt úgy is lehet interpretálni mint lépések egy sorozatát, amelyek szinkron esetben egymást jól meghatározható sorrendben követik. Ezt leginkább szekvencia diagramokon lehet ábrázolni. Ezen felül ami miatt még a szekvencia diagram tűnik a legkézenfekvőbb megjelenítési megoldásnak az a MagicDraw, illetve a Cameo Simulation toolkit. Ez ugyanis képes szimulációt rögzíteni szekvencia diagramok formájában (\refstruc{fig:md-cameo-rec})) és ezeket újra lejátszani. A cél tehát olyan szekvencia diagramok előállítása úgy minthogyha a szimulátort használva találtuk volna meg a hibautakat, így ezekről nem csak egy jól áttekinthető megoldást kapunk szekvenciák formájában, hanem ezek szimulálhatók is lesznek Cameo Toolkit segítségével.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/md-cameo-rec.png}
+	\caption[]{Rögzített szimuláció szekvencia diagramon\footnotemark}
+	\label{fig:md-cameo-rec}
+\end{figure}
+
+\footnotetext{Forrás: https://docs.nomagic.com/display/CSTD184/Recording+simulation+as+a+Sequence+diagram}
+
+\subsection{Követelmények definiálása}
+
+A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak jellemzően. A beépülő modul a kérdés vagy megkötések megfogalmazásához egy saját nyelvet kínál, amely azt érhetőséget célozza.
+
 
 \section{MagicDraw profil}
+
+A SysML nyelv nagyon általános, ezért célszerű specializálni, új elemeket bevezetni, vagy kiegészíteni a már meglévőket. Ennek eléréséhez készítettem egy UML profilt. Ez három részből áll.
+
+\begin{itemize}
+	\item Kompozit szemantika
+	\item Check modell
+	\item Back-annotation modell
+\end{itemize}
+Az UML profil érdekessége, hogy tartalmazásokat csak megkötés szintjén customizationökön keresztül tudunk megadni. UML profil diagramon csak öröklést és attribútumokat tudunk definiálni elemeinknek.
+
+\subsection{Kompozit szemantika}
+
+\newpage
+
+\subsection{Check modell}
+
+Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani, hogy milyen modelleket szeretnénk ellenőrizni és ezeken milyen követelményeket. Ezeknek a megadására sokféle megoldás például egy varázsló jellegű menü is elképzelhető. Én azonban ezeket az információkat magában a modellben tárolom el egyéb az technológiák és az infrastruktúra sajátosságaiból adódó információkkal együtt.
+
+Az elképzelés szerint a felhasználó \emph{Workspace}eket hoz létre. Ezek hivatkoznak a felhasználó számítógépén egy könyvtárra melyet az infrastruktúra sajátosságából adódó háttértárra kimentendő modelleket tárolására használok. Ezen felül ezen keresztül kell behivatkozni az ellenőrizendő modellt a projektből.
+
+A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy mely a MagicDraw - Gamma transzformáció során milyen leképzések történtek.
+
+A követelményeket \emph{GammaProperty} segítségével lehet megadni a plugin által definiált nyelvtan segítségével. Az ezek ellenőrzéséből származó Back-annotaion modellek is a \emph{Workspace}ben helyezkednek el. A modell elemei a következők:
+
+\begin{itemize}
+	\item \textbf{GammaWorkspace} \newline
+	Transzformációk és ellenőrzések kezelésére szolgáló MagicDraw projektben tárolt modell.
+	\newline
+	\textit{Attribútumok:}
+	\subitem Target: InstanceSpecification[1]: transzformálandó modell
+	\subitem WorkspaceUri: String: egy elérési út a felhasználó egy könyvárához
+	\subitem Counter examples: Boolean: Back-annotation engedélyezése
+	
+	\item \textbf{GammaCheck} \newline
+	\emph{GammaProperty}k konténere
+	
+	\item \textbf{GammaProperty} \newline
+	Egy a modellel szemben támasztott követelmény a saját nyelven
+	\newline
+	\textit{Attribútumok:}
+	\subitem body: String[1]: saját nyelven írt kifejezés
+
+	\item \textbf{GammaWorkspaceFile} \newline
+	Hivatkozás egy Gamma modellre a háttértáron. A modell elem neve a fájl elérési útja.
+	
+	\item \textbf{MD2G\_Trace} \newline
+	Egy megfeleltetés a MagicDraw és Gamma modellek között. A MagicDraw elemre egy Trace él mutat, a Gammabeli modell elem pedig EMF hivatkozás formájában kerül tárolásra.
+	\newline
+	\textit{Attribútumok:}
+	\subitem URIFragment: String[1]: hivatkozás EMF-es modell elemekre
+	
+	
+\end{itemize}
+
+
+
+
+\subsection{Back-annotation modell}
+A back-annotation modell feladata visszacsatolni az eredeti modellbe a valamilyen külső, jellemzően szimulátorból származó időzítési adatokat. A Gamma is készít egy ilyen modellt. A megoldás amit kidolgoztam Gamma modell egy MagicDraw specifikus változatának létrehozásából és egy Gamma-MagicDraw transzformáció megtervezéséből és megvalósításából állt. Az UML profil egy szakterület specifikus nyelvet definiál. Elemei pedig a következők:
+
+\begin{itemize}
+	\item \textbf{ExecutionTrace} \newline
+	Egy kompozit komponens végrehajtása. \textit{Steppeket} azaz lépéseket tartalmaz, illetve a végrehajtás végén állhat egy lépésekből álló ciklus.
+	\newline
+	\textit{Attribútumok:}
+	\subitem component: InstanceSpecification[1]: kompozit komponens példánya a modellben
+	\subitem steps: Step[1..*]: lépések
+	\subitem cycle: Cycle[0..1]: lépésekből álló ciklus amire a végrehajtás futhat
+	
+	\item \textbf{Step} \newline
+	A végrehajtás egy lépése. Két részből áll egy \textit{Act} részből, ami a végrehajtódott műveleteket írja le és egy \textit{Assert} részből, ami a lépésben elért állapotot írja le.
+	\newline
+	\textit{Attribútumok:}
+	\subitem actGroup: ActGroup[0..1]: műveletek konténere
+	\subitem assert: Assert[1]: lépés során beálló állapotok
+	
+	\item \textbf{ActGroup} \newline
+	\textit{Actok} konténere a \textit{Steppen} belül. Csak áttekinthetőségre szolgál.
+	\newline
+	\textit{Attribútumok:}
+	\subitem acts: Act[0..*]: műveletek konténere
+	
+	\item \textbf{Act} \newline
+	Absztrakt sztereotípia. Egy végrehajtott művelet.
+	
+	\item \textbf{ComponentSchedule} \newline
+	Komponensen egy kör végrehajtása (üzenetek kiolvasása az üzenetsorokból, állapotok léptetése)
+	
+	\item \textbf{TimeElapse} \newline
+	Végrehajtás várakoztatása bizonyos ideig.
+	\newline
+	\textit{Attribútumok:}
+	\subitem value: Integer: várakozás ideje milliszekundumban
+	
+	\item \textbf{RaiseEventAct} \newline
+	Egy esemény elküldése a komponens példánynak.
+	\newline
+	\textit{Attribútumok:}
+	%TODO ez itt biztosan válozik majd
+	\subitem referencedAction: Behavior: eseményt küldő viselkedés.
+	
+	\item \textbf{InstanceState} \newline
+	Absztrakt. Az egyes példányok, partok állapotainak leírása.
+	\newline
+	\textit{Attribútumok:}
+	\subitem referencedPart: PartProperty: hivatkozott komponens példány
+	
+	\item \textbf{InstanceVariableState} \newline
+	Egy változónak egy állapota.
+	\newline
+	\textit{Attribútumok:}
+	\subitem referencedVariable: Property: hivatkozott változó
+	\subitem value: ValueSpecification: hivatkozott változó értéke
+	
+	\item \textbf{InstanceStateConstant} \newline
+	Az állapot gép egy állapota.
+	\newline
+	\textit{Attribútumok:}
+	\subitem referencedState: State: hivatkozott állapot konstans
+\end{itemize}
+
+A \refstruc{fig:contribution-trace-profile} az UML profilt, a \refstruc{fig:contribution-trace-customization} pedig ennek a customizationjét mutatja.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=100mm, keepaspectratio]{figures/contribution/trace-model.png}
+	\caption{Back-annotation UML profilja}
+	\label{fig:contribution-trace-profile}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=100mm, keepaspectratio]{figures/contribution/trace-profile.png}
+	\caption{Back-annotation customization modellje}
+	\label{fig:contribution-trace-customization}
+\end{figure}
+ 
+
 
 \section{Kompozíciók transzformációja}
 
@@ -24,7 +183,13 @@ A struktúrák megfeleltetésénél könnyebb dolgom volt, hiszen mind szintakti
 
 \section{CTL nyelvtan}
 
-\section{Back-annotation}
+\section{Back-annotation transzformációja}
+
+A Back-annotation egy általában szimulátor által biztosított időzítési adatok visszacsatolása az eredeti modellbe. Ahhoz, hogy MagicDrawban is el tudjuk tárolni ezeket az adatokat létre kellett hoznom egy UML profilt ami a Back-annotation modell metamodelljeként fog szolgálni.
+
+A transzformáció iránya itt megfordul nem MagicDraw modellekből állítok elő Gamma modelleket hanem épp fordítva Gammából alakítok MagicDraw-ra.
+
+
 
 \section{Szimuláció}
 
