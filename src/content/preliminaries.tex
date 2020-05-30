@@ -73,7 +73,7 @@ Az modellezőeszköz gazdag funkcionalitással rendelkezik mint fejlett felhaszn
 	\label{fig:md-gui}
 \end{figure}
 
-MagicDrawhoz lehetőségünk van saját plugin fejlesztésére is, amik lehetővé teszik számunkra, új funkcionalitás integrálását az eszközben illetve modellek manipulálását is. Jelen dolgozat egy ilyen plugin fejlesztési folyamatát mutatja be.
+MagicDrawhoz lehetőségünk van saját plugin fejlesztésére is, amik lehetővé teszik számunkra, új funkcionalitás integrálását az eszközben illetve modellek manipulálását is. A feladatot is egy ilyen plugin fejlesztésével oldottam meg.
 
 
 \section{Modelltranszformációk}
@@ -82,15 +82,42 @@ Az ipari standardok mellett sok speciális modellezési nyelv is létezik, amely
 
 A modellvezéreltség egyik alapötlete, hogy különböző modellekből származtatni tudunk más modelleket feltéve, hogy elegendő információ áll rendelkezésünkre a konverzió elvégzéséhez. Ezt a fajta származtatási folyamatot modelltranszformációnak nevezzük. A modelltranszformációk használata lehetővé teszi, hogy ne csak azokat a technológiákat használjuk modellünk feldolgozására melyek speciálisan az adott modellezési nyelvhez készültek hanem a modelleket megpróbáljuk átalakítani - lehetőleg a szemantikai tartalom megőrzésével és automatizáltan - egy olyan modellezési nyelvre amelyhez már létezik az általunk használni kívánt funkcionalitást támogató technológia.
 
+Ezen felül dokumentumokat is tudunk származtatni a modellekből a kódgenerálás tulajdonképpen ennek egy speciális esete. Az sem ritka, hogy a származtatások több lépésen és modellen keresztül történnek. A kód generálásnál maradva a generált kód is egy modell amit általában egy fordítónak valamilyen futtatható állománnyá kell alakítani.
+
 Fontos megjegyezni, hogy előfordulhatnak olyan esetek is amikor a modell transzformáció komplexitása és elkészítésének költsége, ha egyáltalán lehetséges ilyet készíteni, nagyobb mintha speciálisan az adott nyelvhez készítenénk egy speciális eszközt ami megvalósítja az állvárt funkcionalitást.
 
 
 \section{Felhasznált technológiák}
 \subsection{Eclipse Modeling Framework}
 
-Az Eclipse Modeling Framework (EMF) egy keretrendszer amellyel metamodelleket tudunk készíteni illetve ezeknek példánymodelljeit. Az EMF-nek van egy meta-metamodellje ami a felhasználók által létrehozott metamodelljeként szolgál ezen felül API-t biztosít modellek manipulálásához és a modell elemekkel kapcsolatos események kezeléséhez.
+Az Eclipse Modeling Framework (EMF) Eclipse pluginok egy halmaza amellyel jellemzően adatmodelleket tudunk készíteni illetve ezekből kódot vagy valamilyen dokumentumot generálni. Az EMF kétféle modell között tesz különbséget. Az egyik típus a metamodellek, a modell struktúrája azaz a felhasználó által definiált elemek és lehetséges kapcsolataik, megkötések. Illetve a példánymodellek, azok a modellek amik a metamodell által leírt elemekből állnak és ennek megfelelő kapcsolatokat tartalmaznak ezek között. Az EMF-nek van egy meta-metamodellje ami a felhasználók által létrehozott metamodellek metamodelljeként szolgál (\refstruc{fig:emf-meta}) ezen felül API-t biztosít modellek manipulálásához és a modell elemekkel kapcsolatos események kezeléséhez.
 
-A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni.
+Az EMF legjellemzőbb használati esete az, hogy valamilyen szabványos általában XMI formában metamodelleket hozunk létre, majd ennek megfelelő Java implementációs osztályokat generálunk. Ez a generált kód akár kézzel ki is kibővíthető. Alkalmazásunkban a példánymodelleket ezeken az osztályokon keresztül tudjuk létrehozni és manipulálni. A framework lehetővé teszi ezeknek a szabványos formában történő kisorosítását is.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=110mm, keepaspectratio]{figures/preliminaries/emf-meta.png}
+	\caption[]{Az EMF metamodellje}
+	\label{fig:emf-meta}
+\end{figure}
+
+A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni. Ennek oka, hogy a MagicDraw projektek képesek elosztott környezetben is működni, ami miatt lehetnek olyan esetek, hogy a felhasználónak nincs írás hozzáférése egyes elemekhez. A MagicDraw API ilyenkor Exception dobásával képes jelezni ha az írás nem sikerült.
+
+\subsection{Xtext}
+
+Az Xtext egy keretrendszer amivel programozási nyelveket és egyéb szakterület specifikus nyelveket lehet készíteni, melyek szöveges formában manifesztálódnak. Ezeket valamilyen már meglévő modellezési nyelv egy konkrét szintaxisaként érdemes készíteni. Ez azt jelenti, hogy egy szövegesen megadott leírás elemeket és ezek kapcsolatait írja egy metamodellnek megfelelően.
+
+Az Xtext nyelvtanok készítéséhez egy erős nyelvtan leíró nyelvet kínál. Az ezzel leírt nyelvtanhoz pedig teljes infrastruktúrát generál mint: parser, linker, típus ellenőrző, fordító. Ezen felül Eclipses környezetben a szerkesztéshez kapunk szintaxis kiemelést, content assistot (\refstruc{fig:ctl-lang}).
+
+MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és akár saját kiértékelő motort is tudunk írni, az általunk létrehozott nyelvtanokhoz. Sajnos a MagicDraw beépített szerkesztőjében elesünk olyan hasznos felhasználói funkcióktól mint a content assist vagy a szintaxis kiemelés. Erre megoldást jelenthet az Xtext language szerver támogatásának a kihasználása a dolgozat azonban ennek a vizsgálatára nem tér ki.
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=120mm, keepaspectratio]{figures/preliminaries/ctl-language.png}
+	\caption[]{Példa: saját Xtext nyelvtan Eclipseben, szintaxis kiemeléssel}
+	\label{fig:ctl-lang}
+\end{figure}
 
 \subsection{Gamma Statechart Composition Framework}
 
@@ -115,11 +142,29 @@ A dolgozat elkészítése során nagy mértékben támaszkodtam a Gamma nyújtot
 \footnotetext{https://www.eclipse.org/viatra/}
 
 
-A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
+A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re (\refstruc{fig:vql}) támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
+
+\begin{figure}[!ht]
+	\begin{lstlisting}
+	pattern StateMachines(stateMachine: StateMachine, name: java String){
+	    StateMachine.name(stateMachine, name);
+	}
+	
+	pattern ParametersInStateMachine(stateMachine: StateMachine, parameter: Parameter){
+    	StateMachine.ownedParameter(stateMachine, parameter);
+	}
+	
+	pattern RegionsInRegion(container: Region, region: Region){
+	    Region.subvertex(container, vertex);
+    	State.region(vertex, region);
+	}
+	\end{lstlisting}
+	\caption{Példa: VIATRA Query Language}
+	\label{fig:vql}
+\end{figure}
+
 
 A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár én elsősorban a modell lekérdezés részére támaszkodtam a dolgozat elkészítése alatt. MagicDraw-ban egy pluginon keresztül van lehetőség VIATRA használatára melyet V4MD-nek hívnak. A plugin egy Query Engine-t biztosít számunkra per projekt. Ezen keresztül tudunk lekérdezéseket és transzformációkat regisztrálni. A V4MD leveszi a vállunkról a terhet az Engine életciklus menedzsmentjét illetően, azonban hátránya, hogy nagyon nagy modelleket komplex lekérdezések esetén a memóriaigénye elég jelentősre duzzadhat a háttérben, cserébe viszont az inkrementális működésnek köszönhetően a lekérdezések már csak a VIATRA által karbantartott táblázatokból való kiolvasás ezért költségül elhanyagolható.
-
-\newpage
 
 \section{MagicDraw állapottérkép verifikációs plugin}
 
