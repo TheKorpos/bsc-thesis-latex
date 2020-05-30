@@ -43,9 +43,21 @@ A SysML nyelv nagyon általános, ezért célszerű specializálni, új elemeket
 \end{itemize}
 Az UML profil érdekessége, hogy tartalmazásokat csak megkötés szintjén customizationökön keresztül tudunk megadni. UML profil diagramon csak öröklést és attribútumokat tudunk definiálni elemeinknek.
 
+\newpage
+
 \subsection{Kompozit szemantika}
 
-\newpage
+A Gamma háromféle komponens végrehajtási szemantikát biztosít a felhasználók számára. Ugyan ezt implicit módon is meg lehet határozni, például a kommunikáció típusából, mégis fontos lehet ezek egyértelmű jelölése. Ezért az UML profil (\refstruc{fig:comp-prof}) a SysML nyelvet kiegészíti néhány sztereotípiával melyek segítségével explicit jelölhetők, hogy milyen szemantikát szeretne a felhasználó érteni Blokkjain.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/contribution/profile.png}
+	\caption{Szinkron, asszinkron szemantikát támogató UML profil}
+	\label{fig:comp-prof}
+\end{figure}
+
+%TODO kep
+
 
 \subsection{Check modell}
 
@@ -86,9 +98,6 @@ A követelményeket \emph{GammaProperty} segítségével lehet megadni a plugin 
 	
 	
 \end{itemize}
-
-
-
 
 \subsection{Back-annotation modell}
 A back-annotation modell feladata visszacsatolni az eredeti modellbe a valamilyen külső, jellemzően szimulátorból származó időzítési adatokat. A Gamma is készít egy ilyen modellt. A megoldás amit kidolgoztam Gamma modell egy MagicDraw specifikus változatának létrehozásából és egy Gamma-MagicDraw transzformáció megtervezéséből és megvalósításából állt. Az UML profil egy szakterület specifikus nyelvet definiál. Elemei pedig a következők:
@@ -158,26 +167,36 @@ A \refstruc{fig:contribution-trace-profile} az UML profilt, a \refstruc{fig:cont
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=100mm, keepaspectratio]{figures/contribution/trace-model.png}
+	\includegraphics[width=90mm, keepaspectratio]{figures/contribution/trace-model.png}
 	\caption{Back-annotation UML profilja}
 	\label{fig:contribution-trace-profile}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=100mm, keepaspectratio]{figures/contribution/trace-profile.png}
+	\includegraphics[width=90mm, keepaspectratio]{figures/contribution/trace-profile.png}
 	\caption{Back-annotation customization modellje}
 	\label{fig:contribution-trace-customization}
 \end{figure}
  
+ \newpage
 
 
 \section{Kompozíciók transzformációja}
 
 Egy nagy komplex rendszert célszerű nem egyben, hanem részekre bontva modellezni majd a részek egymáshoz illesztéséből, komponálásából képezni a teljes rendszert. Állapottérképek dekomponálását azaz részekre bontását a Gamma is támogatja. A kihívás a SysML és a Gamma közötti megfeleltetések megválasztása oly módon, hogy a szemantika ne sérüljön. A megfeleltetés két szempontól kell vizsgálni, egyszer az elemek tartalmazási hierarchiái szerint, egyszer pedig a köztük modellezett kommunikáció szerint.
 
+
+
 \subsection{Struktúra megfeleltetése}
 A Gammában nyelvi szinten elkülönül az állapottérkép (StatechartDefinition) és a kompozit komponens (Composite Component) fogalma. Állapottérképek a modell hierarchia gráfjában a levelekben helyezkednek el. SysML esetében a minden Blokknak lehet viselkedése, jelen esetben állapottérképe. A megfeleltetés elvégzéséhez megkötést fogalmaztam meg mely kétféle blokkot enged meg. A viselkedéssel rendelkező blokkokat és azokat amelyek nem tartalmazhatnak viselkedést csak Part Propertyket. Tehát állapottérképek ebben a modellben is csak levelekben lehetnek.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/md2g.png}
+	\caption{Struktúra megfeleltetése}
+	\label{fig:md2g}
+\end{figure}
 
 Az érdekes kérdés lehet, hogy ha egy magasabb szintű blokknak mégis lehetne viselkedése, azt szemantikailag hogyan kezelhetnénk. Elképzelhető olyan értelmezés, hogy ez a magas szintű állapottérkép a dekomponált részek együttes viselkedését írja le. Ez lehetőséget adna arra, hogy a magasabb és az alacsonyabb szintű viselkedés halmazt összehasonlítsuk működés szempontjából és ha nincsenek szinkronban akkor tervezési hibaként fogjuk fel. Így a magasabb hierarchia szintek tulajdonképpen validálnák az alacsonyabb szinteket. Ennek a lehetőségnek a komolyabb kifejtése azonban nem célja a dolgozatnak.
 
@@ -189,7 +208,7 @@ Az egyik ilyen megkötés szerint a portokban interfész blokkokat kell tipizál
 Az eseményeknek mindig specifikálniuk kell, hogy melyik porton várják az operáció hívását vagy szignál érkezését. Ez igaz az akciókra az ő esetükben azt kell specifikálni, hogy milyen porton keresztül történjen a küldés.
 
 Portok közül csak a \emph{Proxy} portok támogatottak. Proxy portok iránya származtatott a \emph{Flow property} irányokból amik keresztül mehetnek rajta. Az irány az \emph{isConjugated} flag igazra állításával változtatható. Az alap szemantika szerint minden port az interfész blokkját kínálja (provide), conjugate hatására pedig várja (require). Operációk minden esetben in irányúak.
-
+ 
 \section{CTL nyelvtan}
 
 \section{Back-annotation transzformációja}

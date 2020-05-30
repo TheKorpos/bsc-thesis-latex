@@ -126,14 +126,20 @@ A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérk
 A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
 
 A dolgozat elkészítése során nagy mértékben támaszkodtam a Gamma nyújtotta lehetőségekre. Ezt a Gamma mint egy köztes nyelv használatával érem el úgy, hogy modell transzformációk segítségével megvalósítok SysML-Gamma leképzést. A Gamma a formális verifikáció elvégzéséhez az UPPAAL nevű eszközt használja. Ez időzített automatákon tudja elvégezni a formális verifikációt (\refstruc{fig:gamma}). Ezeket a Gamma szintén modell transzformációk segítségével állítja elő, összekapcsolva a mérnöki modelleket matematikai modellekkel.
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=140mm, keepaspectratio]{figures/preliminaries/gamma.png}
 	\caption[]{A Gamma Statechart Composition Framework\footnotemark}
 	\label{fig:gamma}
 \end{figure}
+\newpage
+A Gamma nagy erőssége, hogy állapotgép kompozíciókat is lehet modellezni benne. A komponenseket végrehajtás szempontjából háromféle szemantika van megkülönböztetve.
+
+\paragraph{Szinkron komponensek} melyek egy lépésen belül fogadnak eseményeket ezekre lépnek és elküldik az eseményeket, ezek viszont a következő iterációban fognak fogadásra kerülni a hozzájuk kapcsolódó komponensekben.
+
+\paragraph{Kaszkád komponensek (Cascade Component)} ezek hasonlóan működnek, mint a szinkron komponensek, viszont ebben az esetben a kiküldött üzenetek ugyan abban az iterációban kerülnek fogadásra. Ebből kifolyólag az üzenet áramlásnak aciklikusnak kell lennie, hiszen a feldolgozást végtelen ciklusba kerülne.
+
+\paragraph{Aszinkron komponensek} Az események feldolgozása aszinkron módon, üzenet sorok kiolvasásával történik. Állapottérkép definíciók alapból szinkron szemantikával bírnak, így ahhoz hogy asszinkron szemantikával ruházzuk fel őket be kell csomagolni őket egy \emph{Wrapperbe}. Ez definiálja számukra az üzenet sort is.
 
 \newpage
 \footnotetext[1]{Forrás: \href{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}}
