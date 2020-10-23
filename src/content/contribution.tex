@@ -16,7 +16,7 @@ Fontos kérdés, hogy a formális verifikáció eredményét milyen formában k�
 
 Az \uppaal és a Gamma is képes sokkal részletesebb választ adni. Ezt a Gamma Back-annotation formájában teszi azaz a verifikációban előállt időzítések és lépéseket visszavezeti az eredeti modellbe. Ehhez a Gamma egy elég jól értelmezhető nyelvtant definiál, azonban a SysML-t jellemzően rendszermérnökök használják akik inkább a diagramokat mint a szöveges leírásokat preferálják általában.
 
-A Back-annotationt úgy is lehet interpretálni mint lépések egy sorozatát, amelyek szinkron esetben egymást jól meghatározható sorrendben követik. Ezt leginkább szekvencia diagramokon lehet ábrázolni. Ezen felül ami miatt még a szekvencia diagram tűnik a legkézenfekvőbb megjelenítési megoldásnak az a MagicDraw, illetve a Cameo Simulation toolkit. Ez ugyanis képes szimulációt rögzíteni szekvencia diagramok formájában (\refstruc{fig:md-cameo-rec})) és ezeket újra lejátszani. A cél tehát olyan szekvencia diagramok előállítása úgy minthogyha a szimulátort használva találtuk volna meg a hibautakat, így ezekről nem csak egy jól áttekinthető megoldást kapunk szekvenciák formájában, hanem ezek szimulálhatók is lesznek Cameo Toolkit segítségével.
+A Back-annotationt úgy is lehet interpretálni mint lépések egy sorozatát, amelyek szinkron esetben egymást jól meghatározható sorrendben követik. Ezt leginkább szekvencia diagramokon lehet ábrázolni. Ezen felül ami miatt még a szekvencia diagram tűnik a legkézenfekvőbb megjelenítési megoldásnak az a MagicDraw, illetve a Cameo Simulation toolkit. Ez ugyanis képes szimulációt rögzíteni szekvencia diagramok formájában (\refstruc{fig:md-cameo-rec})) és ezeket újra lejátszani. A cél tehát olyan szekvencia diagramok előállítása úgy minthogyha a szimulátort használva találtuk volna meg a hibautakat, így ezekről nem csak egy jól áttekinthető megoldást kapunk szekvenciák formájában, hanem ezek szimulálhatók is lesznek Cameo Simulation Toolkit segítségével.
 
 \begin{figure}[!ht]
 	\centering
@@ -32,16 +32,18 @@ A Back-annotationt úgy is lehet interpretálni mint lépések egy sorozatát, a
 A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak jellemzően. A beépülő modul a kérdés vagy megkötések megfogalmazásához egy saját nyelvet kínál, amely azt érhetőséget célozza.
 
 
-\section{MagicDraw profil}
+\section{Gamma UML profil}
 
-A SysML nyelv nagyon általános, ezért célszerű specializálni, új elemeket bevezetni, vagy kiegészíteni a már meglévőket. Ennek eléréséhez készítettem egy UML profilt. Ez három részből áll.
+Az eszköz fejlesztése során törekedtem arra, hogy a funkcionalitás ahol csak lehet a MagicDraw-n belül történjen. Ehhez szükséges volt magában a modellben is eltárolni információkat, mint például az ellenőrizendő követelmények vagy a Back-annotation.
+Ennek eléréséhez készítettem egy UML profilt. Ez három részből áll.
 
 \begin{itemize}
 	\item Kompozit szemantika
 	\item Check modell
 	\item Back-annotation modell
 \end{itemize}
-Az UML profil érdekessége, hogy tartalmazásokat csak megkötés szintjén customizationökön keresztül tudunk megadni. UML profil diagramon csak öröklést és attribútumokat tudunk definiálni elemeinknek.
+
+Az UML profil érdekessége, hogy tartalmazásokat csak megkötés szintjén \emph{Customization}on keresztül tudunk megadni. UML profil diagramon csak öröklést és \emph{tag}eket van lehetőségünk definiálni.
 
 \newpage
 
@@ -61,14 +63,14 @@ A Gamma háromféle komponens végrehajtási szemantikát biztosít a felhaszná
 
 \subsection{Check modell}
 
-Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani, hogy milyen modelleket szeretnénk ellenőrizni és ezeken milyen követelményeket. Ezeknek a megadására sokféle megoldás például egy varázsló jellegű menü is elképzelhető. Én azonban ezeket az információkat magában a modellben tárolom el egyéb az technológiák és az infrastruktúra sajátosságaiból adódó információkkal együtt.
+Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani, hogy milyen modelleket szeretnénk ellenőrizni és ezeken milyen követelményeket. Ezeket az információkat magában a modellben tárolom el egyéb az technológiák és az infrastruktúra sajátosságaiból adódó információkkal együtt.
 
-Az elképzelés szerint a felhasználó \emph{Workspace}eket hoz létre. Ezek hivatkoznak a felhasználó számítógépén egy könyvtárra melyet az infrastruktúra sajátosságából adódó háttértárra kimentendő modelleket tárolására használok. Ezen felül ezen keresztül kell behivatkozni az ellenőrizendő modellt a projektből.
+Az elképzelés szerint a felhasználó \emph{Workspace}eket hoz létre. Ezek hivatkoznak a felhasználó számítógépén egy könyvtárra melyet az infrastruktúra sajátosságából adódó háttértárra kimentendő modelleket tárolására használok. Ezen felül rajta keresztül kell behivatkozni az ellenőrizendő modellt a projektből.
 
 A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy mely a MagicDraw - Gamma transzformáció során milyen leképzések történtek.
 
-A követelményeket \emph{GammaProperty} segítségével lehet megadni a plugin által definiált nyelvtan segítségével. Az ezek ellenőrzéséből származó Back-annotaion modellek is a \emph{Workspace}ben helyezkednek el. A modell elemei a következők:
-
+A követelményeket \emph{GammaProperty} segítségével lehet megadni a Gamma által definiált Property nyelvtan segítségével. Az ezek ellenőrzéséből származó Back-annotaion modellek is a \emph{Workspace}ben helyezkednek el. A modell elemei a következők:
+%TODO Update
 \begin{itemize}
 	\item \textbf{GammaWorkspace} \newline
 	Transzformációk és ellenőrzések kezelésére szolgáló MagicDraw projektben tárolt modell.
@@ -198,24 +200,24 @@ A Gammában nyelvi szinten elkülönül az állapottérkép (StatechartDefinitio
 	\label{fig:md2g}
 \end{figure}
 
-Az érdekes kérdés lehet, hogy ha egy magasabb szintű blokknak mégis lehetne viselkedése, azt szemantikailag hogyan kezelhetnénk. Elképzelhető olyan értelmezés, hogy ez a magas szintű állapottérkép a dekomponált részek együttes viselkedését írja le. Ez lehetőséget adna arra, hogy a magasabb és az alacsonyabb szintű viselkedés halmazt összehasonlítsuk működés szempontjából és ha nincsenek szinkronban akkor tervezési hibaként fogjuk fel. Így a magasabb hierarchia szintek tulajdonképpen validálnák az alacsonyabb szinteket. Ennek a lehetőségnek a komolyabb kifejtése azonban nem célja a dolgozatnak.
+Az érdekes kérdés lehet, hogy ha egy magasabb szintű blokknak mégis lehetne viselkedése, azt szemantikailag hogyan kezelhetnénk. Elképzelhető olyan értelmezés, hogy ez a magas szintű állapottérkép a dekomponált részek együttes viselkedését írja le. Ez lehetőséget adna arra, hogy a magasabb és az alacsonyabb szintű viselkedés halmazt összehasonlítsuk működés szempontjából és ha nincsenek szinkronban akkor tervezési hibaként értelmezzük. Így a magasabb hierarchia szintek tulajdonképpen validálnák az alacsonyabb szinteket. Ennek a lehetőségnek a komolyabb kifejtése azonban nem célja a dolgozatnak.
 
 \subsection{Kommunikáció megfeleltetése}
 
-A Gammában a komponensek kommunikációja kimondottan az eseményvezérelt állapot alapú rendszerek sajátosságain alapul, azonban SysML-ben a kommunikáció leírása sokkal általánosabb és többféle módon is megadható. Éppen ezért a feladat elvégzése során az események és az interfészek modellezésére megkötéseket kellett megfogalmazni.
+A Gammában a komponensek kommunikációja kimondottan az eseményvezérelt állapot alapú rendszerek sajátosságain alapul, azonban SysML-ben a kommunikáció leírása sokkal általánosabb és többféle módon is modellezhető. Éppen ezért a feladat elvégzése során az események és az interfészek modellezésére megkötéseket kellett megfogalmazni.
 Az egyik ilyen megkötés szerint a portokban interfész blokkokat kell tipizálniuk és szinkron szemantika esetében operációkat definiálni, asszinkron esetben pedig szignálokkal tipizált \emph{Flow Property} formájában fel kell tüntetni milyen szignálok fogadására képes a blokk.
 
 Az eseményeknek mindig specifikálniuk kell, hogy melyik porton várják az operáció hívását vagy szignál érkezését. Ez igaz az akciókra az ő esetükben azt kell specifikálni, hogy milyen porton keresztül történjen a küldés.
 
-Portok közül csak a \emph{Proxy} portok támogatottak. Proxy portok iránya származtatott a \emph{Flow property} irányokból amik keresztül mehetnek rajta. Az irány az \emph{isConjugated} flag igazra állításával változtatható. Az alap szemantika szerint minden port az interfész blokkját kínálja (provide), conjugate hatására pedig várja (require). Operációk minden esetben in irányúak.
- 
+Portok közül csak a \emph{Proxy} portok támogatottak. Proxy portok iránya származtatott a \emph{Flow property} irányokból amik keresztül mehetnek rajta. Az irány az \emph{isConjugated} flag igazra állításával változtatható.
+
 \section{CTL nyelvtan}
 
 \section{Back-annotation transzformációja}
 
 A Back-annotation egy általában szimulátor által biztosított időzítési adatok visszacsatolása az eredeti modellbe. Ahhoz, hogy MagicDrawban is el tudjuk tárolni ezeket az adatokat létre kellett hoznom egy UML profilt ami a Back-annotation modell metamodelljeként fog szolgálni.
 
-A transzformáció iránya itt megfordul nem MagicDraw modellekből állítok elő Gamma modelleket hanem épp fordítva Gammából alakítok MagicDraw-ra.
+A transzformáció iránya itt megfordul nem MagicDraw modellekből állítok elő Gamma modelleket hanem épp fordítva Gamma modelleket transzformálok MagicDraw modellekké.
 
 
 

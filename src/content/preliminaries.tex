@@ -80,11 +80,9 @@ MagicDrawhoz lehetőségünk van saját plugin fejlesztésére is, amik lehetőv
 
 Az ipari standardok mellett sok speciális modellezési nyelv is létezik, amelyek megannyi céllal és eszközkészlettel jöttek létre. Ezek között vannak magas absztrakciójú általánosabb nyelvek és alacsony szintűek is amik egy része olyan formalizmusokra épül amik felett bizonyos problémákra matematikai eszközökkel tudunk megoldást keresni.
 
-A modellvezéreltség egyik alapötlete, hogy különböző modellekből származtatni tudunk más modelleket feltéve, hogy elegendő információ áll rendelkezésünkre a konverzió elvégzéséhez. Ezt a fajta származtatási folyamatot modelltranszformációnak nevezzük. A modelltranszformációk használata lehetővé teszi, hogy ne csak azokat a technológiákat használjuk modellünk feldolgozására melyek speciálisan az adott modellezési nyelvhez készültek hanem a modelleket megpróbáljuk átalakítani - lehetőleg a szemantikai tartalom megőrzésével és automatizáltan - egy olyan modellezési nyelvre amelyhez már létezik az általunk használni kívánt funkcionalitást támogató technológia.
+A modellvezéreltség egyik alapötlete, hogy különböző modellekből származtatni tudunk más modelleket feltéve, hogy elegendő információ áll rendelkezésünkre a konverzió elvégzéséhez. Ezt a fajta származtatást például modell transzformációk segítségével tudjuk végrehajtani. A modelltranszformációk használata lehetővé teszi, hogy ne csak azokat a technológiákat használjuk modellünk feldolgozására melyek speciálisan az adott modellezési nyelvhez készültek hanem a modelleket megpróbáljuk átalakítani - lehetőleg a szemantikai tartalom megőrzésével és automatizáltan - egy olyan modellezési nyelvre amelyhez már létezik az általunk használni kívánt funkcionalitást támogató technológia.
 
 Ezen felül dokumentumokat is tudunk származtatni a modellekből a kódgenerálás tulajdonképpen ennek egy speciális esete. Az sem ritka, hogy a származtatások több lépésen és modellen keresztül történnek. A kód generálásnál maradva a generált kód is egy modell amit általában egy fordítónak valamilyen futtatható állománnyá kell alakítani.
-
-Fontos megjegyezni, hogy előfordulhatnak olyan esetek is amikor a modell transzformáció komplexitása és elkészítésének költsége, ha egyáltalán lehetséges ilyet készíteni, nagyobb mintha speciálisan az adott nyelvhez készítenénk egy speciális eszközt ami megvalósítja az állvárt funkcionalitást.
 
 
 \section{Felhasznált technológiák}
@@ -101,8 +99,9 @@ Az EMF legjellemzőbb használati esete az, hogy valamilyen szabványos általá
 	\label{fig:emf-meta}
 \end{figure}
 
-A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni. Ennek oka, hogy a MagicDraw projektek képesek elosztott környezetben is működni, ami miatt lehetnek olyan esetek, hogy a felhasználónak nincs írás hozzáférése egyes elemekhez. A MagicDraw API ilyenkor Exception dobásával képes jelezni ha az írás nem sikerült.
+A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni. Ennek oka, hogy a MagicDraw projektek képesek elosztott környezetben is működni, ami miatt lehetnek olyan esetek, hogy a felhasználónak nincs írás hozzáférése egyes elemekhez. A MagicDraw API ilyenkor kivétel dobásával képes jelezni ha az írás nem sikerült.
 
+%TODO
 \subsection{Xtext}
 
 Az Xtext egy keretrendszer amivel programozási nyelveket és egyéb szakterület specifikus nyelveket lehet készíteni, melyek szöveges formában manifesztálódnak. Ezeket valamilyen már meglévő modellezési nyelv egy konkrét szintaxisaként érdemes készíteni. Ez azt jelenti, hogy egy szövegesen megadott leírás elemeket és ezek kapcsolatait írja egy metamodellnek megfelelően.
@@ -119,6 +118,7 @@ MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és ak�
 	\label{fig:ctl-lang}
 \end{figure}
 
+%TODO
 \subsection{Gamma Statechart Composition Framework}
 
 A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez is. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
