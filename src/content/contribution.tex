@@ -1,10 +1,10 @@
 \chapter{Plugin továbbfejlesztése}
 
-Ebben a felyezetben ismertetem azokat a fejlesztéseket amelyeket a mesterképzés során az eszközön végeztem.
+Ebben a fejezetben ismertetem a beépülő modulon végzett továbbfejlesztéseket melyeket a mesterképzés során végeztem. 
 
 \section{Fejlesztés céljai}
 
-A fejlesztés során hozott alkalmazott megoldások áttekintése előtt érdemes végigmenni a fejlesztés kitűzött céljain és átgondolni ezek létjogosultságát.
+A fejlesztés során hozott alkalmazott megoldások áttekintése előtt érdemes végigvenni, hogy mik is voltak a fejlesztés fő céljai és mi volt ezeknek a motivációja.
 
 \subsection{Funkcionális dekompozíció transzformálása}
 Egy rendszert állapotait és állapotváltásait le lehetne modellezni egy mindent tartalmazó állapotgéppel, párhuzamos régiókkal és egyéb modellezési megoldásokkal. Ahogy a modell mérete nő a funkcionalitást érdemes feldarabolni és részenként modellezni. Ez nem csak az áttekinthetőséget segíti, de megkönnyíti a modellen való csapatmunkát is a mérnökök számára hiszen a szétbontott részeket külön, egymástól független lehet modellezni, majd ezeket összekapcsolni.
@@ -29,13 +29,23 @@ A Back-annotationt úgy is lehet interpretálni mint lépések egy sorozatát, a
 
 \subsection{Követelmények definiálása}
 
-A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak jellemzően. A beépülő modul a kérdés vagy megkötések megfogalmazásához egy saját nyelvet kínál, amely azt érhetőséget célozza.
+A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak jellemzően. Az \uppaal-ban ezeket temporális logikai kifejezések segítségével tudjuk megtenni \uppaal Queryk formájában ezért ezeket az ellenőrzés során elő kell állítanunk.
 
+Eredetileg szándékoztam erre egy saját nyelvtant is fejleszteni, de a Gammához időközben készült egy úgynevezett \emph{Property Language} és ez ennek az \uppaal-ra transzformáló funkciója és végül ezt használtam fel.
+
+\subsection{Validáció}
+
+A fejlesztés során hozott számos döntés megköveteli, hogy a modellekre vonatkozzanak bizonyos jól-formáltsági kényszerek. Ezek egy része a Gammából örökölt. Például a \emph{Property Language} egy komponensen belül egy állapotra a régión keresztül tudunk hivatkozni (\emph{[component]+.region.state}). Ebből következik, hogy a régióknak a MagicDraw modellben nevet kell adni, illetve, hogy ezek egyediek legyenek egy állapottérképen belül.
+
+A dolgozat célja egy validációs szabálykészlet létrehozása ami segít a felhasználóknak az eszköz helyes használatában.
+
+\newpage
 
 \section{Gamma UML profil}
 
-Az eszköz fejlesztése során törekedtem arra, hogy a funkcionalitás ahol csak lehet a MagicDraw-n belül történjen. Ehhez szükséges volt magában a modellben is eltárolni információkat, mint például az ellenőrizendő követelmények vagy a Back-annotation.
-Ennek eléréséhez készítettem egy UML profilt. Ez három részből áll.
+A dolgozat elkészítéséhez pusztán a SysML nyelv nem volt elegendő ugyanis szükséges volt  a modellben is eltárolni  bizonyos információkat, mint például az ellenőrizendő követelmények, a Back-annotation, vagy éppen, hogy milyen kompozit szemantikát kívánunk érvényesíteni az adott modellekre.
+
+Ezek információk modellezhetőségéhez készítettem egy MagicDraw profilt. Ez alapvetően három részből áll:
 
 \begin{itemize}
 	\item Kompozit szemantika
@@ -45,7 +55,7 @@ Ennek eléréséhez készítettem egy UML profilt. Ez három részből áll.
 
 Az UML profil érdekessége, hogy tartalmazásokat csak megkötés szintjén \emph{Customization}on keresztül tudunk megadni. UML profil diagramon csak öröklést és \emph{tag}eket van lehetőségünk definiálni.
 
-\newpage
+
 
 \subsection{Kompozit szemantika}
 
@@ -58,16 +68,18 @@ A Gamma háromféle komponens végrehajtási szemantikát biztosít a felhaszná
 	\label{fig:comp-prof}
 \end{figure}
 
-%TODO kep
+A sztereotípiák leszármaznak a Block sztereotípiájából, így lényegében lecserélik azt. Ennek előnye hogy szintaktikailag is asszinkron és szinkron blokkok fognak megjelenni a modelljeinkben. Viszont van egy nagyon nagy hátulütője is mégpedig az, hogyha már meglévő modelleken szeretnénk használni az eszközt ezekhez hozzá kell nyúlni, amihez például elosztott környezetben nem biztos, hogy egyszerű. Ami mégis elfogadhatóvá teszi ezt a plugin jelenlegi iterációjának kapcsán az az őrfeltételek és az akciókra vagy akár az interfészekre vonatkozó megkötések amik - sajnálatos módon - jó eséllyel megkövetelik a modell módosítását.
+
+Egy alternatív megoldás az lehetne, hogy a sztereotípiákat valamilyen él például \emph{Dependency} segítségével rendeljük az egyes komponens definíciókhoz, vagy akár partokhoz. Ez megoldást nyújthat arra a problémára is, hogyha a modell egyes részei külső könyvtárból jönnek, vagy nincs hozzáférésünk hozzájuk.
 
 
 \subsection{Check modell}
 
-Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani, hogy milyen modelleket szeretnénk ellenőrizni és ezeken milyen követelményeket. Ezeket az információkat magában a modellben tárolom el egyéb az technológiák és az infrastruktúra sajátosságaiból adódó információkkal együtt.
+Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani, hogy milyen modelleket szeretnénk ellenőrizni és ezeken milyen követelményeket. Az formális verifikációt modell elemeken keresztül lehet paraméterezni.
 
 Az elképzelés szerint a felhasználó \emph{Workspace}eket hoz létre. Ezek hivatkoznak a felhasználó számítógépén egy könyvtárra melyet az infrastruktúra sajátosságából adódó háttértárra kimentendő modelleket tárolására használok. Ezen felül rajta keresztül kell behivatkozni az ellenőrizendő modellt a projektből.
 
-A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy mely a MagicDraw - Gamma transzformáció során milyen leképzések történtek.
+A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy mely a MagicDraw - Gamma transzformáció során milyen leképzések történtek. Ezek valójában UML propertyk egy \emph{Class}on belül melyeknek a neve egy azonosító amivel a Gamma modell egy kisorosított XMI fájlban lévő elemei vannak hivatkozva. A \emph{property}kből egy \emph{Trace} él mutat a megfelelő MagicDraw elemekre. A kisorosított XMI ugyan ezen \emph{Class} modell elemekhez mint \emph{Comment} vannak hozzárendelve, innen lehet őket kiolvasni.
 
 A követelményeket \emph{GammaProperty} segítségével lehet megadni a Gamma által definiált Property nyelvtan segítségével. Az ezek ellenőrzéséből származó Back-annotaion modellek is a \emph{Workspace}ben helyezkednek el. A modell elemei a következők:
 %TODO Update
