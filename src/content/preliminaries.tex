@@ -86,67 +86,9 @@ Ezen felül dokumentumokat is tudunk származtatni a modellekből a kódgenerál
 
 
 \section{Felhasznált technológiák}
-\subsection{Eclipse Modeling Framework}
-
-Az Eclipse Modeling Framework (EMF) Eclipse pluginok egy halmaza amellyel jellemzően adatmodelleket tudunk készíteni illetve ezekből kódot vagy valamilyen dokumentumot generálni. Az EMF kétféle modell között tesz különbséget. Az egyik típus a metamodellek, a modell struktúrája azaz a felhasználó által definiált elemek és lehetséges kapcsolataik, megkötések. Illetve a példánymodellek, azok a modellek amik a metamodell által leírt elemekből állnak és ennek megfelelő kapcsolatokat tartalmaznak ezek között. Az EMF-nek van egy meta-metamodellje ami a felhasználók által létrehozott metamodellek metamodelljeként szolgál (\refstruc{fig:emf-meta}) ezen felül API-t biztosít modellek manipulálásához és a modell elemekkel kapcsolatos események kezeléséhez.
-
-Az EMF legjellemzőbb használati esete az, hogy valamilyen szabványos általában XMI formában metamodelleket hozunk létre, majd ennek megfelelő Java implementációs osztályokat generálunk. Ez a generált kód akár kézzel ki is kibővíthető. Alkalmazásunkban a példánymodelleket ezeken az osztályokon keresztül tudjuk létrehozni és manipulálni. A framework lehetővé teszi ezeknek a szabványos formában történő kisorosítását is.
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=110mm, keepaspectratio]{figures/preliminaries/emf-meta.png}
-	\caption[]{Az EMF metamodellje}
-	\label{fig:emf-meta}
-\end{figure}
-
-A MagicDraw modelljei is realizálják az EMF-es interfészeket azonban saját implementációt használnak. Ez lehetővé teszi, hogy MagicDraw modelleket EMF-es API-n keresztül manipuláljuk. Ez sokszor hasznos lehet, azonban sok esetben érdemesebb a MagicDraw beépített segéd osztályaira támaszkodni. Ennek oka, hogy a MagicDraw projektek képesek elosztott környezetben is működni, ami miatt lehetnek olyan esetek, hogy a felhasználónak nincs írás hozzáférése egyes elemekhez. A MagicDraw API ilyenkor kivétel dobásával képes jelezni ha az írás nem sikerült.
-
-%TODO
-\subsection{Xtext}
-
-Az Xtext egy keretrendszer amivel programozási nyelveket és egyéb szakterület specifikus nyelveket lehet készíteni, melyek szöveges formában manifesztálódnak. Ezeket valamilyen már meglévő modellezési nyelv egy konkrét szintaxisaként érdemes készíteni. Ez azt jelenti, hogy egy szövegesen megadott leírás elemeket és ezek kapcsolatait írja egy metamodellnek megfelelően.
-
-Az Xtext nyelvtanok készítéséhez egy erős nyelvtan leíró nyelvet kínál. Az ezzel leírt nyelvtanhoz pedig teljes infrastruktúrát generál mint: parser, linker, típus ellenőrző, fordító. Ezen felül Eclipses környezetben a szerkesztéshez kapunk szintaxis kiemelést, content assistot (\refstruc{fig:ctl-lang}).
-
-MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és akár saját kiértékelő motort is tudunk írni, az általunk létrehozott nyelvtanokhoz. Sajnos a MagicDraw beépített szerkesztőjében elesünk olyan hasznos felhasználói funkcióktól mint a content assist vagy a szintaxis kiemelés. Erre megoldást jelenthet az Xtext language szerver támogatásának a kihasználása a dolgozat azonban ennek a vizsgálatára nem tér ki.
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=120mm, keepaspectratio]{figures/preliminaries/ctl-language.png}
-	\caption[]{Példa: saját Xtext nyelvtan Eclipseben, szintaxis kiemeléssel}
-	\label{fig:ctl-lang}
-\end{figure}
-
-%TODO
-\subsection{Gamma Statechart Composition Framework}
-
-A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez is. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
-
-A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
-
-A dolgozat elkészítése során nagy mértékben támaszkodtam a Gamma nyújtotta lehetőségekre. Ezt a Gamma mint egy köztes nyelv használatával érem el úgy, hogy modell transzformációk segítségével megvalósítok SysML-Gamma leképzést. A Gamma a formális verifikáció elvégzéséhez az UPPAAL nevű eszközt használja. Ez időzített automatákon tudja elvégezni a formális verifikációt (\refstruc{fig:gamma}). Ezeket a Gamma szintén modell transzformációk segítségével állítja elő, összekapcsolva a mérnöki modelleket matematikai modellekkel.
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=140mm, keepaspectratio]{figures/preliminaries/gamma.png}
-	\caption[]{A Gamma Statechart Composition Framework\footnotemark}
-	\label{fig:gamma}
-\end{figure}
-\newpage
-A Gamma nagy erőssége, hogy állapotgép kompozíciókat is lehet modellezni benne. A komponenseket végrehajtás szempontjából háromféle szemantika van megkülönböztetve.
-
-\paragraph{Szinkron komponensek} melyek egy lépésen belül fogadnak eseményeket ezekre lépnek és elküldik az eseményeket, ezek viszont a következő iterációban fognak fogadásra kerülni a hozzájuk kapcsolódó komponensekben.
-
-\paragraph{Kaszkád komponensek (Cascade Component)} ezek hasonlóan működnek, mint a szinkron komponensek, viszont ebben az esetben a kiküldött üzenetek ugyan abban az iterációban kerülnek fogadásra. Ebből kifolyólag az üzenet áramlásnak aciklikusnak kell lennie, hiszen a feldolgozást végtelen ciklusba kerülne.
-
-\paragraph{Aszinkron komponensek} Az események feldolgozása aszinkron módon, üzenet sorok kiolvasásával történik. Állapottérkép definíciók alapból szinkron szemantikával bírnak, így ahhoz hogy asszinkron szemantikával ruházzuk fel őket be kell csomagolni őket egy \emph{Wrapperbe}. Ez definiálja számukra az üzenet sort is.
-
-\newpage
-\footnotetext[1]{Forrás: \href{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}{https://inf.mit.bme.hu/sites/default/files/publications/icse18.pdf}}
 
 \subsection[]{VIATRA\footnotemark}
 \footnotetext{https://www.eclipse.org/viatra/}
-
 
 A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re (\refstruc{fig:vql}) támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
 
@@ -170,11 +112,35 @@ A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzfo
 \end{figure}
 
 
-A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár én elsősorban a modell lekérdezés részére támaszkodtam a dolgozat elkészítése alatt. MagicDraw-ban egy pluginon keresztül van lehetőség VIATRA használatára melyet V4MD-nek hívnak. A plugin egy Query Engine-t biztosít számunkra per projekt. Ezen keresztül tudunk lekérdezéseket és transzformációkat regisztrálni. A V4MD leveszi a vállunkról a terhet az Engine életciklus menedzsmentjét illetően, azonban hátránya, hogy nagyon nagy modelleket komplex lekérdezések esetén a memóriaigénye elég jelentősre duzzadhat a háttérben, cserébe viszont az inkrementális működésnek köszönhetően a lekérdezések már csak a VIATRA által karbantartott táblázatokból való kiolvasás ezért költségül elhanyagolható.
+A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár én elsősorban a modell lekérdezés részére támaszkodtam a dolgozat elkészítése alatt. MagicDraw-ban egy pluginon keresztül van lehetőség VIATRA használatára melyet V4MD-nek hívnak. A plugin egy Query Engine-t biztosít számunkra per projekt. Ezen keresztül tudunk lekérdezéseket és transzformációkat regisztrálni. A V4MD leveszi a vállunkról a terhet az engine életciklus menedzsmentjét illetően. A VIATRA hátránya lehet azonban, hogy nagyon nagy modelleket komplex lekérdezések esetén a memóriaigénye elég jelentősre duzzadhat a háttérben, cserébe viszont az inkrementális működésnek köszönhetően a lekérdezések már csak a VIATRA által karbantartott táblázatokból való kiolvasás ezért költségül elhanyagolható. Éppen ezért olyan esetekben érdemes használni, amelyek kellően gyakran futnak és gyorsan van szükség az eredmény meghatározására mint például a futás idejű validáció.
 
 \section{MagicDraw állapottérkép verifikációs plugin}
 
-Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszközt, mely korábbi egyetemi munkám eredményeként képes volt MagicDraw modellek ellenőrzésére.
+Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszközt, mely korábbi egyetemi munkám eredményeként képes volt MagicDraw modellek ellenőrzésére. A funkció megvalósításához a \emph{Gamma Statechart Composition framework} nevű keretrendszert használtam fel.
+
+\subsection{Gamma Statechart Composition Framework}
+
+A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez is. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
+
+A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
+
+A dolgozat elkészítése során nagy mértékben támaszkodtam a Gamma nyújtotta lehetőségekre. Ezt a Gamma mint egy köztes nyelv használatával érem el úgy, hogy modell transzformációk segítségével megvalósítok SysML-Gamma leképzést. A Gamma a formális verifikáció elvégzéséhez az UPPAAL nevű eszközt használja. Ez időzített automatákon tudja elvégezni a formális verifikációt (\refstruc{fig:gamma}). Ezeket a Gamma szintén modell transzformációk segítségével állítja elő, összekapcsolva a mérnöki modelleket matematikai modellekkel.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/preliminaries/gamma.png}
+	%TODO Forras megjeloles!
+	\caption[]{A Gamma Statechart Composition Framework\footnotemark}
+	\label{fig:gamma}
+\end{figure}
+\newpage
+A Gamma nagy erőssége, hogy állapotgép kompozíciókat is lehet modellezni benne. A komponenseket végrehajtás szempontjából háromféle szemantika van megkülönböztetve.
+
+\paragraph{Szinkron komponensek} melyek egy lépésen belül fogadnak eseményeket ezekre lépnek és elküldik az eseményeket, ezek viszont a következő iterációban fognak fogadásra kerülni a hozzájuk kapcsolódó komponensekben.
+
+\paragraph{Kaszkád komponensek (Cascade Component)} ezek hasonlóan működnek, mint a szinkron komponensek, viszont ebben az esetben a kiküldött üzenetek ugyan abban az iterációban kerülnek fogadásra. Ebből kifolyólag az üzenet áramlásnak aciklikusnak kell lennie, hiszen a feldolgozást végtelen ciklusba kerülne.
+
+\paragraph{Aszinkron komponensek} Az események feldolgozása aszinkron módon, üzenet sorok kiolvasásával történik. Állapottérkép definíciók alapból szinkron szemantikával bírnak, így ahhoz hogy asszinkron szemantikával ruházzuk fel őket be kell csomagolni őket egy \emph{Wrapperbe}. Ez definiálja számukra az üzenet sort is.
+
 
 \subsection{MagicDraw - Gamma transzformáció}
 
@@ -212,6 +178,17 @@ Ezt a folyamatot \refstruc{fig:preliminaries-verif} szemlélteti. A Gamma által
 SysML nem definiál akció nyelvet őrfeltételek és akciók végrehajtásához. Míg akciókat tudunk modellezni bármilyen viselkedést leíró modell segítségével, addig az őrfeltételeket jellemzően valamilyen szöveges nyelvtannal szokás megadni.
 
 Ahhoz, hogy a modell ellenőrzést végre lehessen hajtani ezeknek a Gamma számára érthető kifejezéseknek kell lenniük. A pluginnak ez a verziójában ezért minden őrfeltételt és akciót a Gamma által biztosított nyelvtan segítségével kellett megírni. Ez abból a szempontból nem szerencsés, hogy ez nem egy olyan elterjedt nyelv, mint például a javascript amit a MagicDraw felkínál, továbbá nem áll még rendelkezésre olyan interpreter a MagicDraw-ban ami lehetővé tenné ezek futtatását ami elengedhetetlen többek között a modellek szimulációjához.
+
+
+\section{Xtext}
+
+Az Xtext egy keretrendszer amivel programozási nyelveket és egyéb szakterület specifikus nyelveket lehet készíteni, melyek szöveges formában manifesztálódnak. Ezeket valamilyen már meglévő modellezési nyelv egy konkrét szintaxisaként érdemes készíteni. Ez azt jelenti, hogy egy szövegesen megadott leírás elemeket és ezek kapcsolatait írja egy metamodellnek megfelelően.
+
+Az Xtext nyelvtanok készítéséhez egy erős nyelvtan leíró nyelvet kínál. Az ezzel leírt nyelvtanhoz pedig teljes infrastruktúrát generál mint: parser, linker, típus ellenőrző, fordító. Ezen felül Eclipses környezetben a szerkesztéshez kapunk szintaxis kiemelést, content assistot.
+
+MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és akár saját kiértékelő motort is tudunk írni, az általunk létrehozott nyelvtanokhoz. Sajnos a MagicDraw beépített szerkesztőjében elesünk olyan hasznos felhasználói funkcióktól mint a content assist vagy a szintaxis kiemelés. Erre megoldást jelenthet az Xtext language szerver támogatásának a kihasználása a dolgozat azonban ennek a vizsgálatára nem tér ki.
+
+Az Xtext használatára a dolgozat elkészítése során két helyen volt szükségem. Az egyik az őrfeltételek \emph{parse}olása, a másik pedig külön kérésre egy olyan export funkció integrálása ami XMI helyett a Gamma saját nyelvtanára sorosítva képes modelleket kimenteni.
 
 
 
