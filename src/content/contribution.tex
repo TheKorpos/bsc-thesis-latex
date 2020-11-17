@@ -309,6 +309,34 @@ Szignál fogadásához, hasonlóan mint a küldés esetében a szignálnak szere
 \newline
 Ahhoz, hogy szignálthoz irányt lehessen rendelni fel kell venni egy \emph{Flow Property}t és tipizálni a szignállal. A MagicDraw kikényszeríti, hogy egyedi neve legyen a \emph{Flow Property}knek az azonban lehetséges, hogy két különböző \emph{Flow Property} ugyan azt a szignált használja típusnak vagy ugyan külön szignálra hivatkoznak viszont ezek nevei megegyeznek. Ez a transzformáció során hibához vezethet hiszen a majdani \emph{Event}ek nevei ütközni fognak. Éppen ezért a \emph{Flow Property}k által használt szignálok neveinek egyedinek kell lennie.
 
+\subsection{Kompozit blokkok}
+\begin{tabular}{ | l | r | }
+	\hline
+	Név: & CompositeBlockRule  \\ 
+	\hline
+	Azonosító: & GAMMA\_COMPOSITE \\
+	\hline
+	Súlyosság: & Error \\  
+	\hline
+	Üzenet: & Composite blocks cannot define classifier behaviors \\
+	\hline
+\end{tabular}\newline
+\newline
+Blokkok vagy kompozit blokkok vagy viselkedést, állapotgépeket definiáló blokkok lehetnek. Ez a szabály hibásnak jelöl minden blokkon ami vegyesen definiál partokat és viselkedéseket.
 
+\subsection{Statechart definíciók}
+\begin{tabular}{ | l | r | }
+	\hline
+	Név: & StatechartBlockRule  \\ 
+	\hline
+	Azonosító: & GAMMA\_STATECHART \\
+	\hline
+	Súlyosság: & Error \\  
+	\hline
+	Üzenet: & Statechart blocks cannot contain parts \\
+	\hline
+\end{tabular}\newline
+\newline
+Állapotgépet definiáló blokkok nem tartalmazhatnak partokat.
 
 

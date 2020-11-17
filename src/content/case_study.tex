@@ -142,13 +142,20 @@ A \emph{GammaCheckExpression}öket szintén a gyors menüben a  \emph{Gamma Tran
 \end{figure}
 
 
-Tehát a feltétel teljesül.
+Tehát a feltétel teljesül. Ezt az eredményt nem kielégítő hiszen azt szeretnénk, ha ez soha nem forduljon elő. Vizsgáljuk meg az példát amit kaptunk, hogy hogyan jutottunk el ebbe az állapotba (\ref{fig:trace-signals} ábra). A végrehajtás a harmadik lépésig a megszokott viselkedést produkálja azonban a negyedik lépésben érkezik egy \emph{police} szignál. Ennek határára a negyedik lépésben a két lámpa \emph{Interrupted} állapotba vált. Ugyan ebben a lépésben érkezik még egy \emph{police} szignál. Ezután az ötödik lépésben már hibás állapotba kerül a rendszer. Ennek az oka talán elsőre nem annyira látszik, de ha közelebbről megvizsgáljuk az állapotokat azt láthatjuk, hogy a  harmadik, negyedik és ötödik lépésben is a \emph{controller} a \emph{Secondary} állapotba lép bele. Ennek az állapot belépéskor végrehajtja a \emph{toggleBoth} (\ref{fig:activity} ábra) viselkedést, ami először a \emph{priority} majd a \emph{secondary} partoknak küldi el a \emph{toggle} szignálokat ebben a sorrendben. A negyedik lépésben \emph{primary} piros a \emph{secodnary} épp zöld így amikor a következő lépésben megérkezik előbb a \emph{primary}ba a \emph{toggle} szignál, így ő átlép a zöldbe még mielőtt a \emph{secondary} váltana így teljesül a tulajdonság.
 
-%TODO back-annotation, szimuláció
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=10cm, keepaspectratio]{figures/contribution/traces_example.png}
+	\caption{Verifikáció futtatásának eredménye}
+	\label{fig:traces-example}
+\end{figure}
 
+
+\newpage
 \section{Modell javítása}
 
-A problémát úgy lehet kiküszöbölni talán a legkönnyebben, hogy a \emph{Controller}-be is felveszünk egy olyan állapotot amikor várakozik (\ref{fig:fixed} ábra).
+A problémát úgy lehet kiküszöbölni talán a legkönnyebben, hogy a \emph{Controller}-be is felveszünk egy olyan állapotot amikor várakozik (\ref{fig:fixed} ábra). így már nem történik meg a többször egymás utáni szignál elküldés. Legalább is ezt feltételezzük.
 
 \begin{figure}[!ht]
 	\centering
