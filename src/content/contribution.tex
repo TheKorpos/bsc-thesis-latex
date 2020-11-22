@@ -220,9 +220,24 @@ Kezdetben a legígéretesebb lehetőségnek a szekvencia diagram bizonyult. Ahog
 A Cameo Simulation toolkit képes a szimulációt rögzíteni szekvencia diagramon azonban a szignál kommunikáció nem fog működni a portok miatt. Amit viszont nagyon jól lehet ezeken a diagramokon ábrázolni azok a rendszer állapotai \emph{State Invariant}ok formájában. Ezekkel, ha működő szimulációt nem is, egy jól áttekinthető megjelenítését kaphatjuk a működésnek.
 
 \subsection{Activity diagramok}
-Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást.
+Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást (\ref{fig:activity-counter-example} ábra).
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/WrappedSystem1.png}
+	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/Sender.png}
+	\caption{Ellenpélda végrehajtása}
+	\label{fig:activity-counter-example}
+\end{figure}
+Alap beállítások mellett a szimulátor nem kezeli jól az időzítéseket. Például az egyes komponensek kezdő állapotai nem a nulla időpillanatba voltak aktívak, hanem később és a különböző esemény küldések is időbe teltek amik azt eredményezték, hogy az ellenpélda nem működött a példán, hiszen a modellek nem tartalmaztak ezekre vonatkozóan információkat és a végrehajtások elcsúsztak. Szerencsére azt, hogy hogyan kezeli a szimulátor az idő múlását van lehetőség állítani \emph{Simulation Config} segítségével (\ref{fig:simconf} ábra).
 
-Azonban a szimulátor nem kezeli jól az időzítéseket a két modellen. Ez azt eredményezi, hogy hiába kerülnek jó ütemben elküldésre a szignálok a feldolgozás csúszik ezért az \emph{Activiy} végén az állapotgépek nem lesznek a megfelelő állapotban.
+A modell órájának megfelelő konfigurációja után már az ellenpéldában is szereplő időzítésekkel hajtódtak végre az állapotváltások. Ezek a \emph{start time} nullára állítása. A \emph{step delay} és \emph{step size} 1-1-re állításai voltak.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=70mm, keepaspectratio]{figures/contribution/Sim Config.png}
+	\caption{Szimuláció konfigurálása}
+	\label{fig:simconf}
+\end{figure}
+A konfigurációban az időzítéseken túl a végrehajtás más aspektusait is állítani lehet. Ami kiemelendő az a \emph{slient} mód. Ez kikapcsolja a diagramokon való animációkat. A  hivatalos dokumentáció azt ajánlja, hogy időzítés érzékeny modelleken ezt érdemes kikapcsolni. %TODO link
 
 \newpage
 \section{Validáció}
