@@ -3,7 +3,7 @@
 Ebben a fejezetben bemutatom azokat az ismereteket, technológiákat amelyek segítenek megérteni azokat a megoldásokat melyeket a dolgozat elkészítése során alkalmaztam.
 
 \section{Kapocsolódó munkák}
-Talán érdemes elsőre utánanézni, hogy milyen már létező eszközök állnak rendelkezésre. Bár a MagicDraw specifikus eszközről nem tudok, ami még most is releváns lenne, általánosabban az állapottérkép és formális verifikációval kapcsolatban a legszorosabban kapcsolódó munka, amit a dolgozat során sokszor említeni fogok a Gamma Statechart Compoition Framework amelyet későbbi fejezetekben mutatok be. A megoldások amiket alkalmaztam főleg ennek az eszköznek a segítségével történtek.
+A fejlesztés megkezdése előtt utána néztem, hogy milyen eszközök állak rendelkezésre, amelyek hasonló problémákat oldanak meg. Specifikusan a MagicDrawhoz nem találtam olyat, ami még most is releváns lenne (korábbi munkáim során találkoztam hasonló célú eszközzel, de úgy tűnik annak a fejlesztése nem folytatódott). Általánosabban az állapottérkép és formális verifikációval kapcsolatban a legszorosabban kapcsolódó munka a Gamma Statechart Compoition Framework amelyet későbbi fejezetekben mutatok be. A megoldások amiket alkalmaztam főleg ennek az eszköznek a segítségével történtek.
 
 \section{SysML}
 
@@ -18,7 +18,7 @@ A SysML-t mint ahogyan az UML-t is az Object Management Group (OMG) fejleszti, s
 	\label{fig:custom-profile}
 \end{figure}
 
-Egy nyelv lehetséges elemeit és kapcsolatait leíró struktúrát metamodellnek hívjuk, a tényleges elemekből és ezek kapcsolatából álló modellt pedig példánymodellnek.  SysML esetében az UML profil az amit metamodellnek tudunk tekinteni, igaz a metaszintek eléggé összemosódnak és nem elegendő csak a profilt ismerni, hanem az UML metamodellt is ismerni kell. Például egy SysML Block valójában egy sztereotipizált UML Class. Ez azt jelenti, hogy van egy UML példány specifikáció (Instance Specification) aminek az osztája (Classifier) egy Block sztereotípia és ez hozzá van rendelve az UML-s osztály példányunkhoz a modellünkben. Az UML-s osztály példány a sztereotípia és a példány specifikáció tehát hagyományos értelemben azonos metaszinten helyezkednek el (\refstruc{fig:block-stereotype}).
+Egy nyelv lehetséges elemeit és kapcsolatait leíró struktúrát metamodellnek hívjuk, a tényleges elemekből és ezek kapcsolatából álló modellt pedig példánymodellnek.  SysML esetében az UML profil az amit metamodellnek tudunk tekinteni, igaz a metaszintek eléggé összemosódnak és nem elegendő csak a profilt ismerni, hanem az UML metamodellt is ismerni kell. Például egy SysML Block valójában egy sztereotipizált UML Class. Ez azt jelenti, hogy van egy UML példány specifikáció (Instance Specification) aminek az osztálya (Classifier) egy Block sztereotípia és ez hozzá van rendelve az UML-s osztály példányunkhoz a modellünkben. Az UML-s osztály példány a sztereotípia és a példány specifikáció tehát hagyományos értelemben azonos metaszinten helyezkednek el (\refstruc{fig:block-stereotype}).
 
 \begin{figure}[!ht]
 	\centering
@@ -49,23 +49,25 @@ Akció nem csak állapotátmenetek, hanem állapotok be és kilépésénél is v
 	\label{fig:statechart}
 \end{figure}
 
-Az állapotoknak van egy típusa melyet pszeudo állapotoknak nevezünk. Ezek nem tényleges állapotai a rendszernek olyan értelemben, hogy a rendszer soha nem tartózkodhat ezekben mindig azonnal át kell lépniük belőle egy tényleges állapotba, viszont fontos szemantikai jelentéssel bírnak. A kezdő állapot mely fekete körként jelenik meg egy régió belépési pontjai. Az állapotok mindig régiókban helyezkednek el, ezek tulajdonképpen állapotoknak egy olyan halmaza, amely halmazon belül mindig csak egy állapot lehet aktív, régiókból viszont lehet több is párhuzamosan. Így egy rendszernek lehet egyszerre több aktív állapota is régiónként viszont csak egy (a fork-joinra a dolgozat nem tér ki).
+Az állapotoknak van egy típusa melyet pszeudo állapotoknak nevezünk. Ezek nem tényleges állapotai a rendszernek olyan értelemben, hogy a rendszer soha nem tartózkodhat ezekben mindig azonnal át kell lépniük belőle egy tényleges állapotba, viszont fontos szemantikai jelentéssel bírnak. A kezdő állapot mely fekete körként jelenik meg: \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/initial.png}, egy régió belépési pontjai. Az állapotok mindig régiókban helyezkednek el, ezek tulajdonképpen állapotoknak egy olyan halmaza, amely halmazon belül mindig csak egy állapot lehet aktív, régiókból viszont lehet több is párhuzamosan. Így egy rendszernek lehet egyszerre több aktív állapota is régiónként viszont csak egy (a fork-joinra a dolgozat nem tér ki részletesen).
 
-Pszeudo állapotok még a \emph{History Statek} is. Ezek segítségével meg lehet jegyezni, hogy egy összetett állapot mely belső állapota volt aktív, így az állapotba visszalépve nem a belső régió kezdő állapota hanem az utolsó aktív állapot lesz újra aktív. \emph{History State}eknek két változata van \emph{Deep} és \emph{Shallow}. Előbbi egymásba ágyazott esetén minden régióba az utolsó aktív állapotba lép át, míg utóbbi csak a saját régiójának utolsó aktív állapotába. Jelölésük kör benne "H"-val vagy "H*".
+Pszeudo állapotok a \emph{History Statek} is. Ezek segítségével meg lehet jegyezni, hogy egy összetett állapot mely belső állapota volt aktív, így az állapotba visszalépve nem a belső régió kezdő állapota hanem az utolsó aktív állapot lesz újra aktív. \emph{History State}eknek két változata van \emph{Deep} és \emph{Shallow}. Előbbi egymásba ágyazott esetén minden régióba az utolsó aktív állapotba lép át, míg utóbbi csak a saját régiójának utolsó aktív állapotába. Jelölésük kör, benne "H"-val vagy "H*": \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/history.png}. Létezik még választó pszeudo állapot (\emph{Choice state}) ez szintaktikailag egy rombuszként jelenik meg \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/choice.png}. Ezzel lehet elágazásokat megvalósítani oly módon, hogy a kimenő állapot átmeneteken lévő őrfeltételek igazsága jelöli ki azt az élt ami tüzelhet (több igazra értékelt átmenet esetén nem determinisztikus módon az egyik tüzelhet). Választó állapotok esetén lehet egy őrfeltételben az \emph{else} kulcsszót használni, ilyenkor, ha nem volt más átmeneten igazra értékelődő őrfeltétel akkor ezen az átmeneten keresztül folytatódik a futtatás. A választó állapotból kimenő éleken nem lehet \emph{trigger}.
+
+Az előbbieken kívül létezik még fork-join amivel párhuzamos futtatást lehet modellezni, csatlakozás (\emph{junction}), amivel élek vonhatók össze. Végső állapot (\emph{Final State}) ami a futtatás végét jeleni.
 
 
-\subsection{Funkcionális architektúra modellek}
+\subsection{A rendszer architektúrája}
+Egy rendszer felépítését többféle szempont szerint is lehet modellezni. Ez egyik ilyen, hogy a rendszerünk milyen fizikai részekből áll és ezek között mi a kapcsolat, de fel lehet funkciók szerint is bontani. Utóbbit a rendszer funkcionális architektúrájának nevezzük.
 
-Egy rendszer funkcionális architektúráján olyan modelleket értünk melyek ennek logikai felépítését írják le azaz, hogy milyen funkciói vannak a rendszernek, ezek hogyan kapcsolódnak egymáshoz. Jelen esetben ezeket a modelleket a rendszer állapotgépének a dekomponálására használjuk. Tehát van egy összetett rendszerünk melyeket funkcionális egységekre tudunk bontani úgy, hogy minden funkcionális egység állapot alapú viselkedések egy összessége. A komponensek képesek egymással kommunikálni és egymás viselkedését ezáltal befolyásolni.
+Egy rendszer funkcionális architektúráján olyan modelleket értünk amelyek ennek a logikai felépítését írják le azaz, hogy milyen funkciói vannak a rendszernek, ezek hogyan kapcsolódnak egymáshoz. Jelen esetben ezeket a modelleket a rendszer állapotgépének a dekomponálására használjuk. Tehát van egy összetett rendszerünk melyeket funkcionális egységekre tudunk bontani úgy, hogy minden funkcionális egység állapot alapú viselkedések egy összessége. A komponensek képesek egymással kommunikálni és egymás viselkedését ezáltal befolyásolni.
 
-%TODO ez igy meg lehet pontatlan
-A rendszert két szempont szerint tudjuk modellezni: komponens definíciók és ezek kompozíciója illetve ezek kapcsolatai szerint. Előbbiek blokkok formájában jelennek meg és SysMLben Blokk definíciós (Block Definition) vagy BDD diagramokon jelennek meg. Azt, hogy a blokkon belüli részek (Part) hogyan kapcsolódnak egymáshoz Internal Block Diagramok (IBD) tartalmazzák. A részek közötti kapcsolatot konnektorok írják le. Ezek jellemzően portokon keresztül kötik össze a részeket. A portok tekinthetők egy adott blokk interfészének is.
+A rendszert két szinten tudjuk modellezni: komponens definíciók és ezek kompozíciója, illetve ezeknek a kapcsolatai és belső szerkezete szerint. Előbbiek blokkok formájában jelennek meg és SysMLben Blokk definíciós (Block Definition) vagy BDD diagramokon jelennek meg A tartalmazásokat pedig \emph{Composition} élekkel tudjuk modellezni. Azt, hogy a blokkon belüli részek (\emph{Part}) hogyan kapcsolódnak egymáshoz Internal Block Diagramok (IBD) tartalmazzák. A részek közötti kapcsolatot konnektorok írják le. Ezek jellemzően portokon keresztül kötik össze a részeket. A portok tekinthetők egy adott blokk interfészének is.
 
 A dolgozat elkészítésénél kétféle blokkot különböztetek meg. Azokat melyek állapotgépeket definiálnak és nem bonthatók részekre ezeket állapot blokkoknak nevezem. Illetve olyan blokkokat melyen részekre bonthatók, de nem definiálhatnak saját állapotgépet, ezeket pedig kompozit blokkoknak.
 
 \section{MagicDraw}
 
-A MagicDraw egy modellező eszköz melyet a NoMagic fejlesztett elsősorban UML modellek készítésére. Ahhoz, hogy SyML-ben is tudjunk modelleket készíteni egy beépülő modulra van szükségünk (kivéve ha Cameo System Modellert használunk ami a SysML pluginnal integrálva szállít). A MagicDraw az iparban egy egyre inkább elterjedt eszköz. Szigorúan követi az UML és SysML szabványt.
+A MagicDraw egy modellező eszköz melyet a NoMagic fejlesztett elsősorban UML modellek készítésére, bár talán inkább a SysML modellezés vált meghatározóvá. Ahhoz, hogy SyML-ben is tudjunk modelleket készíteni egy beépülő modulra van szükségünk (kivéve ha Cameo System Modellert használunk ami a SysML pluginnal integrálva szállít). A MagicDraw az iparban egy egyre inkább elterjedt eszköz. Szigorúan követi az UML és SysML szabványt.
 Az modellezőeszköz gazdag funkcionalitással rendelkezik mint fejlett felhasználói interfész (\refstruc{fig:md-gui}), validációs motor - ami képes akár futásidőben a felhasználók által készített szabályok futtatására is, sablon alapú kódgenerátor és még sok egyéb. Ezen felül a funkcionalitás beépülő modulok segítségével bővíthető.
 
 \begin{figure}[!ht]
@@ -80,7 +82,7 @@ MagicDrawhoz lehetőségünk van saját plugin fejlesztésére is, amik lehetőv
 
 \section{Modelltranszformációk}
 
-Az ipari standardok mellett sok speciális modellezési nyelv is létezik, amelyek megannyi céllal és eszközkészlettel jöttek létre. Ezek között vannak magas absztrakciójú általánosabb nyelvek és alacsony szintűek is amik egy része olyan formalizmusokra épül amik felett bizonyos problémákra matematikai eszközökkel tudunk megoldást keresni.
+Az ipari standardok mellett sok speciális modellezési nyelv is létezik, amelyek megannyi céllal és az ezeket használó eszközökkel jöttek létre. Ezek között vannak magas absztrakciójú általánosabb nyelvek és alacsony szintűek is amik egy része olyan formalizmusokra épül amik felett bizonyos problémákra matematikai eszközökkel tudunk megoldást keresni.
 
 A modellvezéreltség egyik alapötlete, hogy különböző modellekből származtatni tudunk más modelleket feltéve, hogy elegendő információ áll rendelkezésünkre a konverzió elvégzéséhez. Ezt a fajta származtatást például modell transzformációk segítségével tudjuk végrehajtani. A modelltranszformációk használata lehetővé teszi, hogy ne csak azokat a technológiákat használjuk modellünk feldolgozására melyek speciálisan az adott modellezési nyelvhez készültek hanem a modelleket megpróbáljuk átalakítani - lehetőleg a szemantikai tartalom megőrzésével és automatizáltan - egy olyan modellezési nyelvre amelyhez már létezik az általunk használni kívánt funkcionalitást támogató technológia.
 
@@ -88,6 +90,8 @@ Ezen felül dokumentumokat is tudunk származtatni a modellekből a kódgenerál
 
 
 \section{Felhasznált technológiák}
+
+Ebben az alfejezetben röviden kitérek azokra a tényleges  technológiákra, amelyekre a feladat elvégzése során használtam, mint például a VIATRA, a kiindulási alapot szolgáltató MagicDraw plugin és a Gamma.
 
 \subsection[]{VIATRA\footnotemark}
 \footnotetext{https://www.eclipse.org/viatra/}

@@ -9,14 +9,14 @@ A fejlesztés során hozott alkalmazott megoldások áttekintése előtt érdeme
 \subsection{Kompozit állapotgép definíciók támogatása}
 Egy rendszert állapotait és állapotváltásait le lehetne modellezni egy mindent tartalmazó állapotgéppel, párhuzamos régiókkal és egyéb modellezési megoldásokkal. Ahogy a modell mérete nő a funkcionalitást érdemes feldarabolni és részenként modellezni. Ez nem csak az áttekinthetőséget segíti, de megkönnyíti a modellen való csapatmunkát is a mérnökök számára hiszen a szétbontott részeket külön, egymástól független lehet modellezni, majd ezeket összekapcsolni.
 
-Szerencsére a Gamma erre a problémára is megoldást kínál, támogatja állapotgépek kompozíciójának modellezését és formális verifikációját.
+Szerencsére a Gamma erre a problémára is megoldást kínál, támogatja állapotgépek kompozíciójának modellezését és formális verifikációját. A fejlesztés egyik fő célja modell alapú kompozit rendszerek modellezésének és transzformációjának támogatása MagicDraw - SysML modellek esetében.
 
 \subsection{Eredmények megjelenítése}
-Fontos kérdés, hogy a formális verifikáció eredményét milyen formában kívánjuk megjeleníteni a mérnökök számára. A plugin eddigi verziója csak arra a kérdésre tudott választ adni, hogy teljesülnek-e a modellel szemben támasztott megkötések vagy sem.
+Fontos kérdés, hogy a formális verifikáció eredményét milyen formában kívánjuk megjeleníteni a mérnökök számára. A plugin korábbi verziója csak arra a kérdésre tudott választ adni, hogy teljesülnek-e a modellel szemben támasztott megkötések vagy sem.
 
 Az \uppaal\ és a Gamma is képes sokkal részletesebb választ adni. Ezt a Gamma \emph{back-annotation} formájában teszi azaz a verifikációban előállt időzítések és lépéseket visszavezeti az eredeti modellbe. Ehhez a Gamma egy elég jól értelmezhető nyelvtant definiál, azonban a SysML-t jellemzően rendszermérnökök használják akik általában a szöveges leírások helyett a diagramokat preferálják.
 
-A modellbe visszavezetett lépések, \emph{trace}k, a modell egy futtatását írják le. Ezek szinkron esetben egymástól jól elkülönülő lépés sorozatok. Ezt leginkább szekvencia diagramokon lehet ábrázolni. További érv a szekvencia diagramok alkalmazása mellett az a MagicDraw, illetve a Cameo Simulation toolkit. Ez ugyanis lehetőséget biztosít szimulációk rögzítésére szekvencia diagramok formájában (\refstruc{fig:md-cameo-rec})) melyekkel a futtatás reprodukálható. A cél tehát olyan szekvencia diagramok előállítása úgy minthogyha a szimulátort használva találtuk volna meg a hibautakat, így ezekről nem csak egy jól áttekinthető megoldást kapunk szekvenciák formájában, hanem ezek szimulálhatók is lesznek Cameo Simulation Toolkit segítségével.
+A modellbe visszavezetett lépések, \emph{trace}k, a modell egy futtatását írják le. Ezek szinkron esetben egymástól jól elkülönülő lépés sorozatok. Ezt leginkább szekvencia diagramokon lehet ábrázolni. További érv a szekvencia diagramok alkalmazása mellett az a MagicDraw, illetve a Cameo Simulation toolkit. Ez ugyanis lehetőséget biztosít szimulációk rögzítésére szekvencia diagramok formájában (\refstruc{fig:md-cameo-rec})) melyekkel a futtatás elméletben reprodukálható. A cél tehát olyan szekvencia diagramok előállítása úgy minthogyha a szimulátort használva találtuk volna meg a hibautakat, így ezekről nem csak egy jól áttekinthető megoldást kapunk szekvenciák formájában, hanem ezek akár szimulálhatóak is lehetnek Cameo Simulation Toolkit segítségével.
 
 %TODO kisebbre
 \begin{figure}[!ht]
@@ -32,7 +32,7 @@ A modellbe visszavezetett lépések, \emph{trace}k, a modell egy futtatását í
 
 A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak lehetnek. Az \uppaal-ban ezeket temporális logikai kifejezések segítségével tudjuk megtenni \uppaal Queryk formájában ezért ezeket az ellenőrzés során elő kell állítanunk.
 
-A Gammához készült egy úgynevezett \emph{Property Language} és ez ennek az \uppaal-ra transzformáló funkciója és ezt használtam fel.
+A Gammához készült egy úgynevezett \emph{Property Language} és ez ennek az \uppaal-ra transzformáló funkciója és ezt terveztem felhasználni. Ez szintén temporális logikai kifejezéseket ír le viszont nem az \uppaal bemenetét képező időzített automatákon hanem magukon az állapotgépeken.
 
 \subsection{Validáció}
 
@@ -183,6 +183,26 @@ Az eseményeknek mindig specifikálniuk kell, hogy melyik porton várják a szig
 Portok közül csak a \emph{Proxy} portok támogatottak. Ennek oka, hogy talán ezek állnak legközelebb a Gammában használatos portokhoz szemantikailag szemben például a \emph{Full Port}okkal. Utóbbiak a rendszer külön részeinek tekinthetők és saját tulajdonságokkal bírhatnak, míg a \emph{Proxy} portok a blokkjuk tulajdonságaihoz nyújtanak hozzáférési pontot a "külvilágnak". Azt, hogy melyek pontosan ezek a tulajdonságok az \emph{Interface Block} definiálja.
 A Proxy portok iránya származtatott a \emph{Flow property} irányokból amik keresztül mehetnek rajta. Az irány az \emph{isConjugated} flag igazra állításával változtatható.
 
+\section{Modell tulajdonságainak leírása}
+
+A modell felett meg kell tudnunk fogalmazni tulajdonságokat, amelyeknek a teljesülését formális verifikáció segítségével szeretnénk majd igazolni. Ezeknek a tulajdonságoknak sokféle módon le lehetne írni, például Object Constranint Language (OCL) segítségével, esetleg valamilyen szcenárió alapú leírással. A Gamma esetében lehetősége van a felhasználóknak elágazó idejű tempóralis logikai kifejezésekkel tulajdonságokat megfogalmazni (példa: \ref{fig:ctl} ábra). A feladat elkészítéséhez ezt a nyelvtant használtam fel.
+
+Az elágazó idejűség azt jelenti, hogy a rendszernek nem csak egy,  hanem az összes lefutását vizsgáljuk egyszerre. Éppen ezért meg kell tudnunk mondani azt, hogy egy tulajdonság teljesülését minden lefutás esetében elvárunk, vagy megelégszünk azzal, hogy van olyan lefutás ahol teljesül. Ezek jelölése a nyelvben az "A" (for all futures) és az "E" (exits future) kvantorok.
+
+Az egyes útvonalakon is meg kell tudnunk mondani, hogy a tulajdonság teljesülését mikor várjuk. Valamikor a jövőben vagy esetleg minden lépésben azaz a tulajdonság invariáns. Ezek jelölései az "F" (future) és a "G" (globally). A nyelv ezeken felül támogatja még az "X" (next), "U" (until) és "R" (release) operátorokat is.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/CTL.png}
+	\caption{Példa: CTL kifejezések}
+	\label{fig:ctl}
+\end{figure}
+
+\subsection{Kifejezések a definiálása és használata}
+A modellben a kifejezéseket \emph{Check Expression}ök törzsében kell megadni. Ezeknek a modell elemeknek egy tetszőleges \emph{package}ben kell lennie aminek viszont egy \emph{GammaWorkspace}ben. Ellenőrzés során a kifejezések kiolvasásra kerülnek és Xtext segítségével \emph{parse}oldónak. Fontos, hogy ez a nyelvtan Gamma modellekre képes hivatkozni nevezetesen állapotokra és változókra, éppen ezért el kell végezni a MagicDraw - Gamma transzformációt mielőtt a \emph{parse}olást elvégeznénk. A transzformáció után a hivatkozható elemek ugyan azon a néven szerepelnek és ugyan olyan hierarchiában a két modellben ezért nem volt szükséges a kettőt objektum szinten is összekapcsolni. Ez  a kérdés azért fontos mert ezeket a tulajdonságokat a SysML modellen és nem pedig a Gamma modellen szeretnénk kimondani.
+
+Érdemes megjegyezni, hogy mivel a Gamma a háttérben az \uppaal segítségével végzi a formális verifikációt ezeket a kifejezéseket még át kell alakítani UPPAAL queryvé. Ezt a konverziót a Gamma elvégzi. Igazából ez az a lépés ahol a Gamma modellek megléte szükségessé válik, hiszen az állapot és változó neveknek a majdani \uppaal modellben is helyesnek kell lenni.
+
 
 \section{MagicDraw modellek back-annotációja}
 
@@ -209,7 +229,7 @@ Az lépések közti akciók és a kimenet \emph{Activiy} diagramokra képződnek
 \end{figure}
 
 
-\section{Szimuláció}
+\newpage\section{Szimuláció}
 
 A fejlesztés során a futtatás megjelenítésének egyik módjának a szimuláció ígérkezett. Ez sajnos a szimulációs eszköz képességei miatt nem tudott maradéktalanul megvalósulni, viszont az előállított modellek mint megjelenítési forma egészen ígéretesnek bizonyult. Továbbá esetleg később ahogy fejlődik a szimulációs eszköz lehetséges, hogy kis alakításokkal lehetővé válik a modellek szimulációja is. A továbbiakban bemutatom a funkció megvalósítására tett próbálkozásokat és az akadályokat ami miatt nem tudott a funkció maradéktalanul megvalósulni.
 
@@ -217,10 +237,10 @@ A fejlesztés során a futtatás megjelenítésének egyik módjának a szimulá
 
 Kezdetben a legígéretesebb lehetőségnek a szekvencia diagram bizonyult. Ahogy viszont elkezdtem belemélyedni ezek használatába elkezdtek a hiányosságok már a modellezés szintjén megmutatkozni azok iránt az aspektusok iránt, amiket modellezni szerettem volna. Ugyan a komponensek kommunikációja és annak sorrendisége leírható nincsen lehetőség egyéb strukturális tulajdonságok használatára mint például a portok.
 
-A Cameo Simulation toolkit képes a szimulációt rögzíteni szekvencia diagramon azonban a szignál kommunikáció nem fog működni a portok miatt. Amit viszont nagyon jól lehet ezeken a diagramokon ábrázolni azok a rendszer állapotai \emph{State Invariant}ok formájában. Ezekkel, ha működő szimulációt nem is, egy jól áttekinthető megjelenítését kaphatjuk a működésnek.
+A Cameo Simulation toolkit képes a szimulációt rögzíteni szekvencia diagramon azonban a szignál kommunikáció nem fog működni a hiszen az eseményeket nem maguk a komponensek, hanem a portjaik fogadják. Amit viszont nagyon jól lehet ezeken a diagramokon ábrázolni azok a rendszer állapotai \emph{State Invariant}ok formájában. Ezekkel, ha működő szimulációt nem is, egy jól áttekinthető megjelenítését kaphatjuk a működésről.
 
 \subsection{Activity diagramok}
-Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást (\ref{fig:activity-counter-example} ábra).
+Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást (\ref{fig:activity-counter-example} ábra). Az egyetlen hiányosság, az aktuális állapotok nyomon követhetősége.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/WrappedSystem1.png}
