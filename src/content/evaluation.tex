@@ -1,3 +1,12 @@
-\chapter{Értékelés}
+\chapter{Teljesítmény mérés, értékelés}
 
-Ebben a fejezetben értékelem a megoldást és megvizsgálom az alternatív lehetőségeket, illetve összevetem ezekkel az alkalmazott megoldást.
+Ebben a fejezetben megvizsgálom az eszköz teljesítményét és azt, hogy hogyan skálázódik a funkcionalitás a modell elemszámának növekedésével. Ez azért fontos, mert  hiába van megoldásunk egy problémára, ha az a gyakorlatban az erőforrások korlátossága miatt nem képes időben eredményt adni. A két legfontosabb tényező az idő és a memóriafogyasztás. Megfelelő gyorsítótárak alkalmazásával az idő mértéke drasztikusan csökkenthető, viszont ez memóriába kerül. Ha a memória elfogy a szemét gyűjtő algoritmus agresszívabban próbálhatja összeszedni az elengedett objektumokat, ez szintén megnövelheti a végrehajtási időt, hiszen a rendszer szemétgyűjtéssel és nem pedig a működés elvégzésére használja az erőforrásokat.
+
+A plugin VIATRA-t használ mégpedig inkrementális konfigurációval. Ez azt jelenti, hogy minták inicializációjuktól folyamatosan figyelik a modell változásait és módosítják a lekérdezések eredményhalmazát. Ez szintén memóriát vesz igényben viszont az elemek lekérdezése egy táblázat sorának kiolvasásának megfelelő komplexitással bír és nagyon gyors. Azt, hogy mennyire nő nagyra a VIATRA memória igénye leginkább a minták befolyásolják ezért különösen fontos, hogy ezek minél hatékonyabbak legyenek, mert nagy modell esetén nagyon nagy memória fogyasztást eredményezhetnek.
+
+\section{Módszertan}
+
+A teljesítmény mérés során az egyes transzformációk futási idejét és a VIATRA memória fogyasztását mértem. Magát a formális verifikációt  nem vizsgáltam, mert az főként az \uppaal teljesítményétől függ.
+
+
+
