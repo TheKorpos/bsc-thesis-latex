@@ -1,1 +1,40 @@
 \chapter{Összefoglalás}
+
+Dolgozatomban a feladat kiírásnak megfelelően bemutattam az eszköz korábbi változatát, majd ismertettem azokat a módosításokat melyeket a szoftveren végeztem. A módosítások eredményeképp már kompozit, hierarchikus állapottérképek formális verifikációjára is lehetőség van, az ellenpéldák a modellben létrejönnek. A továbbfejlesztett eszköz működését bemutattam egy példán és mérésekkel vizsgáltam a beépülő modul teljesítményét.
+
+\paragraph{A fontosabb kontribúciókéó:}
+\begin{itemize}
+	\item Komponensek transzformációja
+		\begin{itemize}
+			\item UML profil a komponens szemantika módosításához
+			\item Támogatott modell struktúrák
+			\item A transzformáció megvalósítása
+			\item Validációs készlet tervezése
+		\end{itemize}
+	
+	\item Példák, ellenpéldák megjelenítése
+		\begin{itemize}
+			\item UML profil a szemantika változtatásához
+			\item Ellenpélda back-annotálása a SysML modellbe
+			\item Szcenárió megjelenítésének vizsgálata különböző diagramtípusokon
+			\item Kísérletek a szcenáriók végrehajtására a szimulátorral
+		\end{itemize}
+	\item Property nyelvtan felhasználása
+		\begin{itemize}
+			\item tulajdonságok definiálása a Gamma Property nyelvtanán speciális modell elemekben	
+		\end{itemize}
+	\item Megvalósítás értékelése teljesítmény szempontjából
+		\begin{itemize}
+			\item transzformáció végrehajtási idejének mérése
+			\item a VIATRA minták memória igényének vizsgálata	
+		\end{itemize}
+\end{itemize}
+A munkám eredményeként komponens és állapot alapú modelleken is végre lehet hajtani a formális verifikációt. A modellben back-annotáció formájában megjelennek a példák és ellenpéldák. A rendszer tulajdonságait pedig a Gamma \emph{Property} nyelvtanának segítségével lehet megfogalmazni.
+
+\section{Lehetőségek az eszköz továbbfejlesztésére}
+
+Az ellenpéldák megjelennek a modellben, de a szcenáriókat leíró diagramok automatikusan nem állnak elő. Ezek előállítása szintén segítené a mérnököket a modellek vizsgálatában. Ezen felül egy szimulátor motort is létre lehetne  hozni, ami lehetővé tenné az események helyes visszajátszását.
+
+Ahogy arra a mérések is rámutattak van olyan megoldás aminek az alkalmazása teljesítmény problémához vezetett. Ezek kijavítása vagy más megoldásra cserélése a jövőben indokolt.
+
+

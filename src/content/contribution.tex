@@ -259,6 +259,12 @@ A modell órájának megfelelő konfigurációja után már az ellenpéldában i
 \end{figure}
 A konfigurációban az időzítéseken túl a végrehajtás más aspektusait is állítani lehet. Ami kiemelendő az a \emph{slient} mód. Ez kikapcsolja a diagramokon való animációkat. A  hivatalos dokumentáció azt ajánlja, hogy időzítés érzékeny modelleken ezt érdemes kikapcsolni. %TODO link
 
+
+A szimuláció az időzítések korrekciója után sem volt működőképes. Ennek oka, hogy a szimulátor nem ugyan azon szemantika mentén hajtja végre az utasításokat, mint ami szerint a formális verifikációt elvégeztük. Például a \emph{History State} csak akkor mentette el egy állapot belső állapotait, ha az adott állapotból más állapotba lépett át a rendszer. Hurokélek esetén a végrehajtás a kezdő állapotból újraindult. Abban az esetben, ha a rendszer egy másik állapotba átlépett majd vissza a végrehajtás az elvártak szerint az utolsó aktív állapotból folytatódott.
+
+\paragraph{Értékelés}
+A szimulátort csak akkor lehet felhasználni a példák futtatása, ha a szemantika ami szerint az ellenőrzést végeztük ugyan az mint amit a szimulátor is használ. A szimulátorhoz lehetőségünk van szimulációs motort fejleszteni. Ez lehetőséget nyújthat a tulajdonságot sértő vagy alátámasztó működés végrehajtására.
+
 \newpage
 \section{Validáció}
 
