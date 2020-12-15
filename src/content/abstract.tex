@@ -9,9 +9,9 @@
 \chapter*{Kivonat}\addcontentsline{toc}{chapter}{Kivonat}
 
 
-Biztonságkritikus rendszerek tervezéséhez különösen fontos, hogy rendelkezésünkre álljanak olyan eszközök, melyek segítségével meg lehet vizsgálni, hogy a rendszer modellezett viselkedése valóban megfelel a rendszerrel szemben támasztott követelményeknek. A viselkedés modellezése magas szinten gyakran történik állapot alapú formalizmusokkal, mint például a UML állapottérképekkel.
+Biztonságkritikus rendszerek tervezéséhez különösen fontos, hogy rendelkezésünkre álljanak olyan eszközök, melyek segítségével meg lehet vizsgálni, hogy a rendszer modellezett viselkedése valóban megfelel a rendszerrel szemben támasztott követelményeknek. A viselkedés modellezése magas szinten gyakran történik állapot alapú formalizmusokkal, mint például a UML állapottérképekkel. Ezek gyakran komponenseket definiálnak amik egymással kölcsönhatásban állnak, így szükségessé válik ezeknek a komponens együtteseknek a vizsgálata is. A tulajdonságok teljesüléséhez példákat kell szolgáltatni amik alátámasztják a tulajdonság teljesülését vagy adott esetben sérülését, hogy a mérnökök megtalálhassák és kijavíthassák a tervezési hibákat.
 
-A MagicDraw egy UML és SysML modellező eszköz amely elterjedt az iparban. Ehhez az eszközhöz készült egy beépülő modul, ami lehetővé teszi logikai formulák segítségével specifikált tulajdonságok teljesülésének ellenőrzését állapottérképeken. A mérnökök gyakran használnak hierarchikus, komponens alapú állapot modelleket rendszerek modellezésére, azonban a beépülő modul ezek együttes ellenőrzésére nem képes. A tulajdonságok teljesülésének vizsgálata olyan példák keresését jelenti, amik bizonyítják ennek teljesülését. Fontos, hogy a mérnökök ezekhez hozzáférjenek és elemezni tudják. 
+A MagicDraw egy UML és SysML modellező eszköz amely elterjedt az iparban. Ehhez az eszközhöz korábbi munkáim során készítettem egy beépülő modult, ami lehetővé teszi logikai formulák segítségével specifikált tulajdonságok teljesülésének ellenőrzését állapottérképeken. A mérnökök gyakran használnak hierarchikus, komponens alapú állapot modelleket rendszerek modellezésére, azonban a beépülő modul ezek együttes ellenőrzésére nem képes. A tulajdonságok teljesülésének vizsgálata olyan példák keresését jelenti, amik bizonyítják ennek teljesülését. Fontos, hogy a mérnökök ezekhez hozzáférjenek és elemezni tudják. A beépülő modul ezeket megjelenítésére nem képes.
 
 Dolgozatomban bemutatom a beépülő modult és hogy milyen módon fejlesztettem azt tovább, hogy lehetőséget biztosítson komponenst alapú hierarchikus állapot modellek formális ellenőrzésére és az ellenőrzés során keletkező bizonyítékként szolgáló példák megjelenítésére. Az elkészítette eszköz működését egy példán keresztül bemutatom, majd mérések segítségével értékelem a gyakorlati megvalósítás hatékonyságát.
 
@@ -25,7 +25,14 @@ Dolgozatomban bemutatom a beépülő modult és hogy milyen módon fejlesztettem
 %----------------------------------------------------------------------------
 \chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
 
-TODO:
+Safety critical systems raise the need for various tools that can verify their design by checking if modeled behaviors satisfy their specified requirements.
+
+Modeling behaviors on a high level often relies on state-based formalisms such as UML statecharts. These often serve as definitions for components that influence each other’s behavior through various types of communication. This makes it necessary that the tools support this kind of modeling and allow model checking on such component-based systems. The existence of required system properties must be proven by examples that either prove or disprove the existence of these specified properties. Engineers then can use these examples to find and correct errors in the model.
+
+MagicDraw is a modeling tool for UML and SysML and it is a widely used tool amongst system engineers. In the course of my previous works, I have made a plugin for this modeling tool which enables the check of properties defined as logical formulas on statecharts. However, it cannot perform checks on models that follow the commonly used component-based approach. The existence of properties is proven by finding examples as proof of their existence. It is important that engineers can view and analyze these examples which the tool does not allow just yet.
+
+In my thesis I introduce the tool that I have made previously and the feature improvements that allow the checking of component-based systems and the display of examples produced during the checking process. I present my solutions on a small-scale example then I perform some measurements to evaluate the performance of the used solutions.
+
 
 \vfill
 \cleardoublepage
