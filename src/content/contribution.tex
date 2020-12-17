@@ -4,7 +4,7 @@ Ebben a fejezetben ismertetem a beépülő modulon végzett továbbfejlesztések
 
 \section{Fejlesztés céljai}
 
-A fejlesztés során hozott alkalmazott megoldások áttekintése előtt érdemes végigvenni, hogy mik is voltak a fejlesztés fő céljai és mi volt ezeknek a motivációja.
+A fejlesztés során alkalmazott megoldások áttekintése előtt érdemes végigvenni, hogy mik is voltak a fejlesztés fő céljai és mi volt ezeknek a motivációja.
 
 \subsection{Kompozit állapotgép definíciók támogatása}
 Egy rendszert állapotait és állapotváltásait le lehetne modellezni egy mindent tartalmazó állapotgéppel, párhuzamos régiókkal és egyéb modellezési megoldásokkal. Ahogy a modell mérete nő a funkcionalitást érdemes feldarabolni és részenként modellezni. Ez nem csak az áttekinthetőséget segíti, de megkönnyíti a modellen való csapatmunkát is a mérnökök számára hiszen a szétbontott részeket külön, egymástól független lehet modellezni, majd ezeket összekapcsolni.
@@ -32,7 +32,7 @@ A modellbe visszavezetett lépések, \emph{trace}k, a modell egy futtatását í
 
 A formális verifikáció elvégzéséhez a modelleken felül meg kell tudnia a felhasználónak azokat a kérdéseket melyekre választ szeretne kapni a modell ellenőrzése során. Ezek jelen esetben a "Kerülhet-e a rendszer adott állapotba" illetve "Adott állapotból el tud-e jutni egy másikba" típusúak lehetnek. Az \uppaal-ban ezeket temporális logikai kifejezések segítségével tudjuk megtenni \uppaal Queryk formájában ezért ezeket az ellenőrzés során elő kell állítanunk.
 
-A Gammához készült egy úgynevezett \emph{Property Language} és ez ennek az \uppaal-ra transzformáló funkciója és ezt terveztem felhasználni. Ez szintén temporális logikai kifejezéseket ír le viszont nem az \uppaal bemenetét képező időzített automatákon hanem magukon az állapotgépeken.
+A Gammához készült egy úgynevezett \emph{Property Language} és ez ennek az \uppaal-ra transzformáló funkciója és ezt terveztem felhasználni. Ez szintén temporális logikai kifejezéseket ír le viszont nem az \uppaal\ bemenetét képező időzített automatákon hanem magukon az állapotgépeken.
 
 \subsection{Validáció}
 
@@ -67,7 +67,7 @@ A Gamma háromféle komponens végrehajtási szemantikát biztosít a felhaszná
 	\label{fig:comp-prof}
 \end{figure}
 
-A sztereotípiák leszármaznak a Block sztereotípiájából, így lényegében lecserélik azt. Ennek előnye hogy szintaktikailag is asszinkron és szinkron blokkok fognak megjelenni a modelljeinkben. Viszont van egy nagyon nagy hátránya is mégpedig az, hogyha már meglévő modelleken szeretnénk használni az eszközt szükség van azok módosítására, amire nem mindig van lehetőség, például elosztott környezetben. Sokszor azonban az őrfeltételekre, akciókra és interfészekre vonatkozó megkötések már önmagukban megkövetelik a modellek módosítását, hiszen ezek nagy valószínűséggel nem a támogatott módszertant követik.
+A sztereotípiák leszármaznak a Block sztereotípiájából, így lényegében lecserélik azt. Ennek előnye hogy szintaktikailag is asszinkron és szinkron blokkok fognak megjelenni a modelljeinkben. Viszont van egy nagy hátránya is mégpedig az, hogyha már meglévő modelleken szeretnénk használni az eszközt szükség van azok módosítására, amire nem mindig van lehetőség, például elosztott környezetben. Sokszor azonban az őrfeltételekre, akciókra és interfészekre vonatkozó megkötések már önmagukban megkövetelik a modellek módosítását, hiszen ezek nagy valószínűséggel nem a támogatott módszertant követik.
 
 Egy alternatív megoldás az lehetne, hogy a sztereotípiákat valamilyen él például \emph{Dependency} segítségével rendeljük az egyes komponens definíciókhoz, vagy komponensekhez, \emph{part}okhoz. Ez megoldást nyújthat arra a problémára is, hogyha a modell egyes részei külső könyvtárból jönnek, vagy nincs hozzáférésünk hozzájuk.
 
@@ -78,7 +78,7 @@ Ahhoz, hogy a formális verifikáció végrehajtható legyen ki kell választani
 
 Az elképzelés szerint a felhasználó \emph{Workspace}eket hoz létre. Ezek hivatkoznak a felhasználó számítógépén egy könyvtárra melyet az infrastruktúra sajátosságából adódó háttértárra kimentendő modelleket tárolására használok. Ezen felül rajta keresztül kell behivatkozni az ellenőrizendő modellt a projektből.
 
-A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy mely a MagicDraw - Gamma transzformáció során milyen leképzések történtek. Ezek valójában UML propertyk egy \emph{Class}on belül melyeknek a neve egy azonosító amivel a Gamma modell egy kisorosított XMI fájlban lévő elemei vannak hivatkozva. A \emph{property}kből egy \emph{Trace} él mutat a megfelelő MagicDraw elemekre. A kisorosított XMI ugyan ezen \emph{Class} modell elemekhez mint \emph{Comment} vannak hozzárendelve, innen lehet őket kiolvasni.
+A modell transzformációk során \emph{Trace}k keletkeznek. Ezek alapján lehet visszakeresni, hogy a MagicDraw - Gamma transzformáció során milyen leképzések történtek. Ezek valójában UML propertyk egy \emph{Class}on belül melyeknek a neve egy azonosító amivel a Gamma modell egy kisorosított XMI fájlban lévő elemei vannak hivatkozva. A \emph{property}kből egy \emph{Trace} él mutat a megfelelő MagicDraw elemekre. A kisorosított XMI-k ugyanezen \emph{Class}okhoz \emph{Comment} formájában vannak hozzárendelve, innen lehet őket kiolvasni.
 
 A követelményeket \emph{GammaProperty} segítségével lehet megadni a Gamma által definiált Property nyelvtan segítségével. Az ezek ellenőrzéséből származó Back-annotaion modellek is a \emph{Workspace}ben helyezkednek el. A modell elemei a következők (\ref{fig:Infrastructure} ábra):
 
@@ -154,13 +154,13 @@ A back-annotation modell feladata visszacsatolni az eredeti modellbe a valamilye
 Egy nagy komplex rendszert célszerű nem egyben, hanem részekre bontva modellezni majd a részek egymáshoz illesztéséből, komponálásából képezni a teljes rendszert. Állapottérképek dekomponálását azaz részekre bontását a Gamma is támogatja. A kihívás a SysML és a Gamma közötti megfeleltetések megválasztása oly módon, hogy a szemantika ne sérüljön. A megfeleltetés két szempontól kell vizsgálni, egyszer az elemek tartalmazási hierarchiái szerint, egyszer pedig a köztük modellezett kommunikáció szerint.
 
 \subsection{Struktúra megfeleltetése}
-A Gammában nyelvi szinten elkülönül az állapottérkép (StatechartDefinition) és a kompozit komponens (Composite Component) fogalma. Állapottérképek a modell hierarchia gráfjában a levelekben helyezkednek el. SysML esetében a minden Blokknak lehet viselkedése, jelen esetben állapottérképe. A megfeleltetés elvégzéséhez megkötést fogalmaztam meg mely kétféle blokkot enged meg. 
+A Gammában nyelvi szinten elkülönül az állapottérkép (StatechartDefinition) és a kompozit komponens (Composite Component) fogalma. Állapottérképek a modell hierarchia gráfjában a levelekben helyezkednek el. SysML esetében a minden Blokknak lehet viselkedése, jelen esetben állapottérképe. A megfeleltetés elvégzéséhez megkötést fogalmaztam meg amely szerint kétféle blokk megengedett meg.\\
 \begin{itemize}
 	\item a viselkedéssel rendelkezőket, amelyek nem tartalmaznak \emph{Part}okat
 \end{itemize}
 és
 \begin{itemize}
-	\item a viselkedés nélkülieket, melyek \emph{Part}okat tartalmaznak.
+	\item a viselkedés nélkülieket, melyek \emph{Part}okat tartalmaznak.\\
 \end{itemize}
 Előbbiek a tartalmazási hierarchiában a levél elemek. Ezzel a módszerrel nem fordulhat elő, hogy egy Blokknak nem egyértelmű a viselkedése. Hiszen ezt mindig a tartalmazottjai adják. Fontos, hogy csak olyan modelleket lehet ellenőrizni amik legalább egy \emph{Part}ot tartalmaznak. Azaz a legkisebb modellnek állnia kell legalább két blokk definícióból amelyek a két már fent említett esetek egyikébe esnek.
 
@@ -199,16 +199,16 @@ Az egyes útvonalakon is meg kell tudnunk mondani, hogy a tulajdonság teljesül
 \end{figure}
 
 \subsection{Kifejezések a definiálása és használata}
-A modellben a kifejezéseket \emph{Check Expression}ök törzsében kell megadni. Ezeknek a modell elemeknek egy tetszőleges \emph{package}ben kell lennie aminek viszont egy \emph{GammaWorkspace}ben. Ellenőrzés során a kifejezések kiolvasásra kerülnek és Xtext segítségével \emph{parse}oldónak. Fontos, hogy ez a nyelvtan Gamma modellekre képes hivatkozni nevezetesen állapotokra és változókra, éppen ezért el kell végezni a MagicDraw - Gamma transzformációt mielőtt a \emph{parse}olást elvégeznénk. A transzformáció után a hivatkozható elemek ugyan azon a néven szerepelnek és ugyan olyan hierarchiában a két modellben ezért nem volt szükséges a kettőt objektum szinten is összekapcsolni. Ez  a kérdés azért fontos mert ezeket a tulajdonságokat a SysML modellen és nem pedig a Gamma modellen szeretnénk kimondani.
+A modellben a kifejezéseket \emph{Check Expression}ök törzsében kell megadni. Ezeknek a modell elemeknek egy tetszőleges \emph{package}ben kell lennie aminek viszont egy \emph{GammaWorkspace}ben. Ellenőrzés során a kifejezések kiolvasásra kerülnek és Xtext segítségével \emph{parse}oldónak. Fontos, hogy ez a nyelvtan Gamma modellekre képes hivatkozni nevezetesen állapotokra és változókra, éppen ezért el kell végezni a MagicDraw - Gamma transzformációt mielőtt a \emph{parse}olást elvégeznénk. A transzformáció után a hivatkozható elemek ugyanazon a néven szerepelnek és ugyan olyan hierarchiában a két modellben ezért nem volt szükséges a kettőt objektum szinten is összekapcsolni. Ez  a kérdés azért fontos mert ezeket a tulajdonságokat a SysML modellen és nem pedig a Gamma modellen szeretnénk kimondani.
 
-Érdemes megjegyezni, hogy mivel a Gamma a háttérben az \uppaal segítségével végzi a formális verifikációt ezeket a kifejezéseket még át kell alakítani UPPAAL queryvé. Ezt a konverziót a Gamma elvégzi. Igazából ez az a lépés ahol a Gamma modellek megléte szükségessé válik, hiszen az állapot és változó neveknek a majdani \uppaal modellben is helyesnek kell lenni.
+Érdemes megjegyezni, hogy mivel a Gamma a háttérben az \uppaal\ segítségével végzi a formális verifikációt ezeket a kifejezéseket még át kell alakítani UPPAAL queryvé. Ezt a konverziót a Gamma elvégzi. Igazából ez az a lépés ahol a Gamma modellek megléte szükségessé válik, hiszen az állapot és változó neveknek a majdani \uppaal\ modellben is helyesnek kell lenni.
 
 
 \section{MagicDraw modellek back-annotációja}
 
 Bizonyos tulajdonságok meglétét vagy éppenséggel hiányát ellenpéldák igazolják. Ezeket a Gamma back-annotation segítségével vezeti vissza az ellenőrzött modelljeibe. A fentebb ismertetett UML profilt azért hoztam létre, hogy ezeket az ellenpéldák, vagy hibautak könnyebben modellezhetőek legyenek.
 
-Ezeknek az előállítása most is modell transzformációkon keresztül történik, azonban ezek iránya itt megfordul nem MagicDraw modellekből állítok elő Gamma modelleket hanem épp fordítva Gamma modelleket transzformálok MagicDraw modellekké. Egyébként erre a modellre nem feltétlenül lenne szükség hiszen a további származtatásokat már a Gamma modellek segítéségével is meg lehetne valósítani. Viszont a végrehajtás íj módon történő tárolása már nem függ a Gammától és általánosabb mint egy \emph{Activiy} diagram vagy egy szekvencia, ezért könnyebb bemenetként használni olyan transzformációkhoz ami ezeket állítja elő, esetleg valami dokumentációt generál.
+Ezeknek az előállítása most is modell transzformációkon keresztül történik, azonban ezek iránya itt megfordul nem MagicDraw modellekből állítok elő Gamma modelleket hanem épp fordítva Gamma modelleket transzformálok MagicDraw modellekké. Egyébként erre a modellre nem feltétlenül lenne szükség hiszen a további származtatásokat már a Gamma modellek segítéségével is meg lehetne valósítani. Viszont a végrehajtás íj módon történő tárolása már nem függ a Gammától és általánosabb mint egy \emph{activiy} diagram vagy egy szekvencia, ezért könnyebb bemenetként használni olyan transzformációkhoz ami ezeket állítja elő, esetleg valami dokumentációt generál.
 
 \begin{figure}[!ht]
 	\centering
@@ -231,16 +231,16 @@ Az lépések közti akciók és a kimenet \emph{Activiy} diagramokra képződnek
 
 \newpage\section{Szimuláció}
 
-A fejlesztés során a futtatás megjelenítésének egyik módjának a szimuláció ígérkezett. Ez sajnos a szimulációs eszköz képességei miatt nem tudott maradéktalanul megvalósulni, viszont az előállított modellek mint megjelenítési forma egészen ígéretesnek bizonyult. Továbbá esetleg később ahogy fejlődik a szimulációs eszköz lehetséges, hogy kis alakításokkal lehetővé válik a modellek szimulációja is. A továbbiakban bemutatom a funkció megvalósítására tett próbálkozásokat és az akadályokat ami miatt nem tudott a funkció maradéktalanul megvalósulni.
+A fejlesztés során igyekeztem olyan modelleket előállítani amik az példákat írják le és szimulálhatók. Ez sajnos részben a szimulációs eszköz képességei miatt nem tudott maradéktalanul megvalósulni, viszont az előállított modellek pontosabban az őket ábrázoló diagramok mint megjelenítési formák egészen ígéretesnek bizonyultak. Továbbá esetleg később ahogy fejlődik a szimulációs eszköz lehetséges, hogy kis alakításokkal lehetővé válik a modellek szimulációja is. A továbbiakban bemutatom a funkció megvalósítására tett próbálkozásokat és az akadályokat ami miatt nem tudott a funkció maradéktalanul megvalósulni.
 
 \subsection{Szekvencia diagramok}
 
 Kezdetben a legígéretesebb lehetőségnek a szekvencia diagram bizonyult. Ahogy viszont elkezdtem belemélyedni ezek használatába elkezdtek a hiányosságok már a modellezés szintjén megmutatkozni azok iránt az aspektusok iránt, amiket modellezni szerettem volna. Ugyan a komponensek kommunikációja és annak sorrendisége leírható nincsen lehetőség egyéb strukturális tulajdonságok használatára mint például a portok.
 
-A Cameo Simulation toolkit képes a szimulációt rögzíteni szekvencia diagramon azonban a szignál kommunikáció nem fog működni a hiszen az eseményeket nem maguk a komponensek, hanem a portjaik fogadják. Amit viszont nagyon jól lehet ezeken a diagramokon ábrázolni azok a rendszer állapotai \emph{State Invariant}ok formájában. Ezekkel, ha működő szimulációt nem is, egy jól áttekinthető megjelenítését kaphatjuk a működésről.
+A Cameo Simulation toolkit képes a szimulációt rögzíteni szekvencia diagramon. Ezért adta magát a lehetőség, hogy ugyan ilyen modelleket az ellenpéldák alapján állítsak elő. Azonban a szignál kommunikáció nem fog működni a hiszen az eseményeket nem maguk a komponensek, hanem a portjaik fogadják. Ez azt fogja eredményezni, hogy a portokon várt események soha nem kerülnek kiolvasásra. Amit viszont nagyon jól lehet ezeken a diagramokon ábrázolni azok a rendszer állapotai \emph{State Invariant}ok formájában. Ezekkel, ha működő szimulációt nem is, egy jól áttekinthető megjelenítését kaphatjuk a működésről.
 
 \subsection{Activity diagramok}
-Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást (\ref{fig:activity-counter-example} ábra). Az egyetlen hiányosság, az aktuális állapotok nyomon követhetősége.
+Egy másik megközelítés amivel próbálkoztam, hogy a működést \emph{Activity} diagramok segítségével írom le. Ezeken várakozni is lehetséges\emph{Time Event} csomópontokkal és a \emph{Send Signal} eventek képesek kijelölni a portokat amiken a kommunikáció végbemegy. Ezzel a módszerrel már el lehet küldeni a szignálokat a megfelelő időzítéssel az ellen példának megfelelően, sőt igény szerint a szimulátor szekvencia diagram generátorával fel lehet venni a végrehajtást (\ref{fig:activity-counter-example} ábra). Az egyetlen hiányosság, az aktuális állapotok nyomon követhetősége, de ez például az elemek kommentelésével megoldható.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=140mm, keepaspectratio]{figures/contribution/WrappedSystem1.png}
@@ -268,8 +268,7 @@ A szimulátort csak akkor lehet felhasználni a példák futtatása, ha a szeman
 \newpage
 \section{Validáció}
 
-A modell ellenőrzés akkor lehetséges, ha a felhasználó betart bizonyos modellezési technikákat, amik lehetővé teszik a modell transzformáció végrehajtását. Ezek betartatására illetve az esetleges hibák megtalálásához készítettem egy validációs szabálykészletet.
-
+A modellek ellenőrzése akkor lehetséges, ha a felhasználó betart bizonyos modellezési technikákat, amik lehetővé teszik a modell transzformáció végrehajtását. Ezek betartatására illetve az esetleges hibák megtalálásához készítettem egy validációs szabálykészletet. Ez olyan hibákat talál meg amik vagy ellehetetlenítik a modell transzformációját vagy olyan Gamma modellt eredményeznek ami nem lesz teljesen helyes.
 
 \subsection{Elnevezett régiók}
 

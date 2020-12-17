@@ -27,20 +27,20 @@ Egy nyelv lehetséges elemeit és kapcsolatait leíró struktúrát metamodellne
 	\label{fig:block-stereotype}
 \end{figure}
 
-SysML segítségével sokféle modellt lehet készíteni a teljesség igénye nélkül: Követelmény modellek, viselkedés modellek, struktúra modellek, allokáció modellek, mindezek közül azonban kettőre koncentrálok a dolgozat elkészítése közben, mégpedig a viselkedés modellek egy részére az állapotgépekre és a funkcionális architektúrára amely funkcionális architektúra egy de-komponált állapotgépet ír le.
+SysML segítségével sokféle modellt lehet készíteni. A teljesség igénye nélkül: követelmény modellek, viselkedés modellek, struktúra modellek, allokáció modellek, mindezek közül azonban kettőre koncentrálok a dolgozat elkészítése közben, mégpedig a viselkedés modellek egy részére az állapotgépekre és a funkcionális architektúrára, amely funkcionális architektúra egy de-komponált állapotgépet ír le.
 
 
 
 \subsection{Állapotgépek, állapottérképek}
 
-Állapotgépek (State Machine) alatt olyan modelleket értünk amik a rendszert véges számú jól elkülönülő állapotát írják le, illetve az ezek közötti átmeneteket. Az állapotgépeket SysML-ben állapottérkép diagramokon (Statechart Diagram) tudunk definiálni. Szintaktikáját tekintve oválisok amik állapotokat jelentenek illetve az ezeket összekötő nyilak, melyek az állapotok közötti lehetséges váltások. A nyilak általában címkézettek. A címke három részből állhat: esemény (trigger), őrfeltétel (guard), akció (action).
+Állapotgépek (State Machine) alatt olyan modelleket értünk amik a rendszert véges számú jól elkülönülő állapotát írják le, illetve az ezek közötti átmeneteket. Az állapotgépeket SysML-ben állapottérkép diagramokon (Statechart Diagram) tudunk definiálni. Szintaktikáját tekintve oválisok amik állapotokat jelentenek illetve az ezeket összekötő irányított élek, melyek az állapotok közötti lehetséges váltások. Az élek általában címkézettek. A címke három részből állhat: esemény (trigger), őrfeltétel (guard), akció (action).
 
 \lstset{framesep=10pt}
 \begin{lstlisting}
 	esemény [örfeltétel] / akció
 \end{lstlisting}
-Állapotváltás egy esemény bekövetkezésekor lehetséges. Amennyiben van őrfeltétel annak igaznak kell lennie. Az állapotváltás bekövetkezését szokás tüzelésnek is nevezni. Ha egy állapotátmenet tüzel és van akció az átmenethez rendelve ez végrehajtódik.
-Akció nem csak állapotátmenetek, hanem állapotok be és kilépésénél is végrehajthatók, illetve létezik olyan akció is ami folyamatosan fut amíg a rendszer adott állapotban van.
+Állapotváltás egy esemény bekövetkezésekor lehetséges. Amennyiben van őrfeltétel annak igaznak kell lennie. Az állapotváltás bekövetkezését szokás tüzelésnek is nevezni. Ha egy állapotátmenet tüzel és van akció az átmenethez rendelve az végrehajtódik.
+Akció nem csak állapotátmenetek, hanem állapotok be és kilépésénél is végrehajthatók, illetve létezik olyan akció is ami folyamatosan fut amíg a rendszer adott állapotban tartózkodik.
 
 \begin{figure}[!ht]
 	\centering
@@ -49,7 +49,7 @@ Akció nem csak állapotátmenetek, hanem állapotok be és kilépésénél is v
 	\label{fig:statechart}
 \end{figure}
 
-Az állapotoknak van egy típusa melyet pszeudo állapotoknak nevezünk. Ezek nem tényleges állapotai a rendszernek olyan értelemben, hogy a rendszer soha nem tartózkodhat ezekben mindig azonnal át kell lépniük belőle egy tényleges állapotba, viszont fontos szemantikai jelentéssel bírnak. A kezdő állapot mely fekete körként jelenik meg: \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/initial.png}, egy régió belépési pontjai. Az állapotok mindig régiókban helyezkednek el, ezek tulajdonképpen állapotoknak egy olyan halmaza, amely halmazon belül mindig csak egy állapot lehet aktív, régiókból viszont lehet több is párhuzamosan. Így egy rendszernek lehet egyszerre több aktív állapota is régiónként viszont csak egy (a fork-joinra a dolgozat nem tér ki részletesen).
+Az állapotoknak van egy csoportja melyet pszeudo állapotoknak nevezünk. Ezek nem tényleges állapotai a rendszernek olyan értelemben, hogy a rendszer soha nem tartózkodhat ezekben mindig azonnal át kell lépniük belőle egy tényleges állapotba, viszont fontos szemantikai jelentéssel bírnak. A kezdő állapot mely fekete körként jelenik meg: \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/initial.png}, egy régió belépési pontjai. Az állapotok mindig régiókban helyezkednek el, ezek tulajdonképpen állapotoknak egy olyan halmaza, amely halmazon belül mindig csak egy állapot lehet aktív, régiókból viszont lehet több is párhuzamosan. Így egy rendszernek lehet egyszerre több aktív állapota is régiónként viszont csak egy (a fork-joinra a dolgozat nem tér ki részletesen).
 
 Pszeudo állapotok a \emph{History Statek} is. Ezek segítségével meg lehet jegyezni, hogy egy összetett állapot mely belső állapota volt aktív, így az állapotba visszalépve nem a belső régió kezdő állapota hanem az utolsó aktív állapot lesz újra aktív. \emph{History State}eknek két változata van \emph{Deep} és \emph{Shallow}. Előbbi egymásba ágyazott esetén minden régióba az utolsó aktív állapotba lép át, míg utóbbi csak a saját régiójának utolsó aktív állapotába. Jelölésük kör, benne "H"-val vagy "H*": \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/history.png}. Létezik még választó pszeudo állapot (\emph{Choice state}) ez szintaktikailag egy rombuszként jelenik meg \includegraphics[width=3mm, height=3mm]{figures/preliminaries/icons/choice.png}. Ezzel lehet elágazásokat megvalósítani oly módon, hogy a kimenő állapot átmeneteken lévő őrfeltételek igazsága jelöli ki azt az élt ami tüzelhet (több igazra értékelt átmenet esetén nem determinisztikus módon az egyik tüzelhet). Választó állapotok esetén lehet egy őrfeltételben az \emph{else} kulcsszót használni, ilyenkor, ha nem volt más átmeneten igazra értékelődő őrfeltétel akkor ezen az átmeneten keresztül folytatódik a futtatás. A választó állapotból kimenő éleken nem lehet \emph{trigger}.
 
@@ -59,7 +59,7 @@ Az előbbieken kívül létezik még fork-join amivel párhuzamos futtatást leh
 \subsection{A rendszer architektúrája}
 Egy rendszer felépítését többféle szempont szerint is lehet modellezni. Ez egyik ilyen, hogy a rendszerünk milyen fizikai részekből áll és ezek között mi a kapcsolat, de fel lehet funkciók szerint is bontani. Utóbbit a rendszer funkcionális architektúrájának nevezzük.
 
-Egy rendszer funkcionális architektúráján olyan modelleket értünk amelyek ennek a logikai felépítését írják le azaz, hogy milyen funkciói vannak a rendszernek, ezek hogyan kapcsolódnak egymáshoz. Jelen esetben ezeket a modelleket a rendszer állapotgépének a dekomponálására használjuk. Tehát van egy összetett rendszerünk melyeket funkcionális egységekre tudunk bontani úgy, hogy minden funkcionális egység állapot alapú viselkedések egy összessége. A komponensek képesek egymással kommunikálni és egymás viselkedését ezáltal befolyásolni.
+Egy rendszer funkcionális architektúráján olyan modelleket értünk amelyek ennek a logikai felépítését írják le azaz, hogy milyen funkciói vannak a rendszernek, ezek hogyan kapcsolódnak egymáshoz. Jelen esetben ezeket a modelleket a rendszer állapotgépének a dekomponálására használjuk. Tehát van egy összetett rendszerünk melyeket funkcionális egységekre tudunk bontani úgy, hogy minden funkcionális egység állapot alapú viselkedések összessége. A komponensek képesek egymással kommunikálni és egymás viselkedését ezáltal befolyásolni.
 
 A rendszert két szinten tudjuk modellezni: komponens definíciók és ezek kompozíciója, illetve ezeknek a kapcsolatai és belső szerkezete szerint. Előbbiek blokkok formájában jelennek meg és SysMLben Blokk definíciós (Block Definition) vagy BDD diagramokon jelennek meg A tartalmazásokat pedig \emph{Composition} élekkel tudjuk modellezni. Azt, hogy a blokkon belüli részek (\emph{Part}) hogyan kapcsolódnak egymáshoz Internal Block Diagramok (IBD) tartalmazzák. A részek közötti kapcsolatot konnektorok írják le. Ezek jellemzően portokon keresztül kötik össze a részeket. A portok tekinthetők egy adott blokk interfészének is.
 
@@ -126,7 +126,7 @@ Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszk
 
 \subsection{Gamma Statechart Composition Framework \cite{DBLP:conf/icse/MolnarGVMV18}}
 
-A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez is. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
+A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez, akciók és őrfeltételek leírásához. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
 
 A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
 
@@ -143,7 +143,7 @@ A Gamma nagy erőssége, hogy állapotgép kompozíciókat is lehet modellezni b
 
 \paragraph{Szinkron komponensek} melyek egy lépésen belül fogadnak eseményeket ezekre lépnek és elküldik az eseményeket, ezek viszont a következő iterációban fognak fogadásra kerülni a hozzájuk kapcsolódó komponensekben.
 
-\paragraph{Kaszkád komponensek (Cascade Component)} ezek hasonlóan működnek, mint a szinkron komponensek, viszont ebben az esetben a kiküldött üzenetek ugyan abban az iterációban kerülnek fogadásra. Ebből kifolyólag az üzenet áramlásnak aciklikusnak kell lennie, hiszen a feldolgozást végtelen ciklusba kerülne.
+\paragraph{Kaszkád komponensek (Cascade Component)} ezek hasonlóan működnek, mint a szinkron komponensek, viszont ebben az esetben a kiküldött üzenetek ugyan abban az iterációban kerülnek fogadásra. Ebből kifolyólag az üzenet áramlásnak aciklikusnak kell lennie, hiszen egy lépés feldolgozása végtelen ciklusba kerülne.
 
 \paragraph{Aszinkron komponensek} Az események feldolgozása aszinkron módon, üzenet sorok kiolvasásával történik. Állapottérkép definíciók alapból szinkron szemantikával bírnak, így ahhoz hogy asszinkron szemantikával ruházzuk fel őket be kell csomagolni őket egy \emph{Wrapperbe}. Ez definiálja számukra az üzenet sort is.
 
@@ -163,10 +163,10 @@ Ez a származtatás vagy modell transzformáció képezi az ötlet alapját (\re
 
 \subsection{Verifikáció menete}
 
-A verifikáció elvégzése a MagicDraw beépülő modul szemszögéből négy lépésből áll: 
+A verifikáció elvégzése a MagicDraw beépülő modulban négy lépésből áll: 
 \begin{itemize}
 	\item MagicDraw modellek Gammává transzformálása
-	\item Gamma modellek \uppaal modellé transzformálása (ezt a Gamma keretrendszer végzi el)
+	\item Gamma modellek \uppaal\ modellé transzformálása (ezt a Gamma keretrendszer végzi el)
 	\item tulajdonságok ellenőrzése UPPAAL segítségével
 	\item Eredmény megjelenítése
 \end{itemize}
@@ -181,18 +181,18 @@ Ezt a folyamatot \refstruc{fig:preliminaries-verif} szemlélteti. A Gamma által
 
 \subsection{Őrfeltételek, akciók}
 
-SysML nem definiál akció nyelvet őrfeltételek és akciók végrehajtásához. Míg akciókat tudunk modellezni bármilyen viselkedést leíró modell segítségével, addig az őrfeltételeket jellemzően valamilyen szöveges nyelvtannal szokás megadni.
+SysML nem definiál saját nyelvet őrfeltételek és akciók végrehajtásához. Míg akciókat tudunk modellezni bármilyen viselkedést leíró modell segítségével, addig az őrfeltételeket jellemzően valamilyen szöveges nyelvtannal szokás megadni.
 
-Ahhoz, hogy a modell ellenőrzést végre lehessen hajtani ezeknek a Gamma számára érthető kifejezéseknek kell lenniük. A pluginnak ez a verziójában ezért minden őrfeltételt és akciót a Gamma által biztosított nyelvtan segítségével kellett megírni. Ez abból a szempontból nem szerencsés, hogy ez nem egy olyan elterjedt nyelv, mint például a javascript amit a MagicDraw felkínál, továbbá nem áll még rendelkezésre olyan interpreter a MagicDraw-ban ami lehetővé tenné ezek futtatását ami elengedhetetlen többek között a modellek szimulációjához.
+Ahhoz, hogy a modell ellenőrzést végre lehessen hajtani ezeknek a Gamma számára érthető kifejezéseknek kell lenniük. A pluginnak ez a verziójában ezért minden őrfeltételt és akciót a Gamma által biztosított nyelvtan segítségével kellett megírni. Ez abból a szempontból nem szerencsés, hogy ez nem egy olyan elterjedt nyelv, mint például a javascript amit a MagicDraw támogat, továbbá nem áll még rendelkezésre olyan interpreter a MagicDraw-ban ami lehetővé tenné ezek futtatását ami elengedhetetlen többek között a modellek szimulációjához.
 
 
 \section{Xtext}
 
 Az Xtext egy keretrendszer amivel programozási nyelveket és egyéb szakterület specifikus nyelveket lehet készíteni, melyek szöveges formában manifesztálódnak. Ezeket valamilyen már meglévő modellezési nyelv egy konkrét szintaxisaként érdemes készíteni. Ez azt jelenti, hogy egy szövegesen megadott leírás elemeket és ezek kapcsolatait írja egy metamodellnek megfelelően.
 
-Az Xtext nyelvtanok készítéséhez egy erős nyelvtan leíró nyelvet kínál. Az ezzel leírt nyelvtanhoz pedig teljes infrastruktúrát generál mint: parser, linker, típus ellenőrző, fordító. Ezen felül Eclipses környezetben a szerkesztéshez kapunk szintaxis kiemelést, content assistot.
+Az Xtext nyelvtanok készítéséhez egy erős nyelvtan leíró nyelvet kínál. Az ezzel leírt nyelvtanhoz pedig teljes infrastruktúrát generál mint: \emph{parser}, \emph{linker}, típus ellenőrző, fordító. Ezen felül Eclipses környezetben a szerkesztéshez kapunk szintaxis kiemelést, \emph{content assist}ot.
 
-MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és akár saját kiértékelő motort is tudunk írni, az általunk létrehozott nyelvtanokhoz. Sajnos a MagicDraw beépített szerkesztőjében elesünk olyan hasznos felhasználói funkcióktól mint a content assist vagy a szintaxis kiemelés. Erre megoldást jelenthet az Xtext language szerver támogatásának a kihasználása a dolgozat azonban ennek a vizsgálatára nem tér ki.
+MagicDraw-ban is ki tudjuk használni az Xtextben rejlő lehetőségeket és akár saját kiértékelő motort is tudunk írni, az általunk létrehozott nyelvtanokhoz. Sajnos a MagicDraw beépített szerkesztőjében elesünk olyan hasznos felhasználói funkcióktól mint a \emph{content assist} vagy a szintaxis kiemelés. Erre megoldást jelenthet az Xtext language szerver támogatásának a kihasználása a dolgozat azonban ennek a vizsgálatára nem tér ki.
 
 Az Xtext használatára a dolgozat elkészítése során két helyen volt szükségem. Az egyik az őrfeltételek \emph{parse}olása, a másik pedig külön kérésre egy olyan export funkció integrálása ami XMI helyett a Gamma saját nyelvtanára sorosítva képes modelleket kimenteni.
 
