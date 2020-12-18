@@ -1,6 +1,6 @@
 \chapter{Teljesítménymérés, értékelés}
 
-Ebben a fejezetben megvizsgálom az eszköz teljesítményét és azt, hogy hogyan skálázódik a funkcionalitás a modell elemszámának növekedésével. Ez azért fontos, mert  hiába van megoldásunk egy problémára, ha az a gyakorlatban az erőforrások korlátossága miatt nem képes időben eredményt adni. A két legfontosabb tényező az idő és a memóriafogyasztás. Megfelelő gyorsítótárak alkalmazásával az idő mértéke drasztikusan csökkenthető, viszont ez memóriába kerül. Ha a memória elfogy a szemét gyűjtő algoritmus agresszívabban próbálhatja összeszedni az elengedett objektumokat, ez szintén megnövelheti a végrehajtási időt, hiszen a rendszer szemétgyűjtéssel és nem pedig a működés elvégzésére használja az erőforrásokat.
+Ebben a fejezetben megvizsgálom az eszköz teljesítményét és azt, hogy hogyan skálázódik a funkcionalitás a modell elemszámának növekedésével. Ez azért fontos, mert  hiába van elméleti megoldásunk egy problémára, ha az a gyakorlatban az erőforrások korlátossága miatt nem képes időben eredményt adni. A két legfontosabb tényező az idő és a memóriafogyasztás. Megfelelő gyorsítótárak alkalmazásával a végrehajtási idő mértéke drasztikusan csökkenthető, viszont ez memóriába kerül. Ha a memória elfogy a szemét gyűjtő algoritmus agresszívabban próbálhatja összeszedni az elengedett objektumokat, ez szintén megnövelheti a végrehajtási időt, hiszen a rendszer szemétgyűjtéssel és nem pedig a működés elvégzésére használja az erőforrásokat.
 
 A plugin VIATRA-t használ mégpedig inkrementális konfigurációval. Ez azt jelenti, hogy minták inicializációjuktól folyamatosan figyelik a modell változásait és módosítják a lekérdezések eredményhalmazát. Ez szintén memóriát vesz igényben viszont az elemek lekérdezése egy táblázat sorának kiolvasásának megfelelő komplexitással bír és nagyon gyors. Azt, hogy mennyire nő nagyra a VIATRA memória igénye leginkább a minták befolyásolják ezért különösen fontos, hogy ezek minél hatékonyabbak legyenek, mert nagy modell esetén nagyon nagy memória fogyasztást eredményezhetnek.
 
@@ -48,15 +48,16 @@ Behatósabban vizsgálva a méréseket kiderül, hogy a legtöbb időt nem magá
 Mivel a lassulás a MagicDraw működéséből keletkezik megpróbáltam másféle modell elemeket létrehozni \emph{property}k helyett remélve így kisebb lesz az elemek létrehozásának a működésre gyakorolt hatása. \emph{Property}k helyett az EMF modellt szimbolizáló linkeket \emph{Class} példányokra cseréltem és újból elvégeztem a mérést. Az eredmények jelentős teljesítmény javulást mutatnak melyet az alábbi táblázat és \aref{fig:mes-2} ábra mutat.\\
 
 \begin{center}
-	\begin{tabular}{ lccccccccc }
+	\begin{tabular}{ l|c|c|c|c|c|c|c|c|c }
 		Partok száma & 10 & 20 & 30 & 40 & 50 & 100 & 200 & 500 & 1000 \\
 		\hline
-		Teljes futási idő & 699 & 798 & 1098 & 1599 & 1899 & 3300 & 2400 & 7000 & 12799 \\
-		Transzformáció & 100 & 99 & 98 & 199 & 200 & 301 & 700 & 2000 & 4240\\
+		Teljes futási idő (ms) & 699 & 798 & 1098 & 1599 & 1899 & 3300 & 2400 & 7000 & 12799 \\
+		\hline
+		Transzformáció (ms) & 100 & 99 & 98 & 199 & 200 & 301 & 700 & 2000 & 4240\\
 	\end{tabular}
 \end{center}
-
- A diagramon a függőleges tengely logaritmikus. A diagramról megállapítható, hogy a végrehajtási idő lineárisan változik a \emph{part}ok darabszámának növekedésével. Ugyanakkor az is látszik, hogy ugyan a korábbi implementációkhoz képest sokkal kevésbé jelentős a \emph{trace} modell létrehozásának az ideje, de az elemszám növekedésével rosszabban skálázódik, mint maga a transzformáció, így kellően nagy modelleken ezzel a megoldással is dominálni fog.
+\vskip 5mm
+A diagramon a függőleges tengely logaritmikus. A diagramról megállapítható, hogy a végrehajtási idő lineárisan változik a \emph{part}ok darabszámának növekedésével. Ugyanakkor az is látszik, hogy ugyan a korábbi implementációkhoz képest sokkal kevésbé jelentős a \emph{trace} modell létrehozásának az ideje, de az elemszám növekedésével rosszabban skálázódik, mint maga a transzformáció, így kellően nagy modelleken ezzel a megoldással is dominálni fog.
 
 \begin{figure}[!ht]
 	\centering
@@ -122,7 +123,7 @@ A meómria használat eloszlását picit részletesebben nézzük (\ref{fig:mem2
 	\caption{Heap méretének százalékos eloszlása}
 	\label{fig:mem2}
 \end{figure}
-Ennek két fő oka lehet. Az egyik, hogy a mérések során a MagicDraw teljes memóriahasználatát néztem a mibe beletartoznak az importált modellek is mint például a SysML projekt és a Gamma profil is. Ez szám ugyan állandó, de a kisebb méreteken dominálhat, míg a nagyobb méreteken már az a generált állapogép mérete lesz a meghatározó. A másik a már említett egymásba ágyazottság növekedésének mértéke.
+Ennek két fő oka lehet. Az egyik, hogy a mérések során a MagicDraw teljes memóriahasználatát néztem a mibe beletartoznak az importált modellek is mint például a SysML projekt és a Gamma profil is. Ez szám ugyan állandó, de a kisebb méreteken dominálhat, míg a nagyobb méreteken már az a generált állapotgép mérete lesz a meghatározó. A másik a már említett egymásba ágyazottság növekedésének mértéke.
 
 \paragraph{Értékelés:} a mérések során nem tapasztaltam kiugró mértékű teljesítmény csökkenést, ami azt jelenti, hogy a vizsgált minták között nem volt olyan, ami nem lett elég jól megírva. Ugyanakkor a közel 18\%-os eredmény a legnagyobb modellen indokolttá teheti, hogy nagy modelleken a VIATRA ne fusson folyamatosan, hanem ez kikapcsolható legyen.
 

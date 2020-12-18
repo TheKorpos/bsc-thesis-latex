@@ -5,9 +5,9 @@ Ebben a fejezetben bemutatom azokat az ismereteket, technológiákat amelyek seg
 \section{Kapocsolódó munkák}
 A fejlesztés megkezdése előtt utána néztem, hogy milyen eszközök állak rendelkezésre, amelyek hasonló problémákat oldanak meg. Specifikusan a MagicDrawhoz nem találtam olyat, ami még most is releváns lenne (korábbi munkáim során találkoztam hasonló célú eszközzel, de úgy tűnik annak a fejlesztése nem folytatódott). Általánosabban az állapottérkép és formális verifikációval kapcsolatban a legszorosabban kapcsolódó munka a Gamma Statechart Compoition Framework amelyet későbbi fejezetekben mutatok be. A megoldások amiket alkalmaztam főleg ennek az eszköznek a segítségével történtek.
 
-\section{SysML \cite{SysML}}
+\section{SysML}
 
-A System Modeling Language (SysML) egy általános célú architektúra modellező nyelv, melyet elsősorban rendszermérnökök használnak. A nyelvvel különböző komplex rendszereket tudunk leírni többféle megközelítésből mint magas szintű funkcionális modellek mind pedig az alacsonyabb akár fizikai modellekig.
+A System Modeling Language (SysML) \cite{SysML} egy általános célú architektúra modellező nyelv, melyet elsősorban rendszermérnökök használnak. A nyelvvel különböző komplex rendszereket tudunk leírni többféle megközelítésből mint magas szintű funkcionális modellek mind pedig az alacsonyabb akár fizikai modellekig.
 
 A SysML-t mint ahogyan az UML-t is az Object Management Group (OMG) fejleszti, sőt az UML 2-nek egy dialógusa a nyelv, úgynevezett UML profil segítségével van definiálva. Az UML profil a nyelv specializálásának egy módja sztereotípiák (Stereotype), megkötések (Constraint) és címkézett értékek (Tagged Value) segítségével (\refstruc{fig:custom-profile}).
 
@@ -93,10 +93,10 @@ Ezen felül dokumentumokat is tudunk származtatni a modellekből a kódgenerál
 
 Ebben az alfejezetben röviden kitérek azokra a tényleges  technológiákra, amelyekre a feladat elvégzése során használtam, mint például a VIATRA, a kiindulási alapot szolgáltató MagicDraw plugin és a Gamma.
 
-\subsection[]{VIATRA\footnotemark}
+\subsection{VIATRA}
 \footnotetext{https://www.eclipse.org/viatra/}
 
-A VIATRA egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését \cite{bergmann2015viatra}. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re (\refstruc{fig:vql}) támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
+A VIATRA\footnotemark egy keretrendszer mely lehetővé teszi eseményvezért modell transzformációk fejlesztését \cite{varro2016road}. Ehhez egy inkrementális modell lekérdezéseket leíró nyelvre a VIATRA Query Language-re (\refstruc{fig:vql}) támaszkodik. A létrehozott transzformációkat egy reaktív Query Engine futtatja és tartja karban.
 
 \begin{figure}[!ht]
 	\begin{lstlisting}
@@ -122,11 +122,11 @@ A VIATRA használata jelentősen megkönnyíti a modellekkel való munkát, bár
 
 \section{MagicDraw állapottérkép verifikációs plugin}
 
-Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszközt, mely korábbi egyetemi munkám eredményeként képes volt MagicDraw modellek ellenőrzésére. A funkció megvalósításához a \emph{Gamma Statechart Composition framework} nevű keretrendszert használtam fel.
+Ebben az alfejezetben bemutatom azt a SysML állapottrékép verifikációs eszközt, mely korábbi egyetemi munkám eredményeként képes volt MagicDraw modellek ellenőrzésére \cite{szakdolgozat}. A funkció megvalósításához a \emph{Gamma Statechart Composition framework} nevű keretrendszert használtam fel.
 
-\subsection{Gamma Statechart Composition Framework \cite{DBLP:conf/icse/MolnarGVMV18}}
+\subsection{Gamma Statechart Composition Framework}
 
-A Gamma Statechart Composition Framework (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez, akciók és őrfeltételek leírásához. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
+A Gamma Statechart Composition Framework \cite{DBLP:conf/icse/MolnarGVMV18} (továbbiakban Gamma) egy állapottérkép modellező keretrendszer Eclipse felett ami integrálja a YAKINDU-t, de ezen felül saját nyelveket definiál nem csak állapottérkép leíráshoz, hanem ezek kompozíciójának modellezéséhez, akciók és őrfeltételek leírásához. Gammával a felhasználónak lehetősége van modellek formális verifikációját elvégezni, az eredményből pedig teszt kódot generálni, futtatható kód mellett.
 
 A verifikáció eredményeként előálló időzítéseket és lépéseket visszavezeti a modellbe. Ezt Back-annotationnek nevezzük. Ezekhez szintén definiált egy nyelv, mely lehetővé teszi ezek dokumentálását.
 

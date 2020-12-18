@@ -22,14 +22,14 @@ A rendszer három interfészt definiál (\ref{fig:Interfaces} ábra): \emph{Poli
 	\label{fig:Interfaces}
 \end{figure}
 
-Most, hogy már az interfészek és a portok le vannak modellezve el ezeket fel lehet használni az állapottérképek leírásához. A modell két állapottérképet definiál egyet a két lámpa controllerjéhez (\emph{LightCtr}-hez) és egyet a \emph{Controller}hez.
+Most, hogy már az interfészek és a portok le vannak modellezve el ezeket fel lehet használni az állapottérképek leírásához. A modell két állapottérképet definiál egyet a két lámpa \emph{Controller}jéhez (\emph{LightCtr}-hez) és egyet a \emph{Controller}hez.
 
 Tekintsük előbb a \emph{Controller} állapottérképére (\ref{fig:ControllerSM} ábra). Az állapotgép egy kompozit állapotból és ennek négy belső állapotából áll. \emph{Police Interrupt} hatására az állapotgép kilép a kompozit állapotból mindkét \emph{PoliceInterrupt} típusú portján küld egy-egy \emph{policeInterrupt} jelet, majd visszatér ugyan ebbe az állapotba. Amelyben a \emph{History State} miatt abból az állapotba kerül vissza amiben a kilépés előtt volt.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=12cm, keepaspectratio]{figures/contribution/ControllerSM.png}
-	\caption{Controller állapotai}
+	\caption{Kontroller állapotai}
 	\label{fig:ControllerSM}
 \end{figure}
 
@@ -92,7 +92,7 @@ Az osztályok belsejében továbbá létrejön jó pár \emph{property}. Ezek cs
 
 Következő lépés a az UPPAAL EMF speficikus modelljének előállítása  ez ehhez tartozó \emph{trace}kkel együtt amelyeket a Gamma majd a back-annotation előállításához használ majd. Ezeket a mostmár aktív "Transform models to UPPAAL" akció végrehajtásával tudjuk megtenni. Hasonlóan ez előbb szemléltetettekhez létrejön két sztereotipizált osztály egy az UPPAAL modellnek egy pedig az UPPAAL - Gamma \emph{traceknek}. A modellek ugyan úgy mint az előbb XMI formátumban az elemekhez lesznek kapcsolva. Ebben az esetben nem fognak \emph{property}k megjelenni hiszen ezek a modellek tulajdonképpen nem függnek a MagicDraw modelltől hanem funkcionálisan a Gamma részei.
 
-Az eddigiekben nem volt szükség a háttértárra sorosítani, minden a MagicDraw modell belsejében került tárolásra. Azonban a következő lépés már használni fogja a behivatkozott könyvtárat is. Ez az utolsó lépés amit el kell végeznünk ahhoz, hogy olyan leírás álljon elő amit már az UPPAAL ellenőrzője be tud olvasni. Erre a \emph{Persist UPPAAL XML akció szolgál}. Ez szintén létrehoz egy sztereotipizált osztály elemet ez azonban már nem a \emph{GammaModel} hanem a \emph{GammaWorkspaceFile} sztereotípiát fogja megkapni. Ez utal arra, hogy ez egy külső hivatkozás (\ref{fig:gwsfinal} ábra).
+Az eddigiekben nem volt szükség a háttértárra sorosítani, minden a MagicDraw modell belsejében került tárolásra. Azonban a következő lépés már használni fogja a behivatkozott könyvtárat is. Ez az utolsó lépés amit el kell végeznünk ahhoz, hogy olyan leírás álljon elő amit már az \uppaal\ ellenőrzője be tud olvasni. Erre a \emph{Persist UPPAAL XML akció szolgál}. Ez szintén létrehoz egy sztereotipizált osztály elemet ez azonban már nem a \emph{GammaModel} hanem a \emph{GammaWorkspaceFile} sztereotípiát fogja megkapni. Ez utal arra, hogy ez egy külső hivatkozás (\ref{fig:gwsfinal} ábra).
 
 \begin{figure}[!ht]
 	\centering
@@ -122,7 +122,7 @@ A korábban bemutatott interfészek például ilyen formában fognak megjelenni:
 
 \section{Formális verifikáció}
  
-A letranszformált modellek mellet meg kell tudni fogalmazni az ellenőrizendő feltételeket is. Ehhez előbb létre kell hozni egy \emph{Package}t a GammaWorkspaceben tetszőleges néven. Ebben tudunk létrehozni \emph{GammaCheckExpression}öket. Ezek fogják leírni az ellenőrizendő tulajdonságait a modellnek. Erre a Gamma Property nyelvtanát tudjuk használni. Tegyük fel, hogy elő szeretnénk írni, hogy a két \emph{TrafficLightCtrl} primary és secondary ne kerülhessenek egyszerre a "Green" állapotba. A kifejezést a \emph{GammaCheckExpression}  body mezőjébe meg kell megadni. Sajnos ennek a megadása kissé kényelmetlen, mert nincs \emph{content assist} sem semmilyen támogató funkció.
+A letranszformált modellek mellet meg kell tudni fogalmazni az ellenőrizendő feltételeket is. Ehhez előbb létre kell hozni egy \emph{Package}t a \emph{GammaWorkspaceben} tetszőleges néven. Ebben tudunk létrehozni \emph{GammaCheckExpression}öket. Ezek fogják leírni az ellenőrizendő tulajdonságait a modellnek. Erre a Gamma Property nyelvtanát tudjuk használni. Tegyük fel, hogy elő szeretnénk írni, hogy a két \emph{TrafficLightCtrl} primary és secondary ne kerülhessenek egyszerre a "Green" állapotba. A kifejezést a \emph{GammaCheckExpression}  body mezőjébe meg kell megadni. Sajnos ennek a megadása kissé kényelmetlen, mert nincs \emph{content assist} sem semmilyen támogató funkció.
 
 \begin{lstlisting}	
 	E F [{state primary.NormalRegion.Green and state secondary.NormalRegion.Green}]
